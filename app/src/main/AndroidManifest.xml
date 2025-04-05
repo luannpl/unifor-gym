@@ -13,6 +13,63 @@
         android:theme="@style/Theme.Unifor_gym"
         tools:targetApi="31">
         <activity
+            android:name=".Chat"
+            android:exported="false" />
+        <activity
+            android:name=".GestaoAparelhos"
+            android:exported="false" />
+        <activity
+            android:name=".ExercicioDetalhes"
+            android:exported="false" />
+        <activity
+            android:name=".GestaoExercicios"
+            android:exported="false" />
+        <activity
+            android:name=".AulaDetalhes"
+            android:exported="false" />
+        <activity
+            android:name=".GestaoAulas"
+            android:exported="false" />
+        <activity
+            android:name=".GestaoUsuarios"
+            android:exported="false" />
+        <activity
+            android:name=".HomeAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".ConfiguracoesPerfil"
+            android:exported="false" />
+        <activity
+            android:name=".Perfil"
+            android:exported="false" />
+        <activity
+            android:name=".Notificacoes"
+            android:exported="false" />
+        <activity
+            android:name=".AulasUsuario"
+            android:exported="false" />
+        <activity
+            android:name=".TreinoDetalhes"
+            android:exported="false" />
+        <activity
+            android:name=".Treinos"
+            android:exported="false" />
+        <activity
+            android:name=".HomeUsuario"
+            android:exported="false" />
+        <activity
+            android:name=".RecuperarSenha"
+            android:exported="false" />
+        <activity
+            android:name=".Cadastro"
+            android:exported="false" />
+        <activity
+            android:name=".Login"
+            android:exported="false" />
+        <activity
+            android:name=".SplashScreen"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
