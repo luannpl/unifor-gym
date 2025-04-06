@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <application
         android:allowBackup="true"
@@ -11,67 +11,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Unifor_gym"
-        tools:targetApi="31">
+        tools:targetApi="31" >
         <activity
-            android:name=".Chat"
+            android:name=".activities.Chat"
             android:exported="false" />
         <activity
-            android:name=".GestaoAparelhos"
+            android:name=".activities.UserActivity"
             android:exported="false" />
         <activity
-            android:name=".ExercicioDetalhes"
+            android:name=".activities.AdminActivity"
             android:exported="false" />
         <activity
-            android:name=".GestaoExercicios"
+            android:name=".activities.ConfiguracoesPerfil"
             android:exported="false" />
         <activity
-            android:name=".AulaDetalhes"
+            android:name=".activities.RecuperarSenha"
             android:exported="false" />
         <activity
-            android:name=".GestaoAulas"
+            android:name=".activities.Cadastro"
             android:exported="false" />
         <activity
-            android:name=".GestaoUsuarios"
+            android:name=".activities.Login"
             android:exported="false" />
         <activity
-            android:name=".HomeAdmin"
+            android:name=".activities.SplashScreen"
             android:exported="false" />
         <activity
-            android:name=".ConfiguracoesPerfil"
-            android:exported="false" />
-        <activity
-            android:name=".Perfil"
-            android:exported="false" />
-        <activity
-            android:name=".Notificacoes"
-            android:exported="false" />
-        <activity
-            android:name=".AulasUsuario"
-            android:exported="false" />
-        <activity
-            android:name=".TreinoDetalhes"
-            android:exported="false" />
-        <activity
-            android:name=".Treinos"
-            android:exported="false" />
-        <activity
-            android:name=".HomeUsuario"
-            android:exported="false" />
-        <activity
-            android:name=".RecuperarSenha"
-            android:exported="false" />
-        <activity
-            android:name=".Cadastro"
-            android:exported="false" />
-        <activity
-            android:name=".Login"
-            android:exported="false" />
-        <activity
-            android:name=".SplashScreen"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".activities.MainActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
