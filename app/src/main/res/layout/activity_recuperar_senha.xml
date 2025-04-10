@@ -5,6 +5,63 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.RecuperarSenha">
+    tools:context=".activities.RecuperarSenha"
+    android:background="#FFFFFF">
+
+    <ImageView
+        android:id="@+id/logoRecuperar"
+        android:layout_width="217dp"
+        android:layout_height="197dp"
+        android:layout_marginTop="52dp"
+        android:contentDescription="@string/logo_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logounifor" />
+
+    <TextView
+        android:id="@+id/tvDigiteEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-100dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/digite_seu_email"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logoRecuperar" />
+
+    <EditText
+        android:id="@+id/inputEmailRecuperar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="100dp"
+        android:background="@drawable/edittext_background"
+        android:hint="@string/exemplo_email"
+        android:inputType="textEmailAddress"
+        android:padding="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDigiteEmail" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnEnviarLink"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="100dp"
+        android:backgroundTint="#03A9F4"
+        android:text="@string/enviar_link"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputEmailRecuperar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
