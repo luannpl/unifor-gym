@@ -1,5 +1,47 @@
 <resources>
-    <string name="app_name">unifor_gym</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Gerais -->
+    <string name="app_name">Unifor Gym</string>
+    <string name="logo_description">Logo do aplicativo</string>
+
+    <!-- Recuperar Senha -->
+    <string name="digite_seu_email">Digite seu email</string>
+    <string name="exemplo_email">exemplo@email.com</string>
+    <string name="enviar_link">Enviar Link</string>
+
+    <!-- Saudação -->
+    <string name="saudacao_usuario">Bem-vindo, Narak</string>
+
+    <!-- Títulos -->
+    <string name="titulo_treino_dia">TREINO DO DIA</string>
+    <string name="titulo_proximos_treinos">PRÓXIMOS TREINOS</string>
+    <string name="titulo_perna">PERNA</string>
+
+    <!-- Cabeçalhos da tabela -->
+    <string name="coluna_exercicio">Exercício</string>
+    <string name="coluna_carga">Carga</string>
+    <string name="coluna_series">Séries</string>
+
+    <!-- Exercícios -->
+    <string name="exercicio_agachamento">Agachamento</string>
+    <string name="exercicio_leg_press">Leg Press</string>
+    <string name="exercicio_extensora">C. extensora</string>
+    <string name="exercicio_stiff">Stiff</string>
+    <string name="exercicio_mesa_flexora">Mesa flexora</string>
+
+    <!-- Cargas -->
+    <string name="carga_40kg">40kg</string>
+    <string name="carga_80kg">80kg</string>
+    <string name="carga_45kg">45kg</string>
+    <string name="carga_30kg">30kg</string>
+    <string name="carga_50kg">50kg</string>
+
+    <!-- Séries -->
+    <string name="series_3x">3x</string>
+
+    <!-- Próximos Treinos - Grupos Musculares -->
+    <string name="grupo_peito">Peito</string>
+    <string name="grupo_costas">Costas</string>
+
+    <!-- Botão -->
+    <string name="botao_ver">Ver</string>
 </resources>
