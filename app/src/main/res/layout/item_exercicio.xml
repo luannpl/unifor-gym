@@ -32,7 +32,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txtNome"
+                    android:id="@+id/txtNomeExercicio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Supino"
@@ -40,7 +40,7 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/txtNivel"
+                    android:id="@+id/txtNivelExercicio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Intermediário"
@@ -49,7 +49,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/txtGrupoMuscular"
+                android:id="@+id/txtGrupoMuscularExercicio"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"

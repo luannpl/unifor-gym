@@ -15,9 +15,9 @@ class ExercicioAdapter (
 ) : RecyclerView.Adapter<ExercicioAdapter.ExercicioViewHolder>() {
 
     inner class ExercicioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val txtNome: TextView = itemView.findViewById(R.id.txtNome)
-        val txtNivel: TextView = itemView.findViewById(R.id.txtNivel)
-        val txtGrupoMuscular: TextView = itemView.findViewById(R.id.txtGrupoMuscular)
+        val txtNome: TextView = itemView.findViewById(R.id.txtNomeExercicio)
+        val txtNivel: TextView = itemView.findViewById(R.id.txtNivelExercicio)
+        val txtGrupoMuscular: TextView = itemView.findViewById(R.id.txtGrupoMuscularExercicio)
         val btnMore: ImageView = itemView.findViewById(R.id.btnMoreItemExercicio)
     }
 
