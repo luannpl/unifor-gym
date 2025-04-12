@@ -1,15 +1,69 @@
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos do Android Studio
+.idea/
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
+*.iws
+
+# Arquivos de build
+/build/
+.cxx/
+.externalNativeBuild/
+
+# Arquivos locais
+local.properties
+.gradle/
+captures/
+
+# Arquivos de cache do Android Studio
+/.idea/caches/
+/.idea/libraries/
 /.idea/modules.xml
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+
+# Arquivos do Gradle
+.gradle/
+/build/
+
+# Arquivos de log e temporários
+*.log
+*.tmp
+
+# Arquivos de teste gerados
+/test-output/
+/test-results/
+
+# Arquivos do Kotlin
+*.kotlin_module
+
+# Arquivos do lint
+lint/intermediates/
+lint/generated/
+
+# Arquivos do NDK
+obj/
+
+# Arquivos do ProGuard
+proguard/
+
+# APKs e arquivos de distribuição
+*.apk
+*.ap_
+*.aab
+
+# Arquivos gerados
+gen/
+out/
+
+# Arquivos de configuração específicos da máquina
+*.swp
+*.swo
+*~
+
+# Configurações de IDEs diversas
+.vscode/
+
