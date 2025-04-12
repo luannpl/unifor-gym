@@ -44,4 +44,6 @@
 
     <!-- Botão -->
     <string name="botao_ver">Ver</string>
+
+    <string name="hello_blank_fragment">a</string>
 </resources>
