@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_home_user" android:icon="@drawable/home" android:title="Home"/>
+    <item android:id="@+id/nav_exercicios_user" android:icon="@drawable/exercicios" android:title="Exercícios"/>
+    <item android:id="@+id/nav_aulas_user" android:icon="@drawable/aulas" android:title="Aulas"/>
+    <item android:id="@+id/nav_notificacoes_user" android:icon="@drawable/notificacoes" android:title="Notificações"/>
+    <item android:id="@+id/nav_usuarios_user" android:icon="@drawable/usuario" android:title="Usuários"/>
+
+</menu>
