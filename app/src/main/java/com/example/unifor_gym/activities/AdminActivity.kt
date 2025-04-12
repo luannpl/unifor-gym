@@ -22,6 +22,10 @@ class AdminActivity : AppCompatActivity() {
 
         bottomNavMenu = findViewById(R.id.bottomNavAdmin)
         bottomNavMenu.selectedItemId = R.id.nav_home_admin
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         bottomNavMenu.setOnItemSelectedListener { item ->
             val fragment = when (item.itemId) {
@@ -31,7 +35,7 @@ class AdminActivity : AppCompatActivity() {
                 R.id.nav_exercicios_admin -> GestaoExercicios()
                 R.id.nav_aparelhos_admin -> GestaoAparelhos()
                 else -> null
-                }
+            }
 
             return@setOnItemSelectedListener if (fragment != null) {
                 setFragment(fragment)

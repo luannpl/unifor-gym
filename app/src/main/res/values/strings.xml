@@ -2,6 +2,7 @@
     <!-- Gerais -->
     <string name="app_name">Unifor Gym</string>
     <string name="logo_description">Logo do aplicativo</string>
+    <string name="hello_blank_fragment">Fragmento vazio</string>
 
     <!-- Recuperar Senha -->
     <string name="digite_seu_email">Digite seu email</string>
