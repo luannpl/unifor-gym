@@ -46,7 +46,7 @@ class GestaoAulas : Fragment() {
         )
 
         val aulasAdapter = AulaAdapter(listaDeAulas) { aula ->
-            Log.d("Menu de Administração do Exercício", "onMoreClick: " + aula.nome)
+            Log.d("Menu de Administração de Aulas", "onMoreClick: " + aula.nome)
         }
 
         recyclerAulas.layoutManager = LinearLayoutManager(requireContext())

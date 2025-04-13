@@ -25,7 +25,7 @@ class AulaAdapter (
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AulaViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_aula, parent, false)
+            .inflate(R.layout.item_aula_gestao, parent, false)
         return AulaViewHolder(view)
     }
 
