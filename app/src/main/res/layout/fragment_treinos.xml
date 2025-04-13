@@ -5,10 +5,23 @@
     android:layout_height="match_parent"
     tools:context=".fragments.Treinos">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp" android:text="Treinos"
+        android:textAlignment="viewStart"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTreinos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:paddingTop="50dp" android:paddingStart="8dp"
+        android:paddingEnd="8dp" />
 
 </FrameLayout>
