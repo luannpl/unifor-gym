@@ -6,4 +6,6 @@
     <color name="darkBlue">#110341</color>
     <color name="blue">#03A9F4</color>
     <color name="light_gray">#F5F5F5</color>
+    <color name="gray">#FFA0A0A0</color>
+    <color name="red">#FFFF6B6B</color>
 </resources>
