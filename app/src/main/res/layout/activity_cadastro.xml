@@ -16,14 +16,12 @@
         android:layout_marginStart="100dp"
         android:layout_marginTop="265dp"
         android:layout_marginEnd="100dp"
-        android:background="#110341"
+        android:background="@drawable/edittext_background"
         android:ems="10"
         android:hint="Digite seu nome"
         android:inputType="text"
         android:padding="8sp"
         android:paddingBottom="4sp"
-        android:textColor="#FFF"
-        android:textColorHint="#FFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,13 +33,11 @@
         android:layout_marginStart="100dp"
         android:layout_marginTop="33dp"
         android:layout_marginEnd="100dp"
-        android:background="#110341"
+        android:background="@drawable/edittext_background"
         android:ems="10"
         android:hint="Digite seu email"
         android:inputType="textEmailAddress"
         android:padding="8sp"
-        android:textColor="#FFF"
-        android:textColorHint="#FFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nomeCadastroId" />
@@ -53,13 +49,11 @@
         android:layout_marginStart="100dp"
         android:layout_marginTop="33dp"
         android:layout_marginEnd="100dp"
-        android:background="#110341"
+        android:background="@drawable/edittext_background"
         android:ems="10"
         android:hint="Digite sua senha"
         android:inputType="textPassword"
         android:padding="8sp"
-        android:textColor="#FFF"
-        android:textColorHint="#FFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailCadastroId" />
@@ -96,6 +90,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logounifor" />
+
+    <TextView
+        android:id="@+id/textLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="127dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="127dp"
+        android:text="Já tem uma conta? Login"
+        android:textColor="#03A9F4"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="irParaLogin"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCadastrar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
