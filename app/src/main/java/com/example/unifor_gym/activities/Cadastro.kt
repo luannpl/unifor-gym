@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -59,5 +60,13 @@ class Cadastro : AppCompatActivity() {
             }, 2000)
         }
 
+
+
+    }
+    fun irParaLogin(view: View) {
+
+        val intent = Intent(this, Login::class.java)
+        startActivity(intent)
+         finish()
     }
 }
