@@ -3,15 +3,16 @@ package com.example.unifor_gym.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
 import com.example.unifor_gym.activities.ExercicioDetalhes
 import com.example.unifor_gym.adapters.ExercicioAdapter
+import com.example.unifor_gym.models.AcoesMenuMais
 
 data class Exercicio (
     val nome: String,
@@ -46,9 +47,19 @@ class GestaoExercicios : Fragment() {
             Exercicio("Rosca direta", "Iniciante", "Braços")
         )
 
-        val exerciciosAdapter = ExercicioAdapter(listaDeExercicios) { exercicio ->
-            val intentExercicioDetalhes = Intent(requireContext(), ExercicioDetalhes::class.java)
-            startActivity(intentExercicioDetalhes)
+        val exerciciosAdapter = ExercicioAdapter(listaDeExercicios) { exercicio, acao ->
+            when (acao) {
+                AcoesMenuMais.VER_DETALHES -> {
+                    val intentExercicioDetalhes = Intent(requireContext(), ExercicioDetalhes::class.java)
+                    startActivity(intentExercicioDetalhes)
+                }
+                AcoesMenuMais.EDITAR -> {
+                    Log.d("GestaoExercicios", "Editando exercício: ${exercicio.nome}")
+                }
+                AcoesMenuMais.EXCLUIR -> {
+                    Log.d("GestaoExercicios", "Excluindo exercício: ${exercicio.nome}")
+                }
+            }
         }
 
         recyclerExercicios.layoutManager = LinearLayoutManager(requireContext())
