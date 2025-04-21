@@ -27,6 +27,9 @@
             android:name=".activities.ConfiguracoesPerfil"
             android:exported="false" />
         <activity
+            android:name=".activities.ExercicioDetalhes"
+            android:exported="false" />
+        <activity
             android:name=".activities.RecuperarSenha"
             android:exported="false" />
         <activity

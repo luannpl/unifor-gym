@@ -37,7 +37,7 @@ class GestaoExercicios : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerExercicios = view.findViewById(R.id.recyclerExercicios)
+        recyclerExercicios = view.findViewById(R.id.recyclerViewGestaoExercicios)
 
         listaDeExercicios = listOf(
             Exercicio("Supino", "Intermediário", "Peito"),
