@@ -1,5 +1,6 @@
 package com.example.unifor_gym.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,8 +10,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
+import com.example.unifor_gym.activities.AulaDetalhes
+import com.example.unifor_gym.activities.ExercicioDetalhes
 import com.example.unifor_gym.adapters.AulaAdapter
 import com.example.unifor_gym.adapters.ExercicioAdapter
+import com.example.unifor_gym.models.AcoesMenuMais
 
 data class Aula (
     val nome: String,
@@ -45,8 +49,19 @@ class GestaoAulas : Fragment() {
             Aula("Pilates", "5", "15"),
         )
 
-        val aulasAdapter = AulaAdapter(listaDeAulas) { aula ->
-            Log.d("Menu de Administração de Aulas", "onMoreClick: " + aula.nome)
+        val aulasAdapter = AulaAdapter(listaDeAulas) { aula, acao ->
+            when (acao) {
+                AcoesMenuMais.VER_DETALHES -> {
+                    val intentAulaDetalhes = Intent(requireContext(), AulaDetalhes::class.java)
+                    startActivity(intentAulaDetalhes)
+                }
+                AcoesMenuMais.EDITAR -> {
+                    Log.d("GestaoAulas", "Editando aula: ${aula.nome}")
+                }
+                AcoesMenuMais.EXCLUIR -> {
+                    Log.d("GestaoAula", "Excluindo aula: ${aula.nome}")
+                }
+            }
         }
 
         recyclerAulas.layoutManager = LinearLayoutManager(requireContext())

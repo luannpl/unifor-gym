@@ -6,13 +6,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
 import com.example.unifor_gym.fragments.Aula
+import com.example.unifor_gym.models.AcoesMenuMais
 
 class AulaAdapter (
     private val lista: List<Aula>,
-    private val onMoreClick: (Aula) -> Unit
+    private val onMoreClick: (Aula, AcoesMenuMais) -> Unit
 ): RecyclerView.Adapter<AulaAdapter.AulaViewHolder>() {
 
     inner class AulaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -21,6 +23,37 @@ class AulaAdapter (
         val txtQtdVagas: TextView = itemView.findViewById(R.id.txtQtdVagas)
         val btnMore: ImageView = itemView.findViewById(R.id.btnMoreItemAula)
         val progressBar: ProgressBar = itemView.findViewById(R.id.progress_bar)
+
+        fun bind(aula: Aula) {
+            txtNome.text = aula.nome
+            txtQtdMatriculados.text = aula.qtdMatriculados
+            txtQtdVagas.text = aula.qtdVagas
+            progressBar.progress = Integer.parseInt(aula.qtdMatriculados)
+            progressBar.max = Integer.parseInt(aula.qtdVagas)
+
+            btnMore.setOnClickListener { view ->
+                val popupMenu = PopupMenu(view.context, view)
+                popupMenu.inflate(R.menu.menu_item_gestao)
+                popupMenu.setOnMenuItemClickListener { item ->
+                    when(item.itemId) {
+                        R.id.menu_item_gestao_detalhes -> {
+                            onMoreClick(aula, AcoesMenuMais.VER_DETALHES)
+                            true
+                        }
+                        R.id.menu_item_gestao_editar -> {
+                            onMoreClick(aula, AcoesMenuMais.EDITAR)
+                            true
+                        }
+                        R.id.menu_item_gestao_excluir -> {
+                            onMoreClick(aula, AcoesMenuMais.EXCLUIR)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                popupMenu.show()
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AulaViewHolder {
@@ -30,16 +63,7 @@ class AulaAdapter (
     }
 
     override fun onBindViewHolder(holder: AulaViewHolder, position: Int) {
-        val aula = lista[position]
-        holder.txtNome.text = aula.nome
-        holder.txtQtdMatriculados.text = aula.qtdMatriculados
-        holder.txtQtdVagas.text = aula.qtdVagas
-        holder.progressBar.progress = Integer.parseInt(aula.qtdMatriculados)
-        holder.progressBar.max = Integer.parseInt(aula.qtdVagas)
-
-        holder.btnMore.setOnClickListener {
-            onMoreClick(aula)
-        }
+        holder.bind(lista[position])
     }
 
     override fun getItemCount(): Int = lista.size

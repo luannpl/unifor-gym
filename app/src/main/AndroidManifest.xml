@@ -18,7 +18,7 @@
             android:name=".activities.Chat"
             android:exported="false" />
         <activity
-            android:name=".activities.AdminActivity"
+            android:name=".activities.AulaDetalhes"
             android:exported="false" />
 <!--        <activity-->
 <!--            android:name=".activities.AdminActivity"-->
@@ -30,6 +30,9 @@
             android:name=".activities.ExercicioDetalhes"
             android:exported="false" />
         <activity
+            android:name=".activities.UserActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.RecuperarSenha"
             android:exported="false" />
         <activity
@@ -39,7 +42,7 @@
             android:name=".activities.Login"
             android:exported="false" />
         <activity
-            android:name=".activities.UserActivity"
+            android:name=".activities.AdminActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

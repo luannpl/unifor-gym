@@ -16,7 +16,7 @@
 
     <!-- Back button -->
     <androidx.cardview.widget.CardView
-        android:id="@+id/btnVoltar"
+        android:id="@+id/btnVoltarExercicioDetalhes"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="16dp"
@@ -44,9 +44,9 @@
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/btnVoltar"
-        app:layout_constraintStart_toEndOf="@id/btnVoltar"
-        app:layout_constraintTop_toTopOf="@id/btnVoltar" />
+        app:layout_constraintBottom_toBottomOf="@id/btnVoltarExercicioDetalhes"
+        app:layout_constraintStart_toEndOf="@id/btnVoltarExercicioDetalhes"
+        app:layout_constraintTop_toTopOf="@id/btnVoltarExercicioDetalhes" />
 
     <!-- Main Content Card -->
     <androidx.cardview.widget.CardView

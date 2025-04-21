@@ -5,13 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
 import com.example.unifor_gym.fragments.Exercicio
+import com.example.unifor_gym.models.AcoesMenuMais
 
 class ExercicioAdapter (
     private val lista: List<Exercicio>,
-    private val onMoreClick: (Exercicio) -> Unit
+    private val onMoreClick: (Exercicio, AcoesMenuMais) -> Unit
 ) : RecyclerView.Adapter<ExercicioAdapter.ExercicioViewHolder>() {
 
     inner class ExercicioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -19,6 +21,36 @@ class ExercicioAdapter (
         val txtNivel: TextView = itemView.findViewById(R.id.txtNivelExercicio)
         val txtGrupoMuscular: TextView = itemView.findViewById(R.id.txtGrupoMuscularExercicio)
         val btnMore: ImageView = itemView.findViewById(R.id.btnMoreItemExercicio)
+
+        fun bind(exercicio: Exercicio) {
+            txtNome.text = exercicio.nome
+            txtNivel.text = exercicio.nivel
+            txtGrupoMuscular.text = exercicio.grupoMuscular
+
+            btnMore.setOnClickListener { view ->
+                val popupMenu = PopupMenu(view.context, view)
+                popupMenu.inflate(R.menu.menu_item_gestao)
+                popupMenu.setOnMenuItemClickListener { item ->
+                    when(item.itemId) {
+                        R.id.menu_item_gestao_detalhes -> {
+                            onMoreClick(exercicio, AcoesMenuMais.VER_DETALHES)
+                            true
+                        }
+                        R.id.menu_item_gestao_editar -> {
+                            onMoreClick(exercicio, AcoesMenuMais.EDITAR)
+                            true
+                        }
+                        R.id.menu_item_gestao_excluir -> {
+                            onMoreClick(exercicio, AcoesMenuMais.EXCLUIR)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                popupMenu.show()
+            }
+
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExercicioViewHolder {
@@ -28,14 +60,7 @@ class ExercicioAdapter (
     }
 
     override fun onBindViewHolder(holder: ExercicioViewHolder, position: Int) {
-        val exercicio = lista[position]
-        holder.txtNome.text = exercicio.nome
-        holder.txtNivel.text = exercicio.nivel
-        holder.txtGrupoMuscular.text = exercicio.grupoMuscular
-
-        holder.btnMore.setOnClickListener {
-            onMoreClick(exercicio)
-        }
+        holder.bind(lista[position])
     }
 
     override fun getItemCount(): Int = lista.size
