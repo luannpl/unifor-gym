@@ -5,14 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="0dp">
 
 
     <TextView
         android:id="@+id/tvSaudacao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
         android:text="@string/saudacao_usuario"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -23,7 +24,7 @@
         android:id="@+id/tvTreinoDia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="288dp"
         android:text="@string/titulo_treino_dia"
@@ -37,16 +38,16 @@
         android:id="@+id/cardTreino"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         app:cardCornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTreinoDia">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="382dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="17dp">
@@ -197,26 +198,36 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <ImageView
+        android:id="@+id/btnAccessibility"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="Acessibilidade"
+        android:src="@drawable/accessibility"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardTreino" />
 
-    <!-- Próximos treinos -->
     <TextView
         android:id="@+id/tvProximosTreinos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:text="@string/titulo_proximos_treinos"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardTreino" />
 
+    <!-- Card de Próximos Treinos -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="12dp"
         app:cardElevation="6dp"
@@ -225,15 +236,14 @@
         app:layout_constraintTop_toBottomOf="@id/tvProximosTreinos">
 
         <LinearLayout
-            android:id="@+id/layoutProximosTreinos"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="95dp"
             android:background="#22E6D9D9"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="8dp">
+            android:padding="0dp">
 
-            <!-- Peito -->
+            <!-- Botões de treino -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -252,15 +262,16 @@
                     android:textAlignment="center" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPeito"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="Ver treino de Peito"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="8dp"
+                    android:padding="16dp"
                     android:text="@string/botao_ver"
                     android:textColor="#FFFFFF"
                     app:backgroundTint="#03A9F4"
-                    app:cornerRadius="8dp" />
+                    app:cornerRadius="8dp"
+                    android:minHeight="48dp" />
             </LinearLayout>
 
             <!-- Linha vertical -->
@@ -292,14 +303,39 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="Ver treino de Costas"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="8dp"
+                    android:padding="16dp"
                     android:text="@string/botao_ver"
                     android:textColor="#FFFFFF"
                     app:backgroundTint="#03A9F4"
-                    app:cornerRadius="8dp" />
+                    app:cornerRadius="8dp"
+                    android:minHeight="48dp" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/green"
+        android:contentDescription="Abrir chat"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintVertical_bias="0.83"
+        app:srcCompat="@drawable/chat"
+        app:tint="@android:color/white" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavUser"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground"
+        app:menu="@menu/user_bottom_nav"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

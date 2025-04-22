@@ -1,0 +1,29 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="60dp"
+    android:height="60dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Círculo (parte externa do ícone) -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M3.5,11 C3.5,9.10025 3.50106,7.72573 3.64199,6.67754 C3.78098,5.64373 4.04772,5.00253 4.52513,4.52513 C5.00253,4.04772 5.64373,3.78098 6.67754,3.64199 C7.72573,3.50106 9.10025,3.5 11,3.5 H13 C14.8998,3.5 16.2743,3.50106 17.3225,3.64199 C18.3563,3.78098 18.9975,4.04772 19.4749,4.52513 C19.9523,5.00253 20.219,5.64373 20.358,6.67754 C20.4989,7.72573 20.5,9.10025 20.5,11 V13 C20.5,14.8998 20.4989,16.2743 20.358,17.3225 C20.219,18.3563 19.9523,18.9975 19.4749,19.4749 C18.9975,19.9523 18.3563,20.219 17.3225,20.358 C16.2743,20.4989 14.8998,20.5 13,20.5 H11 C9.10025,20.5 7.72573,20.4989 6.67754,20.358 C5.64373,20.219 5.00253,19.9523 4.52513,19.4749 C4.04772,18.9975 3.78098,18.3563 3.64199,17.3225 C3.50106,16.2743 3.5,14.8998 3.5,13 Z"
+        android:strokeColor="#2A4157"
+        android:strokeWidth="0.24"
+        android:fillAlpha="0" />
+
+    <!-- Linha Vertical -->
+    <path
+        android:strokeColor="#222222"
+        android:strokeWidth="2"
+        android:pathData="M12,8 L12,16"
+        android:strokeLineJoin="round"/>
+
+    <!-- Linha Horizontal -->
+    <path
+        android:strokeColor="#222222"
+        android:strokeWidth="2"
+        android:pathData="M16,12 L8,12"
+        android:strokeLineJoin="round"/>
+</vector>
+
