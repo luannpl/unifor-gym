@@ -10,8 +10,10 @@ import com.example.unifor_gym.R
 import com.example.unifor_gym.models.Exercicio
 import com.example.unifor_gym.models.Treino
 
-class TreinoAdapterUser(private val treinos: List<Treino>) :
-    RecyclerView.Adapter<TreinoAdapterUser.TreinoViewHolder>() {
+class TreinoAdapterUser(
+    private val treinos: List<Treino>,
+    private val onTreinoClick: ((Treino) -> Unit)? = null // Adicionar callback de clique
+) : RecyclerView.Adapter<TreinoAdapterUser.TreinoViewHolder>() {
 
     inner class TreinoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTitulo: TextView = itemView.findViewById(R.id.tvTituloTreino)
@@ -30,6 +32,11 @@ class TreinoAdapterUser(private val treinos: List<Treino>) :
 
         holder.rvExercicios.layoutManager = LinearLayoutManager(holder.itemView.context)
         holder.rvExercicios.adapter = ExercicioAdapterUser(treino.exercicios)
+
+        // Configurando o listener de clique para todo o item
+        holder.itemView.setOnClickListener {
+            onTreinoClick?.invoke(treino)
+        }
     }
 
     override fun getItemCount(): Int = treinos.size

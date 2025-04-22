@@ -25,7 +25,28 @@ class Treinos : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val treinos = criarTreinosExemplo()
-        recyclerView.adapter = TreinoAdapterUser(treinos)
+
+        // Criar adapter com callback de clique
+        val adapter = TreinoAdapterUser(treinos) { treinoClicado ->
+            // Quando um treino for clicado, navegar para TreinoDetalhes
+            val bundle = Bundle().apply {
+                putString("treino_nome", treinoClicado.titulo)
+                putParcelableArrayList("exercicios", ArrayList(treinoClicado.exercicios))
+            }
+
+            // Criar uma instância do TreinoDetalhes e passar os argumentos
+            val treinoDetalhesFragment = TreinoDetalhes().apply {
+                arguments = bundle
+            }
+
+            // Fazer a transação de fragmentos
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, treinoDetalhesFragment) // Use o ID do seu container de fragmentos
+                .addToBackStack(null)
+                .commit()
+        }
+
+        recyclerView.adapter = adapter
 
         return view
     }
