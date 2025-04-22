@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Cabeçalho do exercício -->
+        <TextView
+            android:id="@+id/txtNomeExercicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/darkBlue"
+            android:padding="12dp"
+            android:text="Supino Reto"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Descrição peso e repetições -->
+        <TextView
+            android:id="@+id/txtDescricaoExercicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="Peso: 4 séries × 12 repetições"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp" />
+
+        <!-- Equipamentos necessários -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Equipamentos:"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtEquipamentos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="- Banco de Supino\n- Barra\n- 2x Anilhas de 10kg" />
+
+        </LinearLayout>
+
+        <!-- Botões para demonstração e equipamentos -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <Button
+                android:id="@+id/btnDemonstracao"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/blue"
+                android:text="Demonstração"
+                android:textColor="@color/white" />
+
+
+
+        </LinearLayout>
+
+        <!-- Container para vídeo de demonstração (inicialmente invisível) -->
+        <FrameLayout
+            android:id="@+id/containerVideo"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="8dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imgVideoThumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#DEDEDE"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/imgPlayButton"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

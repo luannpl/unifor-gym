@@ -1,5 +1,6 @@
 package com.example.unifor_gym.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import com.example.unifor_gym.fragments.GestaoUsuarios
 import com.example.unifor_gym.fragments.HomeAdmin
 import com.example.unifor_gym.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class AdminActivity : AppCompatActivity() {
     lateinit var bottomNavMenu: BottomNavigationView
@@ -21,11 +23,18 @@ class AdminActivity : AppCompatActivity() {
         setFragment(HomeAdmin())
 
         bottomNavMenu = findViewById(R.id.bottomNavAdmin)
+
         bottomNavMenu.selectedItemId = R.id.nav_home_admin
     }
 
     override fun onStart() {
         super.onStart()
+
+        val fabChat = findViewById<FloatingActionButton>(R.id.fab_chat)
+        fabChat.setOnClickListener {
+            val intent = Intent(this, Chat::class.java)
+            startActivity(intent)
+        }
 
         bottomNavMenu.setOnItemSelectedListener { item ->
             val fragment = when (item.itemId) {
