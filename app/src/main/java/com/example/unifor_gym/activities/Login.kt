@@ -1,13 +1,35 @@
 package com.example.unifor_gym.activities
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.unifor_gym.R
+import com.google.android.material.button.MaterialButton
+import android.util.Patterns
+import android.view.View
 
 class Login : AppCompatActivity() {
+
+    companion object {
+        private const val USER_EMAIL = "user@unifor.br"
+        private const val USER_PASSWORD = "user123"
+
+        private const val ADMIN_EMAIL = "admin@unifor.br"
+        private const val ADMIN_PASSWORD = "admin123"
+    }
+
+    private lateinit var emailEditText: EditText
+    private lateinit var senhaEditText: EditText
+    private lateinit var btnEntrar: MaterialButton
+    private lateinit var textEsqueceuSenha: TextView
+    private lateinit var textCadastrarLogin: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -17,5 +39,99 @@ class Login : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        inicializarComponentes()
+
+        configurarListeners()
     }
+
+    private fun inicializarComponentes() {
+        emailEditText = findViewById(R.id.emailLoginId)
+        senhaEditText = findViewById(R.id.senhaLoginId)
+        btnEntrar = findViewById(R.id.btnEntrar)
+        textEsqueceuSenha = findViewById(R.id.textEsqueceuSenha)
+        textCadastrarLogin = findViewById(R.id.textCadastrarLogin)
+    }
+
+    private fun configurarListeners() {
+        btnEntrar.setOnClickListener {
+            realizarLogin()
+        }
+
+        textEsqueceuSenha.setOnClickListener {
+            irParaRecuperacaoSenha()
+        }
+
+        textCadastrarLogin.setOnClickListener { view ->
+            irParaCadastro(view)
+        }
+    }
+
+    private fun realizarLogin() {
+        val email = emailEditText.text.toString().trim()
+        val senha = senhaEditText.text.toString().trim()
+
+        // Validar campos
+        if (email.isEmpty()) {
+            emailEditText.error = "Digite seu email"
+            emailEditText.requestFocus()
+            return
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailEditText.error = "Digite um email válido"
+            emailEditText.requestFocus()
+            return
+        }
+
+        if (senha.isEmpty()) {
+            senhaEditText.error = "Digite sua senha"
+            senhaEditText.requestFocus()
+            return
+        }
+
+        when {
+            email == ADMIN_EMAIL && senha == ADMIN_PASSWORD -> {
+                Toast.makeText(this, "Login de administrador realizado com sucesso!", Toast.LENGTH_SHORT).show()
+                irParaAdminActivity()
+            }
+
+            email == USER_EMAIL && senha == USER_PASSWORD -> {
+                Toast.makeText(this, "Login de usuário realizado com sucesso!", Toast.LENGTH_SHORT).show()
+                irParaUserActivity()
+            }
+
+            else -> {
+                Toast.makeText(this, "Email ou senha incorretos", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun irParaRecuperacaoSenha() {
+        Toast.makeText(this, "Funcionalidade de recuperação de senha", Toast.LENGTH_SHORT).show()
+
+        val intent = Intent(this, RecuperarSenha::class.java)
+        startActivity(intent)
+    }
+
+    fun irParaCadastro(view: View) {
+        val intent = Intent(this, Cadastro::class.java)
+        startActivity(intent)
+    }
+
+
+    private fun irParaAdminActivity() {
+        val intent = Intent(this, AdminActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+
+    private fun irParaUserActivity() {
+        val intent = Intent(this, UserActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+
 }
