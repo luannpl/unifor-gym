@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- LinearLayout horizontal para o texto e o ícone -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tvNovoObjetivo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Novo objetivo"
+            android:textSize="30sp"
+            android:textColor="#666666"
+            android:layout_marginEnd="150dp"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:id="@+id/btnFecharModal"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="end"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Fechar Modal"
+            android:src="@drawable/x" />
+
+    </LinearLayout>
+
+    <!-- Campo para nome do objetivo -->
+    <EditText
+        android:id="@+id/etNomeObjetivo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nome do Objetivo"
+        android:inputType="text"
+        android:textSize="16sp"
+        android:layout_marginTop="12dp"
+        android:padding="12dp"
+        android:background="@drawable/edittext_background"
+        android:minHeight="56dp" />
+
+    <!-- Campo para valor atual -->
+    <EditText
+        android:id="@+id/etValorAtual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Valor Atual"
+        android:inputType="numberDecimal"
+        android:textSize="16sp"
+        android:layout_marginTop="12dp"
+        android:padding="12dp"
+        android:background="@drawable/edittext_background"
+        android:minHeight="56dp" />
+
+    <!-- Campo para meta desejada -->
+    <EditText
+        android:id="@+id/etMetaDesejada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Meta Desejada"
+        android:inputType="numberDecimal"
+        android:textSize="16sp"
+        android:layout_marginTop="12dp"
+        android:padding="12dp"
+        android:background="@drawable/edittext_background"
+        android:minHeight="56dp" />
+
+    <!-- Botão para adicionar objetivo -->
+    <Button
+        android:id="@+id/btnAdicionarObjetivo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Adicionar Objetivo"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        android:padding="16dp"
+        android:backgroundTint="@color/black"
+        android:textColor="@android:color/white"
+        android:minHeight="56dp" />
+</LinearLayout>
