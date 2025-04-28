@@ -1,94 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- item_treino.xml -->
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="12dp"
-    android:layout_marginVertical="8dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="3dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <!-- Título da tabela com estilo mais moderno -->
         <TextView
-            android:id="@+id/tvTituloTreino"
+            android:id="@+id/tvNomeTreino"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/darkBlue"
-            android:gravity="center"
-            android:paddingVertical="14dp"
-            android:text="PEITO"
-            android:textColor="@color/white"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            android:text="Nome do Treino"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
 
-        <!-- Separador sutil -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E0E0E0" />
-
-        <!-- Cabeçalho da tabela com estilo melhorado -->
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvQtdExercicios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#EEEEEE"
-            android:orientation="horizontal"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="10dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="center_vertical"
-                android:text="Exercício"
-                android:textColor="#555555"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:src="@android:drawable/ic_menu_recent_history"
-                    android:contentDescription="Peso"
-                    app:tint="#555555" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:src="@android:drawable/ic_popup_sync"
-                    android:contentDescription="Repetições"
-                    app:tint="#555555" />
-            </FrameLayout>
-        </LinearLayout>
-
-        <!-- RecyclerView para os exercícios com padding para melhor visualização -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewExercicios"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="4dp"
-            android:clipToPadding="false"
-            android:nestedScrollingEnabled="false" />
-
+            android:text="5 exercícios"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

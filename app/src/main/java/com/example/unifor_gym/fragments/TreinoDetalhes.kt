@@ -5,17 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
-import com.example.unifor_gym.adapters.ExercicioDetalhesAdapter
-import com.example.unifor_gym.models.Exercicio
+import com.example.unifor_gym.adapters.ExercicioAdapterUser
+import com.example.unifor_gym.models.ExercicioTreino
 
 class TreinoDetalhes : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var txtTituloTreino: TextView
+    private lateinit var txtTreinoNome: TextView
+    private lateinit var btnVoltar: CardView
+    private lateinit var recyclerExercicios: RecyclerView
+    private var exercicios: List<ExercicioTreino> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,28 +26,24 @@ class TreinoDetalhes : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_treino_detalhes, container, false)
 
-        // Inicializar views
-        recyclerView = view.findViewById(R.id.recyclerViewExercicios)
-        txtTituloTreino = view.findViewById(R.id.txtTituloTreino)
+        txtTreinoNome = view.findViewById(R.id.txtNomeTreinoDetalhes)
+        btnVoltar = view.findViewById(R.id.btnVoltarTreinoDetalhes)
+        recyclerExercicios = view.findViewById(R.id.recyclerExerciciosTreino)
 
-        // Configurar RecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        // Obter argumentos passados pelo fragmento Treinos
+        // Recuperar argumentos
         arguments?.let { args ->
             val treinoNome = args.getString("treino_nome", "")
-            val exercicios = args.getParcelableArrayList<Exercicio>("exercicios") ?: ArrayList()
+            exercicios = args.getParcelableArrayList("exercicios") ?: emptyList()
 
-            // Atualizar título
-            txtTituloTreino.text = treinoNome
-
-            // Configurar adapter
-            recyclerView.adapter = ExercicioDetalhesAdapter(exercicios.toList())
+            txtTreinoNome.text = treinoNome
         }
 
-        // Configurar botão de voltar
-        view.findViewById<View>(R.id.btnVoltar).setOnClickListener {
-            // Opção 1: Usando FragmentManager (sem Navigation Component)
+        // Configurar RecyclerView
+        recyclerExercicios.layoutManager = LinearLayoutManager(requireContext())
+        recyclerExercicios.adapter = ExercicioAdapterUser(exercicios)
+
+        // Configurar botão voltar
+        btnVoltar.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
 

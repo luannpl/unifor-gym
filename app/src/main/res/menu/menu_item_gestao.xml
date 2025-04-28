@@ -5,8 +5,8 @@
         android:title="Ver detalhes" />
     <item
         android:id="@+id/menu_item_gestao_editar"
-        android:title="Editar" />
+        android:title="Editar exercício" />
     <item
         android:id="@+id/menu_item_gestao_excluir"
-        android:title="Excluir" />
+        android:title="Excluir exercício" />
 </menu>

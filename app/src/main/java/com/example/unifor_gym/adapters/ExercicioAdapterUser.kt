@@ -1,16 +1,14 @@
 package com.example.unifor_gym.adapters
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
-import com.example.unifor_gym.models.Exercicio
+import com.example.unifor_gym.models.ExercicioTreino
 
-
-class ExercicioAdapterUser(private val exercicios: List<Exercicio>) :
+class ExercicioAdapterUser(private val exercicios: List<ExercicioTreino>) :
     RecyclerView.Adapter<ExercicioAdapterUser.ExercicioViewHolder>() {
 
     inner class ExercicioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

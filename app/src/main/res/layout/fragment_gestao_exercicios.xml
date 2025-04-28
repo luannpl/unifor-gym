@@ -2,92 +2,89 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".fragments.GestaoExercicios">
 
-    <!-- Header roxo -->
-    <View
-        android:id="@+id/headerExerciciosGestao"
-        android:layout_width="0dp"
-        android:layout_height="180dp"
-        android:background="@color/darkBlue"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
+    <!-- Header com título e botão de adicionar -->
     <LinearLayout
+        android:id="@+id/headerExercicios"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
         android:gravity="center_vertical"
-        app:layout_constraintTop_toTopOf="@id/headerExerciciosGestao"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="48dp"
-        android:layout_marginStart="16dp"
-        android:orientation="horizontal">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="Exercícios"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="@color/white" />
-
-        <View
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Exercícios"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/btnAdicionarExercicio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/darkBlue"
-            android:text="Adicionar exercicio"
-            android:textColor="@color/white"
+            android:text="Adicionar exercício"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/black"
+            android:paddingHorizontal="16dp"
             android:textAllCaps="false" />
     </LinearLayout>
 
-    <!-- Card branco com pesquisa e filtros -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/searchCard"
-        android:layout_width="0dp"
+    <!-- Campo de busca -->
+    <LinearLayout
+        android:id="@+id/searchBarLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        app:cardCornerRadius="16dp"
-        app:layout_constraintTop_toBottomOf="@id/headerExerciciosGestao"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/headerExercicios"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:translationY="-24dp">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/edtBuscarExercicio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <EditText
-                android:id="@+id/searchInput"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:hint="Buscar exercício"
-                android:background="@drawable/search_background"
-                android:paddingStart="12dp"
-                android:drawableStart="@drawable/search"/>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+            android:hint="Buscar exercício"
+            android:padding="12dp"
+            android:drawableEnd="@android:drawable/ic_menu_search"
+            android:background="@drawable/borda_edittext" />
+    </LinearLayout>
 
     <!-- Lista de exercícios -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewGestaoExercicios"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/searchCard"
+        android:padding="8dp"
+        app:layout_constraintTop_toBottomOf="@id/searchBarLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/item_exercicio_gestao" />
+
+    <!-- Chat Flutuante (conforme mostrado no protótipo) -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_dialog_email"
+        android:backgroundTint="@color/green"
+        app:tint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Chat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

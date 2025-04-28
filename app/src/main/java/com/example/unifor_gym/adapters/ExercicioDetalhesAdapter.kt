@@ -8,9 +8,9 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
-import com.example.unifor_gym.models.Exercicio
+import com.example.unifor_gym.models.ExercicioTreino
 
-class ExercicioDetalhesAdapter(private val exercicios: List<Exercicio>) :
+class ExercicioDetalhesAdapter(private val exercicios: List<ExercicioTreino>) :
     RecyclerView.Adapter<ExercicioDetalhesAdapter.ExercicioViewHolder>() {
 
     class ExercicioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -20,11 +20,11 @@ class ExercicioDetalhesAdapter(private val exercicios: List<Exercicio>) :
         val btnDemonstracao: Button = itemView.findViewById(R.id.btnDemonstracao)
         val containerVideo: FrameLayout = itemView.findViewById(R.id.containerVideo)
 
-        fun bind(exercicio: Exercicio) {
+        fun bind(exercicio: ExercicioTreino) {
             txtNomeExercicio.text = exercicio.nome
             txtDescricaoExercicio.text = "Peso: ${exercicio.peso} × ${exercicio.repeticoes}"
 
-            // Exemplo de equipamentos (você precisará adicionar isso ao seu modelo Exercicio)
+            // Exemplo de equipamentos (você precisará adicionar isso ao seu modelo ExercicioTreino)
             if (exercicio.nome.contains("Supino Reto", ignoreCase = true)) {
                 txtEquipamentos.text = "- Banco de Supino\n- Barra\n- 2x Anilhas de 10kg"
             } else if (exercicio.nome.contains("Supino Inclinado", ignoreCase = true)) {
@@ -42,7 +42,6 @@ class ExercicioDetalhesAdapter(private val exercicios: List<Exercicio>) :
                     containerVideo.visibility = View.VISIBLE
                 }
             }
-
         }
     }
 
