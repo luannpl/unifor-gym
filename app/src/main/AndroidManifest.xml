@@ -40,15 +40,16 @@
             android:exported="false" />
         <activity
             android:name=".activities.Login"
-            android:exported="false" />
-        <activity
-            android:name=".activities.AdminActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.AdminActivity"
+            android:exported="false">
         </activity>
 
     </application>
