@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#F5F7FA">
 
     <!-- Barra superior com título e botão de voltar -->
     <RelativeLayout
@@ -56,7 +57,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Demonstração (Vídeo) -->
+            <!-- Demonstração (Vídeo) - Card arredondado -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,7 +69,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
                 android:layout_marginBottom="16dp">
 
@@ -88,126 +89,167 @@
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Dificuldade -->
-            <LinearLayout
+            <!-- Dificuldade - Card arredondado -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
                 android:layout_marginBottom="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Dificuldade:"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginEnd="8dp" />
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/txtDificuldadeExercicioDetalhes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Intermediário"
-                    android:textSize="16sp" />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Dificuldade:"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
 
-            <!-- Instruções -->
-            <TextView
+                    <TextView
+                        android:id="@+id/txtDificuldadeExercicioDetalhes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Intermediário"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Instruções - Card arredondado -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Instruções:"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
-
-            <TextView
-                android:id="@+id/txtInstrucoesExercicioDetalhes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et tellus mauris. Suspendisse potenti. Nullam et sapien risit. Proin ut leo et dui semper pulvinar."
-                android:textSize="16sp"
-                android:layout_marginBottom="16dp" />
-
-            <!-- Equipamentos necessários -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Equipamentos necessários:"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
-
-            <LinearLayout
-                android:id="@+id/containerEquipamentosDetalhes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
                 android:layout_marginBottom="16dp">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="• Banco de supino"
-                    android:textSize="16sp" />
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="• Barra"
-                    android:textSize="16sp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Instruções:"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="• Anilhas"
-                    android:textSize="16sp" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/txtInstrucoesExercicioDetalhes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et tellus mauris. Suspendisse potenti. Nullam et sapien risit. Proin ut leo et dui semper pulvinar."
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-            <!-- Categorias -->
-            <TextView
+            <!-- Equipamentos necessários - Card arredondado -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Categorias"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
-
-            <LinearLayout
-                android:id="@+id/containerCategoriasDetalhes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
                 android:layout_marginBottom="16dp">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="• Peito"
-                    android:textSize="16sp" />
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="• Braços"
-                    android:textSize="16sp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Equipamentos necessários:"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="• Ombros"
-                    android:textSize="16sp" />
-            </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/containerEquipamentosDetalhes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-            <!-- Chat flutuante (ícone de chat) -->
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabChatDetalhes"
-                android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="• Banco de supino"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="• Barra"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="• Anilhas"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Categorias - Card arredondado -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_margin="16dp"
-                android:src="@android:drawable/ic_dialog_email"
-                android:backgroundTint="@color/green"
-                app:tint="@android:color/white" />
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Categorias"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
+
+                    <LinearLayout
+                        android:id="@+id/containerCategoriasDetalhes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="• Peito"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="• Braços"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="• Ombros"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Removido o FAB de chat conforme solicitado -->
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -1,27 +1,28 @@
 package com.example.unifor_gym.adapters
 
+import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
-import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
 import com.example.unifor_gym.models.AcoesMenuMais
 import com.example.unifor_gym.models.Exercicio
 
 class ExercicioAdapter(
-    private val listaExercicios: List<Exercicio>,
-    private val onActionClick: (Exercicio, AcoesMenuMais) -> Unit
+    private val exercicios: List<Exercicio>,
+    private val onAction: (Exercicio, AcoesMenuMais) -> Unit
 ) : RecyclerView.Adapter<ExercicioAdapter.ExercicioViewHolder>() {
 
     inner class ExercicioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val iconLetter: TextView = itemView.findViewById(R.id.iconLetterExercicio)
-        val txtNome: TextView = itemView.findViewById(R.id.txtNomeExercicio)
-        val txtNivel: TextView = itemView.findViewById(R.id.txtNivelExercicio)
-        val txtGrupoMuscular: TextView = itemView.findViewById(R.id.txtGrupoMuscularExercicio)
-        val btnMore: ImageView = itemView.findViewById(R.id.btnMoreItemExercicio)
+        val txtNome: TextView = itemView.findViewById(R.id.txtNomeExercicioGestao)
+        val txtDificuldade: TextView = itemView.findViewById(R.id.txtDificuldadeExercicioGestao)
+        val txtGrupoMuscular: TextView = itemView.findViewById(R.id.txtGrupoMuscularExercicioGestao)
+        val btnMenu: ImageView = itemView.findViewById(R.id.btnMenuExercicioGestao)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExercicioViewHolder {
@@ -31,53 +32,53 @@ class ExercicioAdapter(
     }
 
     override fun onBindViewHolder(holder: ExercicioViewHolder, position: Int) {
-        val exercicio = listaExercicios[position]
+        val exercicio = exercicios[position]
 
-        // Configurar a letra do ícone (primeira letra do nome do exercício)
-        holder.iconLetter.text = exercicio.nome.first().toString()
-
+        // Configurar dados básicos
         holder.txtNome.text = exercicio.nome
-        holder.txtNivel.text = exercicio.dificuldade
         holder.txtGrupoMuscular.text = exercicio.grupoMuscular
 
-        // Configura cores diferentes para os níveis de dificuldade
-        when (exercicio.dificuldade.lowercase()) {
-            "iniciante" -> {
-                holder.txtNivel.setTextColor(holder.itemView.context.getColor(R.color.green))
-            }
-            "intermediário" -> {
-                holder.txtNivel.setTextColor(holder.itemView.context.getColor(R.color.orange))
-            }
-            "avançado" -> {
-                holder.txtNivel.setTextColor(holder.itemView.context.getColor(R.color.red))
-            }
+        // Configurar dificuldade com cores
+        holder.txtDificuldade.text = exercicio.dificuldade
+        when (exercicio.dificuldade) {
+            "Iniciante" -> holder.txtDificuldade.setTextColor(Color.parseColor("#4CAF50")) // Verde
+            "Intermediário" -> holder.txtDificuldade.setTextColor(Color.parseColor("#FF9800")) // Laranja
+            "Avançado" -> holder.txtDificuldade.setTextColor(Color.parseColor("#F44336")) // Vermelho
+            else -> holder.txtDificuldade.setTextColor(Color.parseColor("#9E9E9E")) // Cinza
         }
 
-        holder.btnMore.setOnClickListener { view ->
-            showPopupMenu(view, exercicio)
-        }
-
-        holder.itemView.setOnClickListener {
-            onActionClick(exercicio, AcoesMenuMais.VER_DETALHES)
+        // Configurar menu de opções com ícones
+        holder.btnMenu.setOnClickListener { view ->
+            showPopupMenu(view, exercicio, holder.itemView.context)
         }
     }
 
-    private fun showPopupMenu(view: View, exercicio: Exercicio) {
-        val popupMenu = PopupMenu(view.context, view)
-        popupMenu.inflate(R.menu.menu_item_gestao)
+    private fun showPopupMenu(view: View, exercicio: Exercicio, context: Context) {
+        val popupMenu = PopupMenu(context, view)
+        popupMenu.menuInflater.inflate(R.menu.menu_item_gestao, popupMenu.menu)
 
-        popupMenu.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
+        // Mostrar ícones no menu popup (requer API level 23+)
+        try {
+            val method = PopupMenu::class.java.getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+            method.isAccessible = true
+            method.invoke(popupMenu, true)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        // Configurar cliques do menu
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
                 R.id.menu_item_gestao_detalhes -> {
-                    onActionClick(exercicio, AcoesMenuMais.VER_DETALHES)
+                    onAction(exercicio, AcoesMenuMais.VER_DETALHES)
                     true
                 }
                 R.id.menu_item_gestao_editar -> {
-                    onActionClick(exercicio, AcoesMenuMais.EDITAR)
+                    onAction(exercicio, AcoesMenuMais.EDITAR)
                     true
                 }
                 R.id.menu_item_gestao_excluir -> {
-                    onActionClick(exercicio, AcoesMenuMais.EXCLUIR)
+                    onAction(exercicio, AcoesMenuMais.EXCLUIR)
                     true
                 }
                 else -> false
@@ -87,5 +88,5 @@ class ExercicioAdapter(
         popupMenu.show()
     }
 
-    override fun getItemCount(): Int = listaExercicios.size
+    override fun getItemCount(): Int = exercicios.size
 }

@@ -140,8 +140,8 @@ class GestaoExercicios : Fragment() {
         // Obter referências dos componentes
         val btnFechar = dialog.findViewById<ImageButton>(R.id.btnFecharAddExercicio)
         val edtNome = dialog.findViewById<EditText>(R.id.edtNomeExercicio)
+        val edtAparelhos = dialog.findViewById<EditText>(R.id.edtAparelhos)
         val spinnerDificuldade = dialog.findViewById<Spinner>(R.id.spinnerDificuldade)
-        val spinnerAparelhos = dialog.findViewById<Spinner>(R.id.spinnerAparelhos)
         val edtInstrucoes = dialog.findViewById<EditText>(R.id.edtInstrucoes)
         val edtLinkVideo = dialog.findViewById<EditText>(R.id.edtLinkVideo)
         val btnCancelar = dialog.findViewById<Button>(R.id.btnCancelarExercicio)
@@ -163,11 +163,6 @@ class GestaoExercicios : Fragment() {
         val adapterDificuldade = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, dificuldades)
         spinnerDificuldade.adapter = adapterDificuldade
 
-        // Configurar spinner de aparelhos (mock)
-        val aparelhos = arrayOf("Selecione os aparelhos...", "Esteira", "Bicicleta", "Leg Press", "Banco de supino", "Barra e anilhas", "Cadeira extensora")
-        val adapterAparelhos = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, aparelhos)
-        spinnerAparelhos.adapter = adapterAparelhos
-
         // Configurar botões
         btnFechar.setOnClickListener {
             dialog.dismiss()
@@ -179,6 +174,7 @@ class GestaoExercicios : Fragment() {
 
         btnSalvar.setOnClickListener {
             val nome = edtNome.text.toString()
+            val aparelhosText = edtAparelhos.text.toString()
             val dificuldade = spinnerDificuldade.selectedItem.toString()
             val instrucoes = edtInstrucoes.text.toString()
             val linkVideo = edtLinkVideo.text.toString()
@@ -209,8 +205,8 @@ class GestaoExercicios : Fragment() {
             // Selecionar grupo muscular principal (primeira categoria)
             val grupoMuscularPrincipal = categoriasSelected.first()
 
-            // Obter aparelhos (simplificado para este exemplo)
-            val aparelhosSelected = listOf(spinnerAparelhos.selectedItem.toString())
+            // Dividir aparelhos por vírgula
+            val aparelhosLista = aparelhosText.split(",").map { it.trim() }.filter { it.isNotEmpty() }
 
             // Criar novo exercício
             val novoExercicio = Exercicio(
@@ -219,7 +215,7 @@ class GestaoExercicios : Fragment() {
                 grupoMuscular = grupoMuscularPrincipal,
                 dificuldade = dificuldade,
                 categorias = categoriasSelected,
-                aparelhos = aparelhosSelected,
+                aparelhos = aparelhosLista,
                 instrucoes = instrucoes,
                 videoUrl = if (linkVideo.isNotBlank()) linkVideo else null
             )

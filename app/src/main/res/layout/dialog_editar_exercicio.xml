@@ -1,252 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:background="@android:color/white">
 
+    <!-- Título e botão fechar (fora do ScrollView para ficar fixo) -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:padding="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Editar exercício"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black" />
+            android:layout_centerVertical="true" />
 
         <ImageButton
             android:id="@+id/btnFecharEditarExercicio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
-    <!-- Nome do exercício -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nome do exercício"
-        android:textSize="16sp"
-        android:layout_marginBottom="4dp" />
-
-    <EditText
-        android:id="@+id/edtEditarNomeExercicio"
+    <!-- ScrollView para o conteúdo do diálogo -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:background="@drawable/borda_edittext"
-        android:layout_marginBottom="16dp" />
+        android:layout_height="wrap_content">
 
-    <!-- Categorias -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Categorias"
-        android:textSize="16sp"
-        android:layout_marginBottom="8dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
-
-        <CheckBox
-            android:id="@+id/checkEditarPeito"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Peito" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <CheckBox
-            android:id="@+id/checkEditarCore"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Core" />
-    </LinearLayout>
+            <!-- Nome do exercício -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nome do exercício"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
+            <EditText
+                android:id="@+id/edtEditarNomeExercicio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Digite aqui..."
+                android:padding="12dp"
+                android:background="@drawable/borda_edittext"
+                android:layout_marginBottom="16dp" />
 
-        <CheckBox
-            android:id="@+id/checkEditarCostas"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Costas" />
+            <!-- Categorias -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Categorias"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
 
-        <CheckBox
-            android:id="@+id/checkEditarCardio"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Cardio" />
-    </LinearLayout>
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:layout_marginBottom="16dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
+                <CheckBox
+                    android:id="@+id/checkEditarPeito"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Peito" />
 
-        <CheckBox
-            android:id="@+id/checkEditarPernas"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Pernas" />
+                <CheckBox
+                    android:id="@+id/checkEditarCore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Core" />
 
-        <CheckBox
-            android:id="@+id/checkEditarCorpoInteiro"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Corpo Inteiro" />
-    </LinearLayout>
+                <CheckBox
+                    android:id="@+id/checkEditarCostas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Costas" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
+                <CheckBox
+                    android:id="@+id/checkEditarCardio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cardio" />
 
-        <CheckBox
-            android:id="@+id/checkEditarBracos"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Braços" />
+                <CheckBox
+                    android:id="@+id/checkEditarPernas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pernas" />
 
-        <CheckBox
-            android:id="@+id/checkEditarFuncional"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Funcional" />
-    </LinearLayout>
+                <CheckBox
+                    android:id="@+id/checkEditarCorpoInteiro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Corpo Inteiro" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
+                <CheckBox
+                    android:id="@+id/checkEditarBracos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Braços" />
 
-        <CheckBox
-            android:id="@+id/checkEditarOmbros"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Ombros" />
+                <CheckBox
+                    android:id="@+id/checkEditarFuncional"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Funcional" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-    </LinearLayout>
+                <CheckBox
+                    android:id="@+id/checkEditarOmbros"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ombros" />
+            </GridLayout>
 
-    <!-- Aparelhos -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Aparelhos"
-        android:textSize="16sp"
-        android:layout_marginBottom="4dp" />
+            <!-- Aparelhos -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Aparelhos"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
 
-    <EditText
-        android:id="@+id/edtEditarAparelhos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:background="@drawable/borda_edittext"
-        android:layout_marginBottom="16dp" />
+            <EditText
+                android:id="@+id/edtEditarAparelhos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Selecione os aparelhos..."
+                android:padding="12dp"
+                android:background="@drawable/borda_edittext"
+                android:layout_marginBottom="16dp" />
 
-    <!-- Dificuldade -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dificuldade"
-        android:textSize="16sp"
-        android:layout_marginBottom="4dp" />
+            <!-- Dificuldade -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dificuldade"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
 
-    <Spinner
-        android:id="@+id/spinnerEditarDificuldade"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/borda_edittext"
-        android:padding="12dp"
-        android:layout_marginBottom="16dp" />
+            <Spinner
+                android:id="@+id/spinnerEditarDificuldade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:background="@drawable/borda_edittext"
+                android:layout_marginBottom="16dp" />
 
-    <!-- Instruções -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Instruções"
-        android:textSize="16sp"
-        android:layout_marginBottom="4dp" />
+            <!-- Instruções -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Instruções"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
 
-    <EditText
-        android:id="@+id/edtEditarInstrucoes"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:gravity="top"
-        android:padding="12dp"
-        android:background="@drawable/borda_edittext"
-        android:layout_marginBottom="16dp"
-        android:inputType="textMultiLine" />
+            <EditText
+                android:id="@+id/edtEditarInstrucoes"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="top"
+                android:padding="12dp"
+                android:background="@drawable/borda_edittext"
+                android:inputType="textMultiLine"
+                android:layout_marginBottom="16dp" />
 
-    <!-- Link do vídeo -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Link do vídeo (opcional)"
-        android:textSize="16sp"
-        android:layout_marginBottom="4dp" />
+            <!-- Link do vídeo -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Link do vídeo (opcional)"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
 
-    <EditText
-        android:id="@+id/edtEditarLinkVideo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:background="@drawable/borda_edittext"
-        android:layout_marginBottom="24dp"
-        android:inputType="textUri" />
+            <EditText
+                android:id="@+id/edtEditarLinkVideo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="URL do vídeo"
+                android:padding="12dp"
+                android:background="@drawable/borda_edittext"
+                android:layout_marginBottom="16dp" />
 
-    <!-- Botões -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <!-- Botões -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnCancelarEditarExercicio"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Cancelar"
-            android:textColor="@android:color/black"
-            android:backgroundTint="@android:color/transparent"
-            android:layout_marginEnd="8dp"
-            style="?android:attr/borderlessButtonStyle" />
+                <Button
+                    android:id="@+id/btnCancelarEditarExercicio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cancelar"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="#E0E0E0"
+                    android:textColor="#000000" />
 
-        <Button
-            android:id="@+id/btnSalvarEditarExercicio"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Salvar"
-            android:textColor="@android:color/white"
-            android:backgroundTint="@android:color/black"
-            android:layout_marginStart="8dp" />
-    </LinearLayout>
-
+                <Button
+                    android:id="@+id/btnSalvarEditarExercicio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Salvar"
+                    android:backgroundTint="#000000"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

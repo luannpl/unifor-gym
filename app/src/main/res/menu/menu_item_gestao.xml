@@ -2,11 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_item_gestao_detalhes"
+        android:icon="@android:drawable/ic_menu_view"
         android:title="Ver detalhes" />
     <item
         android:id="@+id/menu_item_gestao_editar"
+        android:icon="@android:drawable/ic_menu_edit"
         android:title="Editar exercício" />
     <item
         android:id="@+id/menu_item_gestao_excluir"
+        android:icon="@android:drawable/ic_menu_delete"
         android:title="Excluir exercício" />
 </menu>
