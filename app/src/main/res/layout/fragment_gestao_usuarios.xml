@@ -43,13 +43,14 @@
     </LinearLayout>
 
     <!-- RecyclerView -->
+
+    <!-- Botão Flutuante para adicionar usuário -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerUsuarios"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
-    <!-- Botão Flutuante para adicionar usuário -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddUsuario"
         android:layout_width="wrap_content"

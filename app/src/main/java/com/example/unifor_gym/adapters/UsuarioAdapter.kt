@@ -42,6 +42,9 @@ class UsuarioAdapter(
         holder.txtId.text = usuario.id.toString()
         holder.txtInicial.setBackgroundColor(usuario.corAvatar)
 
+        // Alterando o ícone para usar a versão horizontal
+        holder.btnMore.setImageResource(R.drawable.ic_menu_dots_horizontal)
+
         holder.btnMore.setOnClickListener { view ->
             listener.onMoreButtonClick(usuario, view)
         }
