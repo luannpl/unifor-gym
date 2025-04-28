@@ -21,14 +21,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
 import com.example.unifor_gym.adapters.UsuarioAdapter
 import com.example.unifor_gym.models.Usuario
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 
 class GestaoUsuarios : Fragment(), UsuarioAdapter.OnUsuarioClickListener {
 
     private lateinit var recyclerUsuarios: RecyclerView
     private lateinit var edtBuscarUsuario: EditText
-    private lateinit var fabAddUsuario: FloatingActionButton
+    private lateinit var btnAdicionarUsuario: Button
     private lateinit var usuarioAdapter: UsuarioAdapter
     private lateinit var listaUsuarios: MutableList<Usuario>
 
@@ -40,7 +39,7 @@ class GestaoUsuarios : Fragment(), UsuarioAdapter.OnUsuarioClickListener {
 
         recyclerUsuarios = view.findViewById(R.id.recyclerUsuarios)
         edtBuscarUsuario = view.findViewById(R.id.edtBuscarUsuario)
-        fabAddUsuario = view.findViewById(R.id.fabAddUsuario)
+        btnAdicionarUsuario = view.findViewById(R.id.btnAdicionarUsuario)
 
         configurarRecyclerView()
         configurarBotoes()
@@ -56,7 +55,7 @@ class GestaoUsuarios : Fragment(), UsuarioAdapter.OnUsuarioClickListener {
     }
 
     private fun configurarBotoes() {
-        fabAddUsuario.setOnClickListener {
+        btnAdicionarUsuario.setOnClickListener {
             mostrarDialogAdicionarUsuario()
         }
     }
