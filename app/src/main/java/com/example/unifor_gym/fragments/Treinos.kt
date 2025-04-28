@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
 import com.example.unifor_gym.adapters.TreinoAdapterUser
-import com.example.unifor_gym.models.Exercicio
+import com.example.unifor_gym.models.ExercicioTreino
 import com.example.unifor_gym.models.Treino
 
 class Treinos : Fragment() {
@@ -53,19 +53,19 @@ class Treinos : Fragment() {
 
     private fun criarTreinosExemplo(): List<Treino> {
         val exerciciosPeito = listOf(
-            Exercicio("Supino Reto", "20kg", "12x"),
-            Exercicio("Supino Inclinado", "25kg", "12x"),
-            Exercicio("Voador", "45kg", "12x"),
-            Exercicio("Crucifixo", "30kg", "12x"),
-            Exercicio("Flexão", "-------", "40x")
+            ExercicioTreino("Supino Reto", "20kg", "12x"),
+            ExercicioTreino("Supino Inclinado", "25kg", "12x"),
+            ExercicioTreino("Voador", "45kg", "12x"),
+            ExercicioTreino("Crucifixo", "30kg", "12x"),
+            ExercicioTreino("Flexão", "-------", "40x")
         )
         val treinoPeito = Treino("PEITO", exerciciosPeito)
 
         val exerciciosCostas = listOf(
-            Exercicio("Puxada Frontal", "40kg", "12x"),
-            Exercicio("Remada Baixa", "35kg", "12x"),
-            Exercicio("Pullover", "20kg", "15x"),
-            Exercicio("Remada Curvada", "30kg", "12x")
+            ExercicioTreino("Puxada Frontal", "40kg", "12x"),
+            ExercicioTreino("Remada Baixa", "35kg", "12x"),
+            ExercicioTreino("Pullover", "20kg", "15x"),
+            ExercicioTreino("Remada Curvada", "30kg", "12x")
         )
         val treinoCostas = Treino("COSTAS", exerciciosCostas)
 
