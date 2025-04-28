@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unifor_gym.R
+import com.example.unifor_gym.fragments.ChangePasswordFragment
 
 class ConfiguracoesPerfil : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,10 +43,7 @@ class ConfiguracoesPerfil : AppCompatActivity() {
     }
 
     private fun showAlterarSenhaDialog() {
-        val dialog = AlertDialog.Builder(this)
-        dialog.setTitle("Alterar Senha")
-        dialog.setMessage("Funcionalidade em desenvolvimento.")
-        dialog.setPositiveButton("OK", null)
-        dialog.show()
+        val changePasswordFragment = ChangePasswordFragment()
+        changePasswordFragment.show(supportFragmentManager, "ChangePasswordFragment")
     }
 }
