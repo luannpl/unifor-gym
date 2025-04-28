@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Campo para editar nome de usuário -->
+    <EditText
+        android:id="@+id/etNomeUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nome de Usuário"
+        android:inputType="textPersonName"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        android:padding="16dp"
+        android:background="@drawable/edittext_background"
+        android:minHeight="48dp" />
+
+    <!-- Campo para editar peso -->
+    <EditText
+        android:id="@+id/etPeso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Peso (kg)"
+        android:inputType="numberDecimal"
+        android:textSize="14sp"
+        android:padding="16dp"
+        android:background="@drawable/edittext_background"
+        android:minHeight="48dp" />
+
+    <!-- Campo para editar altura -->
+    <EditText
+        android:id="@+id/etAltura"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Altura (cm)"
+        android:inputType="numberDecimal"
+        android:textSize="14sp"
+        android:padding="16dp"
+        android:background="@drawable/edittext_background"
+        android:minHeight="48dp" />
+
+    <!-- Botão para salvar alterações -->
+    <Button
+        android:id="@+id/btnSalvarAlteracoes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Salvar Alterações"
+        android:textSize="14sp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/black"
+        android:padding="16dp"
+        android:minHeight="48dp" />
+</LinearLayout>
