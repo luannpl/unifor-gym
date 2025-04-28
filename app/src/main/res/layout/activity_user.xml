@@ -17,9 +17,20 @@
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintBottom_toTopOf="@id/bottomNavUser"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toEndOf="parent" />
 
-      />
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:id="@+id/fab_chat"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="8dp"
+      android:layout_marginBottom="8dp"
+      android:backgroundTint="@color/green"
+      android:contentDescription="Abrir chat"
+      app:layout_constraintBottom_toTopOf="@id/bottomNavUser"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:srcCompat="@drawable/chat"
+      app:tint="@android:color/white" />
 
   <com.google.android.material.bottomnavigation.BottomNavigationView
       android:id="@+id/bottomNavUser"
@@ -31,4 +42,4 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent" />
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
