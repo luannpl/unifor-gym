@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_dialog_background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:padding="12dp"
+        android:background="@color/light_gray" />
+
+    <TextView
+        android:id="@+id/txtStatusOperacional"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Operacional"
+        android:textColor="@color/green"
+        android:padding="16dp"
+        android:background="?attr/selectableItemBackground" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray" />
+
+    <TextView
+        android:id="@+id/txtStatusManutencao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Manutenção"
+        android:textColor="@color/red"
+        android:padding="16dp"
+        android:background="?attr/selectableItemBackground" />
+
+</LinearLayout>
