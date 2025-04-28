@@ -7,7 +7,7 @@
 
     <!-- Header roxo -->
     <View
-        android:id="@+id/header"
+        android:id="@+id/headerExerciciosGestao"
         android:layout_width="0dp"
         android:layout_height="180dp"
         android:background="@color/darkBlue"
@@ -15,36 +15,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Título -->
-    <TextView
-        android:id="@+id/titleGestaoExercicios"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Exercícios"
-        android:textColor="@android:color/white"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@id/header"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="@id/headerExerciciosGestao"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="48dp"
         android:layout_marginStart="16dp"
-        android:gravity="start"/>
+        android:orientation="horizontal">
 
-    <!-- Subtítulo -->
-    <TextView
-        android:id="@+id/subtitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Encontre o exercício perfeito para o seu treino"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/titleGestaoExercicios"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        android:gravity="start"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="Exercícios"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/white" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnAdicionarExercicio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/darkBlue"
+            android:text="Adicionar exercicio"
+            android:textColor="@color/white"
+            android:textAllCaps="false" />
+    </LinearLayout>
 
     <!-- Card branco com pesquisa e filtros -->
     <androidx.cardview.widget.CardView
@@ -53,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         app:cardCornerRadius="16dp"
-        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintTop_toBottomOf="@id/headerExerciciosGestao"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:translationY="-24dp">
