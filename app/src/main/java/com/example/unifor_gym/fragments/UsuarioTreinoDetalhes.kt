@@ -73,7 +73,7 @@ class UsuarioTreinoDetalhes : Fragment() {
 
     private fun setupViews() {
         // Configurar título do grupo muscular
-        txtTituloGrupoMuscular.text = grupoMuscular?.let { "← $it" } ?: "← Peito"
+        txtTituloGrupoMuscular.text = grupoMuscular ?: "Peito"
 
         // Configuração inicial do Supino Reto (mostrando equipamentos)
         layoutEquipamentosSupinoReto.visibility = View.VISIBLE
