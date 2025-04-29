@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".fragments.Aulas">
 
+    <View
+        android:id="@+id/headerAulas"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:background="@color/darkBlue"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,6 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Aulas"
+            android:layout_marginTop="48dp"
+            android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="16dp"/>
@@ -32,6 +43,7 @@
                 android:id="@+id/chipGroupDias"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 app:singleSelection="true"
                 app:selectionRequired="true">
 

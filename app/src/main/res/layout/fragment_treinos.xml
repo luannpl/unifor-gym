@@ -14,7 +14,7 @@
         android:layout_marginBottom="16dp"
         android:text="Treinos"
         android:textAlignment="viewStart"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="22sp"
         android:textStyle="bold" />
 

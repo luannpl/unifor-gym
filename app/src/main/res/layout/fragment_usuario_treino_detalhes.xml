@@ -5,14 +5,24 @@
     android:layout_height="match_parent"
     android:background="#F5F5F5">
 
-    <!-- Barra superior com título e botão voltar - Simplificada -->
+    <!-- Header azul escuro para combinar com o outro layout -->
+    <View
+        android:id="@+id/headerBackground"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/darkBlue" />
+
+    <!-- Barra superior com título e botão voltar - Ajustada com padding para evitar a câmera -->
     <RelativeLayout
         android:id="@+id/layoutHeaderTreinoDetalhes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="16dp"
-        android:background="@android:color/white"
+        android:paddingTop="40dp"
+        android:paddingBottom="16dp"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
         android:elevation="4dp">
 
         <ImageButton
@@ -23,18 +33,19 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Voltar"
             android:src="@drawable/ic_arrow_back"
-            app:tint="#757575" />
+            app:tint="#FFFFFF" />
 
         <TextView
             android:id="@+id/txtTituloGrupoMuscular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
             android:layout_marginStart="8dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/btnVoltarTreinoDetalhes"
             android:text="Peito"
-            android:textColor="#212121"
-            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
             android:fontFamily="sans-serif-medium" />
     </RelativeLayout>
 
@@ -42,7 +53,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/layoutHeaderTreinoDetalhes"
+        android:layout_below="@id/headerBackground"
         android:clipToPadding="false">
 
         <LinearLayout
@@ -151,9 +162,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
                             android:layout_weight="1"
-                            android:background="#E0E0E0"
+                            android:background="@color/darkBlue"
                             android:text="Demonstração"
-                            android:textColor="@android:color/black" />
+                            android:textColor="@android:color/white" />
 
                         <Button
                             android:id="@+id/btnEquipamentosSupinoReto"
@@ -266,7 +277,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
                             android:layout_weight="1"
-                            android:background="#2196F3"
+                            android:background="@color/darkBlue"
                             android:text="Demonstração"
                             android:textColor="@android:color/white" />
 
@@ -278,7 +289,7 @@
                             android:layout_weight="1"
                             android:background="#E0E0E0"
                             android:text="Equipamentos"
-                            android:textColor="@android:color/black" />
+                            android:textColor="@color/white" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
