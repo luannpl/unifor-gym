@@ -9,7 +9,7 @@ import com.example.unifor_gym.fragments.Aulas
 import com.example.unifor_gym.fragments.HomeUsuario
 import com.example.unifor_gym.fragments.Notificacoes
 import com.example.unifor_gym.fragments.PerfilUsuario
-import com.example.unifor_gym.fragments.Treinos
+import com.example.unifor_gym.fragments.UsuarioTreinos
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -41,7 +41,7 @@ class UserActivity : AppCompatActivity() {
         buttonUserMenu.setOnItemSelectedListener { item ->
             val fragment = when (item.itemId) {
                 R.id.nav_home_user -> HomeUsuario()
-                R.id.nav_exercicios_user -> Treinos()
+                R.id.nav_exercicios_user -> UsuarioTreinos()
                 R.id.nav_aulas_user -> Aulas()
                 R.id.nav_notificacoes_user -> Notificacoes()
                 R.id.nav_usuarios_user -> PerfilUsuario()

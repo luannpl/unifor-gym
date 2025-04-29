@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Equipamentos"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"/>
+
+        <ImageButton
+            android:id="@+id/btnFecharEquipamentos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Fechar"
+            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+    </RelativeLayout>
+
+    <!-- Lista de equipamentos -->
+    <LinearLayout
+        android:id="@+id/containerEquipamentos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="• Banco de Supino"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="• Barra (20kg)"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="• 2x Anilhas de 10kg"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"/>
+    </LinearLayout>
+
+    <!-- Localização dos equipamentos -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Localização"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/txtLocalizacaoEquipamentos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Área de musculação - Setor 2"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Botão de fechar -->
+    <Button
+        android:id="@+id/btnEntendiEquipamentos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ENTENDI"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@android:color/black"/>
+</LinearLayout>

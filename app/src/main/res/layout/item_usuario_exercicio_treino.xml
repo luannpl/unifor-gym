@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="12dp"
+    android:paddingHorizontal="16dp"
+    android:gravity="center_vertical"
+    android:background="@drawable/border_bottom"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <!-- Nome do exercício - Design melhorado -->
+    <TextView
+        android:id="@+id/txtNomeExercicioUsuario"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Supino reto"
+        android:textColor="#212121"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-medium" />
+
+    <!-- Layout para carga e repetições agrupadas -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp">
+
+        <!-- Carga com design melhorado -->
+        <TextView
+            android:id="@+id/txtCargaExercicioUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20kg"
+            android:textColor="#424242"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif" />
+
+        <!-- Separador -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" • "
+            android:textColor="#BDBDBD"
+            android:textSize="14sp" />
+
+        <!-- Repetições com design melhorado -->
+        <TextView
+            android:id="@+id/txtRepsExercicioUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12x"
+            android:textColor="#424242"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif" />
+    </LinearLayout>
+
+    <!-- Ícone de seta para direita em vez do ícone de informação -->
+    <ImageView
+        android:id="@+id/btnInfoExercicioUsuario"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="12dp"
+        android:src="@android:drawable/ic_media_play"
+        app:tint="#757575"
+        android:rotation="0"
+        android:contentDescription="Ver detalhes" />
+</LinearLayout>

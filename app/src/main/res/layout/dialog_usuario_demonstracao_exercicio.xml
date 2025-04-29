@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Demonstração"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"/>
+
+        <ImageButton
+            android:id="@+id/btnFecharDemonstracao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Fechar"
+            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+    </RelativeLayout>
+
+    <!-- Área de vídeo ou imagens -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#EEEEEE"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:id="@+id/imgVideoPlayer"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_media_play" />
+    </FrameLayout>
+
+    <!-- Instruções do exercício -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Instruções"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/txtInstrucoesDemonstracao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1. Deite-se no banco de supino\n2. Segure a barra com as mãos na largura dos ombros\n3. Abaixe a barra até o peito\n4. Empurre a barra para cima até estender os braços\n5. Repita o movimento"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Botão de fechar -->
+    <Button
+        android:id="@+id/btnEntendiDemonstracao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ENTENDI"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@android:color/black"/>
+</LinearLayout>

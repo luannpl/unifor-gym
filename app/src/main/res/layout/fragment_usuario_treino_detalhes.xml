@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
+
+    <!-- Barra superior com título e botão voltar - Simplificada -->
+    <RelativeLayout
+        android:id="@+id/layoutHeaderTreinoDetalhes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp"
+        android:background="@android:color/white"
+        android:elevation="4dp">
+
+        <ImageButton
+            android:id="@+id/btnVoltarTreinoDetalhes"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Voltar"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="#757575" />
+
+        <TextView
+            android:id="@+id/txtTituloGrupoMuscular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/btnVoltarTreinoDetalhes"
+            android:text="← Peito"
+            android:textColor="#212121"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-medium" />
+    </RelativeLayout>
+
+    <!-- Conteúdo principal - Design melhorado -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layoutHeaderTreinoDetalhes"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Card do Exercício - Supino Reto - Design refinado -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- Título do exercício - Design melhorado -->
+                    <TextView
+                        android:id="@+id/txtTituloExercicioDetalhes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Supino Reto"
+                        android:textColor="#212121"
+                        android:textSize="20sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textStyle="bold" />
+
+                    <!-- Subtítulo do exercício - Design melhorado -->
+                    <TextView
+                        android:id="@+id/txtSubtituloExercicioDetalhes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Peito • Médio • Organizado"
+                        android:textColor="#757575"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif" />
+
+                    <!-- Descrição do exercício - Design melhorado -->
+                    <LinearLayout
+                        android:id="@+id/layoutEquipamentosSupinoReto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical"
+                        android:background="#F9F9F9"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="- Banco de Supino"
+                            android:textColor="#424242"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="- Barra"
+                            android:textColor="#424242"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="- 2x Anilhas de 10kg"
+                            android:textColor="#424242"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <!-- Área de demonstração (inicialmente invisível) -->
+                    <FrameLayout
+                        android:id="@+id/layoutDemonstracaoSupinoReto"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="16dp"
+                        android:background="#E0E0E0"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center"
+                            android:src="@android:drawable/ic_media_play"
+                            app:tint="#212121" />
+                    </FrameLayout>
+
+                    <!-- Botões de ação com toggle -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnDemonstracaoSupinoReto"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:layout_weight="1"
+                            android:background="#E0E0E0"
+                            android:text="Demonstração"
+                            android:textColor="@android:color/black" />
+
+                        <Button
+                            android:id="@+id/btnEquipamentosSupinoReto"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:background="#4CAF50"
+                            android:text="Equipamentos"
+                            android:textColor="@android:color/white" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Card do Exercício - Supino Inclinado - Design refinado -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- Título do exercício - Design melhorado -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Supino Inclinado"
+                        android:textColor="#212121"
+                        android:textSize="20sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textStyle="bold" />
+
+                    <!-- Subtítulo do exercício - Design melhorado -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Peito • Médio • Organizado"
+                        android:textColor="#757575"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif" />
+
+                    <!-- Área de equipamentos (inicialmente invisível) -->
+                    <LinearLayout
+                        android:id="@+id/layoutEquipamentosSupinoInclinado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical"
+                        android:background="#F9F9F9"
+                        android:padding="16dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="- Banco Inclinado"
+                            android:textColor="#424242"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="- Barra"
+                            android:textColor="#424242"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="- 2x Anilhas de 15kg"
+                            android:textColor="#424242"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <!-- Ícone de vídeo - Design melhorado - Demonstração visível por padrão -->
+                    <FrameLayout
+                        android:id="@+id/layoutDemonstracaoSupinoInclinado"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="16dp"
+                        android:background="#E0E0E0">
+
+                        <ImageView
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center"
+                            android:src="@android:drawable/ic_media_play"
+                            app:tint="#212121" />
+                    </FrameLayout>
+
+                    <!-- Botões de ação com toggle -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnDemonstracaoSupinoInclinado"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:layout_weight="1"
+                            android:background="#2196F3"
+                            android:text="Demonstração"
+                            android:textColor="@android:color/white" />
+
+                        <Button
+                            android:id="@+id/btnEquipamentosSupinoInclinado"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:background="#E0E0E0"
+                            android:text="Equipamentos"
+                            android:textColor="@android:color/black" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
