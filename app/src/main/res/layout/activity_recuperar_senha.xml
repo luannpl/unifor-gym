@@ -8,6 +8,19 @@
     tools:context=".activities.RecuperarSenha"
     android:background="#FFFFFF">
 
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Voltar"
+        android:padding="12dp"
+        android:src="@drawable/voltar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/logoRecuperar"
         android:layout_width="217dp"
@@ -23,7 +36,7 @@
         android:id="@+id/tvDigiteEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="36dp"
         android:text="@string/digite_seu_email"
         android:textSize="16sp"
@@ -37,9 +50,9 @@
         android:id="@+id/inputEmailRecuperar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginEnd="50dp"
         android:background="@drawable/edittext_background"
         android:hint="@string/exemplo_email"
         android:inputType="textEmailAddress"

@@ -11,12 +11,13 @@
         android:id="@+id/btnBack"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_marginStart="8dp"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Voltar"
         android:padding="12dp"
         android:src="@drawable/voltar"
-        android:contentDescription="Voltar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
@@ -37,6 +38,7 @@
         android:id="@+id/tvContrato"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="40dp"
         android:paddingTop="3dp"
         android:text="Meu contrato"
@@ -50,7 +52,7 @@
         android:id="@+id/tvAlterarSenha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:paddingTop="1dp"
         android:text="Alterar Senha"
@@ -70,6 +72,7 @@
         android:id="@+id/tvSair"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:paddingTop="16dp"
         android:text="Sair"
