@@ -11,37 +11,42 @@
         android:id="@+id/tvBemVindo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="Bem vindo, Narak"
+        android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="#000000"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Título Treino do Dia -->
     <TextView
         android:id="@+id/tvTreinoDoDia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Treino do dia"
-        android:textSize="16sp"
-        android:textColor="#666666"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/tvBemVindo"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:text="Treino do dia"
+        android:textColor="#666666"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvBemVindo" />
 
     <!-- CardView Principal: Treino do dia -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardTreinoDia"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardBackgroundColor="#FAFAFA"
         app:cardCornerRadius="12dp"
         app:cardElevation="2dp"
-        app:cardBackgroundColor="#FAFAFA"
-        app:layout_constraintTop_toBottomOf="@id/tvTreinoDoDia"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/tvTreinoDoDia">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,30 +78,31 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:gravity="center"
                     android:text="Exercício"
+                    android:textColor="#333333"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="#333333"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:text="Peso"
+                    android:textColor="#333333"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:textColor="#333333"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Séries"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
                     android:gravity="center"
-                    android:textColor="#333333"/>
+                    android:text="Séries"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <!-- Exercício 1 -->
@@ -110,6 +116,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:gravity="center"
                     android:text="@string/exercicio_agachamento" />
 
                 <TextView
@@ -138,6 +145,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:gravity="center"
                     android:text="@string/exercicio_leg_press" />
 
                 <TextView
@@ -166,6 +174,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:gravity="center"
                     android:text="@string/exercicio_extensora" />
 
                 <TextView
@@ -194,6 +203,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:gravity="center"
                     android:text="@string/exercicio_stiff" />
 
                 <TextView
@@ -222,6 +232,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:gravity="center"
                     android:text="@string/exercicio_mesa_flexora" />
 
                 <TextView
@@ -246,19 +257,21 @@
         android:id="@+id/cardProximosTreinos"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        app:cardBackgroundColor="#FAFAFA"
         app:cardCornerRadius="12dp"
         app:cardElevation="2dp"
-        app:cardBackgroundColor="#FAFAFA"
-        app:layout_constraintTop_toBottomOf="@id/cardTreinoDia"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/cardTreinoDia">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:background="#F0F0F0"
+            android:orientation="vertical"
             android:padding="12dp">
 
             <!-- Título -->
@@ -278,45 +291,45 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center"
-                android:weightSum="2"
-                android:paddingTop="16dp">
+                android:orientation="horizontal"
+                android:paddingTop="16dp"
+                android:weightSum="2">
 
                 <!-- Peito -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardPeito"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
                     app:cardCornerRadius="10dp"
                     app:cardElevation="2dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="8dp"
-                        android:gravity="center">
+                        android:padding="8dp">
 
                         <TextView
                             android:id="@+id/tvPeito"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Peito"
+                            android:textColor="#333333"
                             android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="#333333" />
+                            android:textStyle="bold" />
 
                         <Button
                             android:id="@+id/btnVerPeito"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
                             android:layout_marginTop="8dp"
                             android:backgroundTint="#333333"
                             android:text="Ver"
-                            android:layout_centerInParent="true"
                             android:textColor="@android:color/white"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -327,26 +340,26 @@
                     android:id="@+id/cardCostas"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="8dp"
+                    android:layout_weight="1"
                     app:cardCornerRadius="10dp"
                     app:cardElevation="2dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="8dp"
-                        android:gravity="center">
+                        android:padding="8dp">
 
                         <TextView
                             android:id="@+id/tvCostas"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Costas"
+                            android:textColor="#333333"
                             android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="#333333" />
+                            android:textStyle="bold" />
 
                         <Button
                             android:id="@+id/btnVerCostas"
