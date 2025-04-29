@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:layout_marginTop="24dp"
             android:padding="8dp">
 
             <ImageView
@@ -69,11 +70,11 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#EEEEEE"
+                    android:background="@color/darkBlue"
                     android:gravity="center"
                     android:padding="12dp"
                     android:text="Medidas"
-                    android:textColor="#333333"
+                    android:textColor="@color/white"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -214,11 +215,11 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#EEEEEE"
+                    android:background="@color/darkBlue"
                     android:gravity="center"
                     android:padding="12dp"
                     android:text="Objetivos"
-                    android:textColor="#333333"
+                    android:textColor="@color/white"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 

@@ -36,7 +36,6 @@ class Notificacoes : Fragment() {
         btnNaoLidas = view.findViewById(R.id.btnNaoLidas)
         btnTodasCard = view.findViewById(R.id.btnTodasCard)
         btnNaoLidasCard = view.findViewById(R.id.btnNaoLidasCard)
-
         configurarRecyclerView()
         configurarBotoes()
 

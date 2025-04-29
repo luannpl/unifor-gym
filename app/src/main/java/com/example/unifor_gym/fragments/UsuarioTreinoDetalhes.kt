@@ -95,7 +95,7 @@ class UsuarioTreinoDetalhes : Fragment() {
     private fun setupListeners() {
         // Botão voltar
         btnVoltarTreinoDetalhes.setOnClickListener {
-            requireActivity().onBackPressed()
+            requireActivity().supportFragmentManager.popBackStack()
         }
 
         // Botões do Supino Reto
