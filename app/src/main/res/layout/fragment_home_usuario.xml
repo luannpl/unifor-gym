@@ -2,380 +2,461 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp">
+    android:background="#F5F5F5">
 
-    <!-- Bem-vindo -->
+    <!-- Header com cor escura -->
+    <View
+        android:id="@+id/headerBackground"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:background="@color/darkBlue"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Bem-vindo texto -->
     <TextView
         android:id="@+id/tvBemVindo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="24dp"
         android:text="Bem vindo, Narak"
-        android:textColor="#000000"
-        android:textSize="20sp"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Título Treino do Dia -->
+    <!-- Treino do dia subtitle -->
     <TextView
         android:id="@+id/tvTreinoDoDia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="4dp"
         android:text="Treino do dia"
-        android:textColor="#666666"
+        android:textColor="#E0E0E0"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvBemVindo" />
 
-    <!-- CardView Principal: Treino do dia -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardTreinoDia"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:cardBackgroundColor="#FAFAFA"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTreinoDoDia">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingTop="20dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerBackground">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingBottom="24dp">
 
-            <!-- Título da Tabela -->
-            <TextView
-                android:id="@+id/tvTituloTreino"
-                android:layout_width="match_parent"
+            <!-- Card Treino do Dia - Agora sem sobreposição -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardTreinoDia"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="#F0F0F0"
-                android:gravity="center"
-                android:padding="12dp"
-                android:text="PERNA"
-                android:textColor="#000000"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <!-- Cabeçalho -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#E0E0E0"
-                android:orientation="horizontal"
-                android:padding="8dp">
-
-                <TextView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:text="Exercício"
-                    android:textColor="#333333"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Peso"
-                    android:textColor="#333333"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    <!-- Título Treino -->
+                    <TextView
+                        android:id="@+id/tvTituloTreino"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/darkBlue"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:text="PERNA"
+                        android:textColor="#FFFFFF"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Séries"
-                    android:textColor="#333333"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    <!-- Cabeçalho da Tabela -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#EEEEEE"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
 
-            <!-- Exercício 1 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingVertical="4dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2.5"
+                            android:text="Exercício"
+                            android:textAlignment="center"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:text="@string/exercicio_agachamento" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Peso"
+                            android:textAlignment="center"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/carga_40kg" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Séries"
+                            android:textAlignment="center"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/series_3x" />
-            </LinearLayout>
+                    <!-- Exercícios -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-            <!-- Exercício 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingVertical="4dp">
+                        <!-- Exercício 1 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:text="@string/exercicio_leg_press" />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2.5"
+                                android:text="@string/exercicio_agachamento"
+                                android:textAlignment="center"
+                                android:textColor="#333333" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/carga_80kg" />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/carga_40kg"
+                                android:textAlignment="center"
+                                android:textColor="#333333" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/series_3x" />
-            </LinearLayout>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/series_3x"
+                                android:textAlignment="center"
+                                android:textColor="#333333" />
+                        </LinearLayout>
 
-            <!-- Exercício 3 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingVertical="4dp">
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E0E0E0" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:text="@string/exercicio_extensora" />
+                        <!-- Exercício 2 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/carga_45kg" />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2.5"
+                                android:text="@string/exercicio_leg_press"
+                                android:textAlignment="center"
+                                android:textColor="#333333" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/series_3x" />
-            </LinearLayout>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/carga_80kg"
+                                android:textAlignment="center"
+                                android:textColor="#333333" />
 
-            <!-- Exercício 4 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingVertical="4dp">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/series_3x"
+                                android:textAlignment="center"
+                                android:textColor="#333333" />
+                        </LinearLayout>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:text="@string/exercicio_stiff" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E0E0E0" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/carga_30kg" />
+                        <!-- Exercício 3 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/series_3x" />
-            </LinearLayout>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2.5"
+                                android:text="@string/exercicio_extensora"
+                                android:textAlignment="center"
+                                android:textColor="#333333" />
 
-            <!-- Exercício 5 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingVertical="4dp">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/carga_45kg"
+                                android:textAlignment="center"
+                                android:textColor="#333333" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:text="@string/exercicio_mesa_flexora" />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/series_3x"
+                                android:textAlignment="center"
+                                android:textColor="#333333" />
+                        </LinearLayout>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/carga_50kg" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E0E0E0" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/series_3x" />
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                        <!-- Exercício 4 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
 
-    <!-- Card Próximos Treinos -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardProximosTreinos"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        app:cardBackgroundColor="#FAFAFA"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardTreinoDia">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2.5"
+                                android:text="@string/exercicio_stiff"
+                                android:textAlignment="center"
+                                android:textColor="#333333" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#F0F0F0"
-            android:orientation="vertical"
-            android:padding="12dp">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/carga_30kg"
+                                android:textAlignment="center"
+                                android:textColor="#333333" />
 
-            <!-- Título -->
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/series_3x"
+                                android:textAlignment="center"
+                                android:textColor="#333333" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E0E0E0" />
+
+                        <!-- Exercício 5 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2.5"
+                                android:text="@string/exercicio_mesa_flexora"
+                                android:textAlignment="center"
+                                android:textColor="#333333" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/carga_50kg"
+                                android:textAlignment="center"
+                                android:textColor="#333333" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/series_3x"
+                                android:textAlignment="center"
+                                android:textColor="#333333" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Título Próximos Treinos -->
             <TextView
                 android:id="@+id/tvTituloProximosTreinos"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#F0F0F0"
-                android:gravity="center"
-                android:padding="12dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="24dp"
                 android:text="Próximos treinos"
-                android:textColor="#000000"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:textColor="#333333"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardTreinoDia" />
 
-            <!-- Cards Peito e Costas -->
+            <!-- Cards dos Próximos Treinos - Simplificados -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layoutProximosTreinos"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:orientation="horizontal"
-                android:paddingTop="16dp"
-                android:weightSum="2">
+                android:weightSum="2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTituloProximosTreinos">
 
-                <!-- Peito -->
+                <!-- Card Peito - Design mais limpo -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardPeito"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="130dp"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    app:cardCornerRadius="10dp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="12dp"
                     app:cardElevation="2dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="8dp">
+                        android:padding="12dp">
 
-                        <TextView
-                            android:id="@+id/tvPeito"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Peito"
-                            android:textColor="#333333"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/ic_fitness"
+                                android:contentDescription="Ícone de peito" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Peito"
+                                android:textColor="#333333"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
                         <Button
                             android:id="@+id/btnVerPeito"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
                             android:layout_marginTop="8dp"
-                            android:backgroundTint="#333333"
+                            android:background="@drawable/button_style"
+                            android:backgroundTint="@color/darkBlue"
+                            app:backgroundTint="@color/darkBlue"
+                            android:textAllCaps="false"
                             android:text="Ver"
-                            android:textColor="@android:color/white"
+                            android:textColor="#FFFFFF"
                             android:textSize="14sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <!-- Costas -->
+                <!-- Card Costas - Design mais limpo -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardCostas"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="130dp"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    app:cardCornerRadius="10dp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="12dp"
                     app:cardElevation="2dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="8dp">
+                        android:padding="12dp">
 
-                        <TextView
-                            android:id="@+id/tvCostas"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Costas"
-                            android:textColor="#333333"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:contentDescription="Ícone de costas"
+                                android:src="@drawable/ic_fitness" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Costas"
+                                android:textColor="#333333"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
                         <Button
                             android:id="@+id/btnVerCostas"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
                             android:layout_marginTop="8dp"
-                            android:backgroundTint="#333333"
+                            android:background="@drawable/button_style"
+                            android:backgroundTint="@color/darkBlue"
+                            app:backgroundTint="@color/darkBlue"
+                            android:textAllCaps="false"
                             android:text="Ver"
-                            android:textColor="@android:color/white"
+                            android:textColor="#FFFFFF"
                             android:textSize="14sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
             </LinearLayout>
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
