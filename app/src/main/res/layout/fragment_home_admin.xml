@@ -52,7 +52,6 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
-                android:layout_marginTop="-40dp"
                 android:layout_marginBottom="15dp">
 
                 <LinearLayout
@@ -64,7 +63,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="SUAS AULAS DO DIA"
+                        android:text="Aulas do dia"
                         android:textStyle="bold"
                         android:textSize="14sp"
                         android:layout_marginBottom="5dp"/>

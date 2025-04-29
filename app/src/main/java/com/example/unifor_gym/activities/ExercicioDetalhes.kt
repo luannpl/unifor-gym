@@ -1,11 +1,14 @@
 package com.example.unifor_gym.activities
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import com.example.unifor_gym.R
 import com.example.unifor_gym.models.Exercicio
 
@@ -52,10 +55,6 @@ class ExercicioDetalhes : AppCompatActivity() {
         txtDificuldade.text = exercicio.dificuldade
         txtInstrucoes.text = exercicio.instrucoes
 
-        // Limpar containers
-        containerEquipamentos.removeAllViews()
-        containerCategorias.removeAllViews()
-
         // Adicionar equipamentos
         for (equipamento in exercicio.aparelhos) {
             val txtEquipamento = TextView(this)
@@ -66,11 +65,35 @@ class ExercicioDetalhes : AppCompatActivity() {
 
         // Adicionar categorias
         for (categoria in exercicio.categorias) {
-            val txtCategoria = TextView(this)
-            txtCategoria.text = "• $categoria"
-            txtCategoria.textSize = 16f
+            val txtCategoria = TextView(this).apply {
+                text = categoria
+                textSize = 14f
+                setTextColor(ContextCompat.getColor(context, R.color.white))
+                background = ContextCompat.getDrawable(context, R.drawable.rounded_blue_bg)
+
+                // Padding (em dp convertido pra px)
+                val horizontalPadding = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 16f, resources.displayMetrics
+                ).toInt()
+                val verticalPadding = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 8f, resources.displayMetrics
+                ).toInt()
+                setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding)
+
+                // Margin end (se estiver usando LinearLayout ou FlexboxLayout)
+                val layoutParams = ViewGroup.MarginLayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    marginEnd = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 8f, resources.displayMetrics
+                    ).toInt()
+                }
+                this.layoutParams = layoutParams
+            }
             containerCategorias.addView(txtCategoria)
         }
+
 
         // Se não houver equipamentos ou categorias, exibir mensagem
         if (exercicio.aparelhos.isEmpty()) {
