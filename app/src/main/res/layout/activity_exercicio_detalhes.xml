@@ -296,7 +296,30 @@
         </androidx.core.widget.NestedScrollView>
     </androidx.cardview.widget.CardView>
 
-    <!-- Chat button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_access"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="48dp"
+        android:contentDescription="Acessibilidade"
+        android:src="@drawable/accessibility"
+        android:tint="@android:color/holo_blue_light"
+        app:backgroundTint="@android:color/transparent"
+        app:elevation="0dp"
+        app:layout_constraintBottom_toTopOf="@id/fab_chat"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/green"
+        android:contentDescription="Abrir chat"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/chat"
+        app:tint="@android:color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

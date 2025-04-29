@@ -17,6 +17,7 @@ class UserActivity : AppCompatActivity() {
 
     lateinit var buttonUserMenu: BottomNavigationView
     lateinit var fabChat: FloatingActionButton
+    lateinit var fabAccess: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,7 @@ class UserActivity : AppCompatActivity() {
 
         // Encontrar o FloatingActionButton de chat
         fabChat = findViewById(R.id.fab_chat)
+        fabAccess = findViewById(R.id.fab_access)
 
         // Configurar clique no botão de chat para abrir a ChatActivity
         fabChat.setOnClickListener {
