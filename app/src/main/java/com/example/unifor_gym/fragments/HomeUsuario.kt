@@ -18,20 +18,23 @@ class HomeUsuario : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home_usuario, container, false)
 
         // Encontra o botão de "Costas"
+
         val btnVerCostas = view.findViewById<Button>(R.id.btnVerCostas)
         btnVerCostas.setOnClickListener {
             // Substitui o fragmento ao clicar no botão de Costas
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, Treinos())  // Substitui o fragmento no contêiner
+                .replace(R.id.fragment_container, UsuarioTreinoDetalhes())
+                .addToBackStack("costas")  // Adiciona à pilha de navegação com um nome
                 .commit()
         }
 
-        // Encontra o botão de "Peito"
+// Encontra o botão de "Peito"
         val btnVerPeito = view.findViewById<Button>(R.id.btnVerPeito)
         btnVerPeito.setOnClickListener {
             // Substitui o fragmento ao clicar no botão de Peito
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, Treinos())  // Substitui o fragmento no contêiner
+                .replace(R.id.fragment_container, UsuarioTreinoDetalhes())
+                .addToBackStack("peito")  // Adiciona à pilha de navegação com um nome
                 .commit()
         }
 
