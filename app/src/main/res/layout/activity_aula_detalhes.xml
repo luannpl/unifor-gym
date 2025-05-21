@@ -35,7 +35,7 @@
     </androidx.cardview.widget.CardView>
     <!-- Título -->
     <TextView
-        android:id="@+id/exerciseTitle"
+        android:id="@+id/aulaTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -76,6 +76,7 @@
                     android:gravity="center_vertical">
 
                     <TextView
+                        android:id="@+id/aulaProfPhoto"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@drawable/circle_background"
@@ -91,6 +92,7 @@
                         android:layout_marginStart="12dp">
 
                         <TextView
+                            android:id="@+id/aulaProf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Ronilson"
@@ -142,6 +144,7 @@
                             android:layout_marginEnd="8dp"
                             android:src="@drawable/aulas"/>
                         <TextView
+                            android:id="@+id/aulaDiaHora"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Segunda 08:00 - 09:00"
@@ -158,6 +161,7 @@
                             android:layout_marginEnd="8dp"
                             android:src="@drawable/usuario"/>
                         <TextView
+                            android:id="@+id/aulaAlunoVaga"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Alunos: 10/15"
@@ -182,6 +186,7 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/aulaDetalhesEquipamentos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Equipamentos: Tapetes"
