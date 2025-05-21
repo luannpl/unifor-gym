@@ -26,10 +26,10 @@ class AulaAdapter (
 
         fun bind(aula: Aula) {
             txtNome.text = aula.nome
-            txtQtdMatriculados.text = aula.qtdMatriculados
-            txtQtdVagas.text = aula.qtdVagas
-            progressBar.progress = Integer.parseInt(aula.qtdMatriculados)
-            progressBar.max = Integer.parseInt(aula.qtdVagas)
+            txtQtdMatriculados.text = aula.qtdMatriculados.toString()
+            txtQtdVagas.text = aula.qtdVagas.toString()
+            progressBar.progress = aula.qtdMatriculados
+            progressBar.max = aula.qtdVagas
 
             btnMore.setOnClickListener { view ->
                 val popupMenu = PopupMenu(view.context, view)

@@ -14,19 +14,27 @@ import com.example.unifor_gym.activities.AulaDetalhes
 import com.example.unifor_gym.adapters.AulaAdapter
 import com.example.unifor_gym.models.AcoesMenuMais
 import android.app.AlertDialog
+import android.os.Parcelable
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 data class Aula (
-    val nome: String,
-    val qtdMatriculados: String,
-    val qtdVagas: String
+    var id: String = "",
+    var nome: String = "",
+    var qtdMatriculados: Int = 0,
+    var qtdVagas: Int = 0,
+    var diaDaSemana: String = "",
+    var horarioInicio: String = "",
+    var horarioFim: String = "",
+    var equipamentos: List<String> = listOf()
 )
 
 class GestaoAulas : Fragment() {
     private lateinit var recyclerAulas: RecyclerView
-    private lateinit var listaDeAulas: List<Aula>
     private lateinit var btnAdicionarAula: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,37 +51,49 @@ class GestaoAulas : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("GestaoAulas", "onViewCreated iniciado")
         recyclerAulas = view.findViewById(R.id.recyclerAulas)
 
+        val fb = Firebase.firestore
+        Log.d("GestaoAulas", "Firebase Firestore instanciado")
+        fb.collection("Aulas").get()
+            .addOnSuccessListener { result ->
+                val listaDeAulas = result.map {
+                    doc ->
+                    val aula = doc.toObject(Aula::class.java)
+                    aula.id = doc.id
+                    aula
+                }
+
+                val aulasAdapter = AulaAdapter(listaDeAulas) { aula, acao ->
+                    when (acao) {
+                        AcoesMenuMais.VER_DETALHES -> {
+                            val intentAulaDetalhes = Intent(requireContext(), AulaDetalhes::class.java)
+                            intentAulaDetalhes.putExtra("aulaId", aula.id)
+                            startActivity(intentAulaDetalhes)
+                        }
+                        AcoesMenuMais.EDITAR -> {
+                            mostrarDialogEditarAula("Editar aula", aula)
+                        }
+                        AcoesMenuMais.EXCLUIR -> {
+                            mostrarDialogExclusao("Confirmar exclusão", aula)
+                        }
+                    }
+                }
+
+                recyclerAulas.layoutManager = LinearLayoutManager(requireContext())
+                recyclerAulas.adapter = aulasAdapter
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "Erro de conexão", Toast.LENGTH_SHORT).show()
+            }
+
+
         btnAdicionarAula = view.findViewById(R.id.btnAdicionarAula)
-        listaDeAulas = listOf(
-            Aula("Yoga", "12", "15"),
-            Aula("Crossfit", "13", "20"),
-            Aula("Rumba", "10", "25"),
-            Aula("Pilates", "5", "15"),
-        )
 
         btnAdicionarAula.setOnClickListener {
             mostrarDialogAdicionarAula("Adicionar aula")
         }
-
-        val aulasAdapter = AulaAdapter(listaDeAulas) { aula, acao ->
-            when (acao) {
-                AcoesMenuMais.VER_DETALHES -> {
-                    val intentAulaDetalhes = Intent(requireContext(), AulaDetalhes::class.java)
-                    startActivity(intentAulaDetalhes)
-                }
-                AcoesMenuMais.EDITAR -> {
-                    mostrarDialogEditarAula("Editar aula", aula)
-                }
-                AcoesMenuMais.EXCLUIR -> {
-                    mostrarDialogExclusao("Confirmar exclusão", aula)
-                }
-            }
-        }
-
-        recyclerAulas.layoutManager = LinearLayoutManager(requireContext())
-        recyclerAulas.adapter = aulasAdapter
     }
 
     private fun mostrarDialogAdicionarAula(titulo: String) {
