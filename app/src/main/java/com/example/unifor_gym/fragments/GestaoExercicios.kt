@@ -1,5 +1,6 @@
 package com.example.unifor_gym.fragments
 
+import com.google.firebase.firestore.FirebaseFirestore
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
@@ -30,6 +31,7 @@ class GestaoExercicios : Fragment() {
     private lateinit var edtBuscarExercicio: EditText
     private lateinit var listaExercicios: MutableList<Exercicio>
     private lateinit var exercicioAdapter: ExercicioAdapter
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,20 +43,24 @@ class GestaoExercicios : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        firestore = FirebaseFirestore.getInstance()
 
         // Inicializar componentes
         recyclerExercicios = view.findViewById(R.id.recyclerViewGestaoExercicios)
         btnAdicionarExercicio = view.findViewById(R.id.btnAdicionarExercicio)
         edtBuscarExercicio = view.findViewById(R.id.edtBuscarExercicio)
 
-        // Inicializar dados
-        listaExercicios = gerarDadosExerciciosMock().toMutableList()
+        // Inicializar lista vazia
+        listaExercicios = mutableListOf()
 
         // Configurar RecyclerView
         configureRecyclerView()
 
         // Configurar botões
         configurarBotoes()
+
+        // Carregar exercícios do Firebase
+        carregarExerciciosDoFirebase()
     }
 
     private fun configureRecyclerView() {
@@ -87,46 +93,27 @@ class GestaoExercicios : Fragment() {
         }
     }
 
-    private fun gerarDadosExerciciosMock(): List<Exercicio> {
-        return listOf(
-            Exercicio(
-                id = 1,
-                nome = "Supino",
-                grupoMuscular = "Peito",
-                dificuldade = "Intermediário",
-                categorias = listOf("Peito", "Braços", "Ombros"),
-                aparelhos = listOf("Banco de supino", "Barra", "Anilhas"),
-                instrucoes = "Deite-se no banco com os pés no chão. Segure a barra com as mãos um pouco mais afastadas que a largura dos ombros. Abaixe a barra até o meio do peito e depois empurre para cima."
-            ),
-            Exercicio(
-                id = 2,
-                nome = "Agachamento",
-                grupoMuscular = "Pernas",
-                dificuldade = "Intermediário",
-                categorias = listOf("Pernas", "Glúteos"),
-                aparelhos = listOf("Rack de agachamento", "Barra", "Anilhas"),
-                instrucoes = "Posicione a barra nos ombros, pés na largura dos ombros. Flexione os joelhos e quadris como se fosse sentar em uma cadeira. Desça até as coxas ficarem paralelas ao chão e suba."
-            ),
-            Exercicio(
-                id = 3,
-                nome = "Levantamento Terra",
-                grupoMuscular = "Costas",
-                dificuldade = "Avançado",
-                categorias = listOf("Costas", "Pernas", "Core"),
-                aparelhos = listOf("Barra", "Anilhas"),
-                instrucoes = "Com os pés na largura dos ombros, segure a barra com as mãos na largura dos ombros. Mantenha as costas retas, flexione os quadris e joelhos para levantar a barra, esticando-se até ficar em pé."
-            ),
-            Exercicio(
-                id = 4,
-                nome = "Rosca direta",
-                grupoMuscular = "Braços",
-                dificuldade = "Iniciante",
-                categorias = listOf("Braços"),
-                aparelhos = listOf("Barra", "Anilhas"),
-                instrucoes = "Em pé, segure a barra com as palmas para cima. Flexione os cotovelos para levantar a barra até os ombros, mantendo os cotovelos fixos ao lado do corpo."
-            )
-        )
+    private fun carregarExerciciosDoFirebase() {
+        firestore.collection("exercicios")
+            .get()
+            .addOnSuccessListener { documents ->
+                listaExercicios.clear()
+
+                for (document in documents) {
+                    val exercicio = document.toObject(Exercicio::class.java)
+                    exercicio.firebaseId = document.id // Definir o ID do Firebase
+                    listaExercicios.add(exercicio)
+                }
+
+                exercicioAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Erro ao carregar exercícios: ${e.message}", Toast.LENGTH_SHORT).show()
+                // Usar dados mock como fallback
+                exercicioAdapter.notifyDataSetChanged()
+            }
     }
+
 
     private fun mostrarDialogAdicionarExercicio() {
         val dialog = Dialog(requireContext())
@@ -208,9 +195,8 @@ class GestaoExercicios : Fragment() {
             // Dividir aparelhos por vírgula
             val aparelhosLista = aparelhosText.split(",").map { it.trim() }.filter { it.isNotEmpty() }
 
-            // Criar novo exercício
+            // Criar novo exercício SEM firebaseId ainda
             val novoExercicio = Exercicio(
-                id = listaExercicios.size + 1,
                 nome = nome,
                 grupoMuscular = grupoMuscularPrincipal,
                 dificuldade = dificuldade,
@@ -220,12 +206,25 @@ class GestaoExercicios : Fragment() {
                 videoUrl = if (linkVideo.isNotBlank()) linkVideo else null
             )
 
-            // Adicionar à lista e atualizar adapter
-            listaExercicios.add(novoExercicio)
-            exercicioAdapter.notifyItemInserted(listaExercicios.size - 1)
+            // Salvar no Firestore
+            firestore.collection("exercicios")
+                .add(novoExercicio)
+                .addOnSuccessListener { documentReference ->
+                    Toast.makeText(requireContext(), "Exercício adicionado com sucesso", Toast.LENGTH_SHORT).show()
 
-            Toast.makeText(requireContext(), "Exercício adicionado com sucesso", Toast.LENGTH_SHORT).show()
-            dialog.dismiss()
+                    // Criar exercício com o ID real do Firebase
+                    val exercicioComFirebaseId = novoExercicio.copy(
+                        firebaseId = documentReference.id
+                    )
+
+                    // Adicionar à lista local
+                    listaExercicios.add(exercicioComFirebaseId)
+                    exercicioAdapter.notifyItemInserted(listaExercicios.size - 1)
+                    dialog.dismiss()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(requireContext(), "Erro ao adicionar: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
         }
 
         dialog.show()
@@ -334,9 +333,10 @@ class GestaoExercicios : Fragment() {
             // Dividir aparelhos por vírgula
             val aparelhosLista = aparelhosText.split(",").map { it.trim() }.filter { it.isNotEmpty() }
 
-            // Criar exercício atualizado
+            // Criar exercício atualizado mantendo o firebaseId
             val exercicioAtualizado = Exercicio(
                 id = exercicio.id,
+                firebaseId = exercicio.firebaseId, // Manter o mesmo firebaseId
                 nome = nome,
                 grupoMuscular = grupoMuscularPrincipal,
                 dificuldade = dificuldade,
@@ -346,14 +346,26 @@ class GestaoExercicios : Fragment() {
                 videoUrl = if (linkVideo.isNotBlank()) linkVideo else null
             )
 
-            // Atualizar na lista
-            val index = listaExercicios.indexOfFirst { it.id == exercicio.id }
-            if (index != -1) {
-                listaExercicios[index] = exercicioAtualizado
-                exercicioAdapter.notifyItemChanged(index)
+            // Atualizar no Firebase usando o firebaseId
+            exercicio.firebaseId?.let { firebaseId ->
+                firestore.collection("exercicios").document(firebaseId)
+                    .set(exercicioAtualizado)
+                    .addOnSuccessListener {
+                        Toast.makeText(requireContext(), "Exercício atualizado com sucesso", Toast.LENGTH_SHORT).show()
 
-                Toast.makeText(requireContext(), "Exercício atualizado com sucesso", Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
+                        // Atualizar na lista local
+                        val index = listaExercicios.indexOfFirst { it.firebaseId == firebaseId }
+                        if (index != -1) {
+                            listaExercicios[index] = exercicioAtualizado
+                            exercicioAdapter.notifyItemChanged(index)
+                        }
+                        dialog.dismiss()
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(requireContext(), "Erro ao atualizar: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            } ?: run {
+                Toast.makeText(requireContext(), "ID do Firebase não encontrado", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -365,12 +377,23 @@ class GestaoExercicios : Fragment() {
             .setTitle("Excluir Exercício")
             .setMessage("Tem certeza que deseja excluir o exercício '${exercicio.nome}'?")
             .setPositiveButton("Excluir") { _, _ ->
-                // Remover da lista
-                val index = listaExercicios.indexOfFirst { it.id == exercicio.id }
-                if (index != -1) {
-                    listaExercicios.removeAt(index)
-                    exercicioAdapter.notifyItemRemoved(index)
-                    Toast.makeText(requireContext(), "Exercício excluído com sucesso", Toast.LENGTH_SHORT).show()
+                exercicio.firebaseId?.let { firebaseId ->
+                    firestore.collection("exercicios").document(firebaseId)
+                        .delete()
+                        .addOnSuccessListener {
+                            // Remover da lista local
+                            val index = listaExercicios.indexOfFirst { it.firebaseId == firebaseId }
+                            if (index != -1) {
+                                listaExercicios.removeAt(index)
+                                exercicioAdapter.notifyItemRemoved(index)
+                            }
+                            Toast.makeText(requireContext(), "Exercício excluído com sucesso", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(requireContext(), "Erro ao excluir exercício: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                } ?: run {
+                    Toast.makeText(requireContext(), "ID do Firebase não encontrado", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancelar", null)
