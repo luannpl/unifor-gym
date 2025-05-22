@@ -8,11 +8,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unifor_gym.R
 import com.example.unifor_gym.fragments.ChangePasswordFragment
+import com.example.unifor_gym.utils.FirebaseAuthManager
 
 class ConfiguracoesPerfil : AppCompatActivity() {
+
+    private lateinit var authManager: FirebaseAuthManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_configuracoes_perfil)
+
+        authManager = FirebaseAuthManager()
 
         // Botão de Voltar
         val btnBack = findViewById<ImageButton>(R.id.btnBack)
@@ -35,10 +41,16 @@ class ConfiguracoesPerfil : AppCompatActivity() {
         // Sair
         val tvSair = findViewById<TextView>(R.id.tvSair)
         tvSair.setOnClickListener {
+            // Sign out from Firebase
+            authManager.signOut()
+
             Toast.makeText(this, "Saindo...", Toast.LENGTH_SHORT).show()
+
+            // Navigate to login screen
             val intent = Intent(this, Login::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+            finish()
         }
     }
 

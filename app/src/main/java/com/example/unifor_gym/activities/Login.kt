@@ -2,6 +2,8 @@ package com.example.unifor_gym.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
+import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -10,19 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.unifor_gym.R
+import com.example.unifor_gym.models.UserRole
+import com.example.unifor_gym.utils.FirebaseAuthManager
 import com.google.android.material.button.MaterialButton
-import android.util.Patterns
-import android.view.View
 
 class Login : AppCompatActivity() {
-
-    companion object {
-        private const val USER_EMAIL = "user@unifor.br"
-        private const val USER_PASSWORD = "user123"
-
-        private const val ADMIN_EMAIL = "admin@unifor.br"
-        private const val ADMIN_PASSWORD = "admin123"
-    }
 
     private lateinit var emailEditText: EditText
     private lateinit var senhaEditText: EditText
@@ -30,18 +24,28 @@ class Login : AppCompatActivity() {
     private lateinit var textEsqueceuSenha: TextView
     private lateinit var textCadastrarLogin: TextView
 
+    private lateinit var authManager: FirebaseAuthManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        inicializarComponentes()
+        authManager = FirebaseAuthManager()
 
+        // Check if user is already logged in
+        if (authManager.isUserLoggedIn()) {
+            checkUserRoleAndNavigate()
+            return
+        }
+
+        inicializarComponentes()
         configurarListeners()
     }
 
@@ -90,26 +94,58 @@ class Login : AppCompatActivity() {
             return
         }
 
-        when {
-            email == ADMIN_EMAIL && senha == ADMIN_PASSWORD -> {
-                Toast.makeText(this, "Login de administrador realizado com sucesso!", Toast.LENGTH_SHORT).show()
-                irParaAdminActivity()
-            }
+        // Show loading state
+        btnEntrar.isEnabled = false
+        btnEntrar.text = "Entrando..."
 
-            email == USER_EMAIL && senha == USER_PASSWORD -> {
-                Toast.makeText(this, "Login de usuário realizado com sucesso!", Toast.LENGTH_SHORT).show()
-                irParaUserActivity()
-            }
+        // Perform login with Firebase
+        authManager.loginUser(
+            email = email,
+            password = senha,
+            onSuccess = { userProfile ->
+                btnEntrar.isEnabled = true
+                btnEntrar.text = "Entrar"
 
-            else -> {
-                Toast.makeText(this, "Email ou senha incorretos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show()
+
+                when (userProfile.role) {
+                    UserRole.ADMIN -> irParaAdminActivity()
+                    UserRole.USER -> irParaUserActivity()
+                }
+            },
+            onFailure = { exception ->
+                btnEntrar.isEnabled = true
+                btnEntrar.text = "Entrar"
+
+                val errorMessage = when {
+                    exception.message?.contains("badly formatted") == true -> "Email inválido"
+                    exception.message?.contains("password is invalid") == true -> "Senha incorreta"
+                    exception.message?.contains("no user record") == true -> "Usuário não encontrado"
+                    exception.message?.contains("temporarily disabled") == true -> "Conta temporariamente bloqueada"
+                    else -> "Erro no login: ${exception.message}"
+                }
+                Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
             }
-        }
+        )
+    }
+
+    private fun checkUserRoleAndNavigate() {
+        authManager.getCurrentUserProfile(
+            onSuccess = { userProfile ->
+                when (userProfile.role) {
+                    UserRole.ADMIN -> irParaAdminActivity()
+                    UserRole.USER -> irParaUserActivity()
+                }
+            },
+            onFailure = {
+                // If profile not found, sign out and stay on login
+                authManager.signOut()
+                Toast.makeText(this, "Erro ao carregar perfil do usuário", Toast.LENGTH_SHORT).show()
+            }
+        )
     }
 
     private fun irParaRecuperacaoSenha() {
-        Toast.makeText(this, "Funcionalidade de recuperação de senha", Toast.LENGTH_SHORT).show()
-
         val intent = Intent(this, RecuperarSenha::class.java)
         startActivity(intent)
     }
@@ -118,7 +154,6 @@ class Login : AppCompatActivity() {
         val intent = Intent(this, Cadastro::class.java)
         startActivity(intent)
     }
-
 
     private fun irParaAdminActivity() {
         val intent = Intent(this, AdminActivity::class.java)
@@ -133,5 +168,4 @@ class Login : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-
 }
