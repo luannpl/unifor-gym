@@ -35,7 +35,7 @@
     </androidx.cardview.widget.CardView>
     <!-- Título -->
     <TextView
-        android:id="@+id/aulaTitle"
+        android:id="@+id/aulaDetalhesTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -76,7 +76,7 @@
                     android:gravity="center_vertical">
 
                     <TextView
-                        android:id="@+id/aulaProfPhoto"
+                        android:id="@+id/aulaDetalhesInstrutorPhoto"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@drawable/circle_background"
@@ -92,7 +92,7 @@
                         android:layout_marginStart="12dp">
 
                         <TextView
-                            android:id="@+id/aulaProf"
+                            android:id="@+id/aulaDetalhesInstrutor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Ronilson"
@@ -144,7 +144,7 @@
                             android:layout_marginEnd="8dp"
                             android:src="@drawable/aulas"/>
                         <TextView
-                            android:id="@+id/aulaDiaHora"
+                            android:id="@+id/aulaDetalhesDiaHora"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Segunda 08:00 - 09:00"
@@ -161,7 +161,7 @@
                             android:layout_marginEnd="8dp"
                             android:src="@drawable/usuario"/>
                         <TextView
-                            android:id="@+id/aulaAlunoVaga"
+                            android:id="@+id/aulaDetalhesAlunoVaga"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Alunos: 10/15"
@@ -178,6 +178,7 @@
                             android:layout_marginEnd="8dp"
                             android:src="@drawable/clock"/>
                         <TextView
+                            android:id="@+id/aulaDetalhesDuracao"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Duração: 60 min"
@@ -230,7 +231,7 @@
                             android:layout_marginEnd="8dp"
                             android:src="@drawable/aulas"/>
                         <TextView
-                            android:layout_width="0dp"
+                            android:id="@+id/txtDataAula1" android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:text="24 de mai"
@@ -243,13 +244,12 @@
                             android:src="@drawable/clock"/>
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:id="@+id/txtHoraAula1" android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="08:00"
                             android:textSize="14sp" />
                     </LinearLayout>
 
-                    <!-- Aula 2 -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -263,7 +263,7 @@
                             android:layout_marginEnd="8dp"
                             android:src="@drawable/aulas"/>
                         <TextView
-                            android:layout_width="0dp"
+                            android:id="@+id/txtDataAula2" android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:text="31 de mai"
@@ -276,13 +276,12 @@
                             android:src="@drawable/clock"/>
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:id="@+id/txtHoraAula2" android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="08:00"
                             android:textSize="14sp" />
                     </LinearLayout>
 
-                    <!-- Aula 3 -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -296,7 +295,7 @@
                             android:src="@drawable/aulas"/>
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:id="@+id/txtDataAula3" android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:text="07 de jun"
@@ -309,7 +308,7 @@
                             android:src="@drawable/clock"/>
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:id="@+id/txtHoraAula3" android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="09:00"
                             android:textSize="14sp" />
