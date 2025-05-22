@@ -51,7 +51,7 @@
 
     <!-- Campo de busca -->
     <androidx.cardview.widget.CardView
-        android:id="@+id/buscaAulaGestao"
+        android:id="@+id/buscaAulaGestaoContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -68,7 +68,7 @@
             android:padding="16dp">
 
             <EditText
-                android:id="@+id/searchInput"
+                android:id="@+id/buscaAulaGestao"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:hint="Buscar aulas"
@@ -81,7 +81,7 @@
     <!-- Lista de Aulas -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerAulas"
-        app:layout_constraintTop_toBottomOf="@id/buscaAulaGestao"
+        app:layout_constraintTop_toBottomOf="@id/buscaAulaGestaoContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="16dp"

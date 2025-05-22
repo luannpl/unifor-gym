@@ -1,5 +1,6 @@
 package com.example.unifor_gym.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +31,7 @@ class AulaAdapter (
             txtQtdVagas.text = aula.qtdVagas.toString()
             progressBar.progress = aula.qtdMatriculados
             progressBar.max = aula.qtdVagas
-
+            Log.d("AulaAdapter", "Binding Aula: ID=${aula.id}, Nome=${aula.nome}, Matriculados=${aula.qtdMatriculados}, Vagas=${aula.qtdVagas}")
             btnMore.setOnClickListener { view ->
                 val popupMenu = PopupMenu(view.context, view)
                 popupMenu.inflate(R.menu.menu_item_gestao)
