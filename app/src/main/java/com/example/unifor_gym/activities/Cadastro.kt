@@ -2,8 +2,7 @@ package com.example.unifor_gym.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.util.Patterns
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
@@ -12,19 +11,30 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.unifor_gym.R
+import com.example.unifor_gym.utils.FirebaseAuthManager
 import com.google.android.material.button.MaterialButton
 
 class Cadastro : AppCompatActivity() {
 
-    lateinit var inputNomeCadastro: EditText
-    lateinit var inputEmailCadastro: EditText
-    lateinit var inputSenhaCadastro: EditText
-    lateinit var btnCadastro: MaterialButton
+    private lateinit var inputNomeCadastro: EditText
+    private lateinit var inputEmailCadastro: EditText
+    private lateinit var inputSenhaCadastro: EditText
+    private lateinit var btnCadastro: MaterialButton
+
+    private lateinit var authManager: FirebaseAuthManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_cadastro)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+        authManager = FirebaseAuthManager()
 
         inputNomeCadastro = findViewById(R.id.nomeCadastroId)
         inputEmailCadastro = findViewById(R.id.emailCadastroId)
@@ -32,41 +42,88 @@ class Cadastro : AppCompatActivity() {
         btnCadastro = findViewById(R.id.btnCadastrar)
 
         btnCadastro.setOnClickListener {
-            val nome = inputNomeCadastro.text.toString()
-            val email = inputEmailCadastro.text.toString()
-            val senha = inputSenhaCadastro.text.toString()
+            realizarCadastro()
+        }
+    }
 
-            if (nome.isEmpty() || email.isEmpty() || senha.isEmpty()) {
-                Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+    private fun realizarCadastro() {
+        val nome = inputNomeCadastro.text.toString().trim()
+        val email = inputEmailCadastro.text.toString().trim()
+        val senha = inputSenhaCadastro.text.toString().trim()
 
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Toast.makeText(this, "Email inválido", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            if (senha.length < 6) {
-                Toast.makeText(this, "A senha deve ter pelo menos 6 caracteres", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            Toast.makeText(this, "Cadastrado com sucesso!", Toast.LENGTH_SHORT).show()
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                val intent = Intent(this, Login::class.java)
-                startActivity(intent)
-                finish()
-            }, 2000)
+        // Validações
+        if (nome.isEmpty()) {
+            inputNomeCadastro.error = "Digite seu nome"
+            inputNomeCadastro.requestFocus()
+            return
         }
 
+        if (email.isEmpty()) {
+            inputEmailCadastro.error = "Digite seu email"
+            inputEmailCadastro.requestFocus()
+            return
+        }
 
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            inputEmailCadastro.error = "Digite um email válido"
+            inputEmailCadastro.requestFocus()
+            return
+        }
 
+        if (senha.isEmpty()) {
+            inputSenhaCadastro.error = "Digite sua senha"
+            inputSenhaCadastro.requestFocus()
+            return
+        }
+
+        if (senha.length < 6) {
+            inputSenhaCadastro.error = "A senha deve ter pelo menos 6 caracteres"
+            inputSenhaCadastro.requestFocus()
+            return
+        }
+
+        // Show loading state
+        btnCadastro.isEnabled = false
+        btnCadastro.text = "Cadastrando..."
+
+        // Perform registration with Firebase
+        authManager.registerUser(
+            name = nome,
+            email = email,
+            password = senha,
+            onSuccess = { _ ->
+                btnCadastro.isEnabled = true
+                btnCadastro.text = "Cadastrar"
+
+                Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show()
+
+                // Navigate to login screen
+                val intent = Intent(this, Login::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            },
+            onFailure = { exception ->
+                btnCadastro.isEnabled = true
+                btnCadastro.text = "Cadastrar"
+
+                val errorMessage = when {
+                    exception.message?.contains("email address is already in use") == true ->
+                        "Este email já está cadastrado"
+                    exception.message?.contains("password is too weak") == true ->
+                        "Senha muito fraca"
+                    exception.message?.contains("email address is badly formatted") == true ->
+                        "Email inválido"
+                    else -> "Erro no cadastro: ${exception.message}"
+                }
+                Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+            }
+        )
     }
-    fun irParaLogin(view: View) {
 
+    fun irParaLogin(view: View) {
         val intent = Intent(this, Login::class.java)
         startActivity(intent)
-         finish()
+        finish()
     }
 }

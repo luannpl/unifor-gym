@@ -37,7 +37,12 @@ android {
 }
 
 dependencies {
+    // Firebase
     implementation("com.google.firebase:firebase-firestore-ktx:25.1.4")
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.0")
+    implementation("com.google.firebase:firebase-analytics-ktx:21.5.0")
+
+    // Existing dependencies
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
