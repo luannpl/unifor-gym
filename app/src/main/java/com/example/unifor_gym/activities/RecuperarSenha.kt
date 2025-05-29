@@ -16,6 +16,7 @@ import com.google.android.material.button.MaterialButton
 class RecuperarSenha : AppCompatActivity() {
 
     private lateinit var firebaseAuthManager: FirebaseAuthManager
+    
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
