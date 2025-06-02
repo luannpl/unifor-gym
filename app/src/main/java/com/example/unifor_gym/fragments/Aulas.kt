@@ -13,97 +13,104 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
+import com.example.unifor_gym.adapters.AulasSemanaAdapter
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class Aulas : Fragment() {
 
-    // Lista para armazenar cards de aulas para facilitar a filtragem
-    private val aulaCards = mutableListOf<CardView>()
+    private lateinit var fb: FirebaseFirestore
+    private val aulas = mutableListOf<Aula>()
+    private lateinit var recyclerViewAulas: RecyclerView
+    private lateinit var aulasSemanaAdapter: AulasSemanaAdapter
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_aulas, container, false)
+        return inflater.inflate(R.layout.fragment_aulas, container, false)
+    }
 
-        // Configurar o chip group para selecionar o dia
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        fb = Firebase.firestore
+        recyclerViewAulas = view.findViewById(R.id.recyclerViewAulasSemana)
+        recyclerViewAulas.layoutManager = LinearLayoutManager(requireContext())
+
+        aulasSemanaAdapter = AulasSemanaAdapter(mutableListOf()) { aula, estaMatriculado ->
+            if(estaMatriculado) {
+                showCancelInscricaoDialog(aula)
+            } else {
+                showConfirmInscricaoDialog(aula)
+            }
+        }
+        recyclerViewAulas.adapter = aulasSemanaAdapter
+
+        loadAulas()  // Vai carregar e atualizar o adapter
+
         setupChipGroup(view)
+    }
 
-        // Armazenar referências aos cards de aulas
-        setupAulaCards(view)
+    private fun loadAulas() {
+        fb.collection("Aulas")
+            .get()
+            .addOnSuccessListener { result ->
+                aulas.clear()
+                for (document in result) {
+                    val aula = document.toObject(Aula::class.java).copy(id = document.id)
+                    aulas.add(aula)
+                }
 
-        // Configurar botões de ação para cada aula
-        setupActionButtons(view)
-
-        return view
+                aulasSemanaAdapter.updateList(aulas)
+            }
     }
 
     private fun setupChipGroup(view: View) {
         val chipGroup = view.findViewById<ChipGroup>(R.id.chipGroupDias)
-
-        // Definir o chip "Sex" como selecionado por padrão (como mostrado na imagem)
-        view.findViewById<Chip>(R.id.chipSex).isChecked = true
+        view.findViewById<Chip>(R.id.chipTodos).isChecked = true
 
         chipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
             if (checkedIds.isNotEmpty()) {
                 filterClassesByDay(checkedIds[0])
+            } else {
+                filterClassesByDay(R.id.chipTodos)
             }
-        }
-    }
-
-    private fun setupAulaCards(view: View) {
-        // Adicionar os cards à lista para facilitar a manipulação
-        aulaCards.add(view.findViewById(R.id.cardYoga))
-        aulaCards.add(view.findViewById(R.id.cardZumba))
-        aulaCards.add(view.findViewById(R.id.cardJiuJitsu))
-    }
-
-    private fun setupActionButtons(view: View) {
-        // Botão inscrever para Yoga
-        val btnInscreverYoga = view.findViewById<Button>(R.id.btnInscreverYoga)
-        btnInscreverYoga.setOnClickListener {
-            showConfirmInscricaoDialog("Yoga")
-        }
-
-        // Botão sair para Jiu Jitsu
-        val btnSairJiuJitsu = view.findViewById<Button>(R.id.btnSairJiuJitsu)
-        btnSairJiuJitsu.setOnClickListener {
-            showCancelInscricaoDialog("Jiu Jitsu")
         }
     }
 
     private fun filterClassesByDay(chipId: Int) {
-        // Implementar lógica de filtragem das aulas por dia
-        // Exemplo simples: mostrar/esconder cards com base no dia selecionado
-        when (chipId) {
-            R.id.chipSeg -> {
-                // Ex: mostrar apenas aulas de segunda
-                aulaCards[0].visibility = View.VISIBLE // Yoga visível na segunda
-                aulaCards[1].visibility = View.GONE
-                aulaCards[2].visibility = View.GONE
-            }
-            R.id.chipSex -> {
-                // Sexta: mostrar todas as aulas (como na imagem)
-                aulaCards.forEach { it.visibility = View.VISIBLE }
-            }
-            R.id.chipTodos -> {
-                aulaCards.forEach { it.visibility = View.VISIBLE }
-            }
-            else -> {
-                // Para outros dias, você pode personalizar conforme necessário
-                // Este é apenas um exemplo
-                aulaCards[0].visibility = View.GONE
-                aulaCards[1].visibility = View.VISIBLE
-                aulaCards[2].visibility = View.VISIBLE
-            }
+        val diaSelecionado = when (chipId) {
+            R.id.chipSeg -> "Segunda"
+            R.id.chipTer -> "Terca"
+            R.id.chipQua -> "Quarta"
+            R.id.chipQui -> "Quinta"
+            R.id.chipSex -> "Sexta"
+            R.id.chipSab -> "Sabado"
+            R.id.chipDom -> "Domingo"
+            R.id.chipTodos -> "Todos"
+            else -> "Todos"
         }
+
+        val aulasFiltradas = if (diaSelecionado == "Todos") {
+            aulas
+        } else {
+            aulas.filter { it.diaDaSemana == diaSelecionado }
+        }
+
+        // Atualiza o adapter com a lista filtrada
+        aulasSemanaAdapter.updateList(aulasFiltradas)
     }
 
     // Dialog de confirmação de inscrição (botão verde/vermelho)
-    private fun showConfirmInscricaoDialog(aulaName: String) {
+    private fun showConfirmInscricaoDialog(aula: Aula) {
         context?.let { ctx ->
             val dialog = Dialog(ctx)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -124,12 +131,43 @@ class Aulas : Fragment() {
             // Botão confirmar (verde)
             val btnConfirmar = dialog.findViewById<Button>(R.id.btnConfirmarInscricao)
             btnConfirmar.setOnClickListener {
-                // Realizar a inscrição
-                Toast.makeText(ctx, "Inscrito na aula de $aulaName com sucesso!", Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
+                if(userId.isBlank()) {
+                    Toast.makeText(ctx, "Usuário não autenticado.", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                    return@setOnClickListener
+                }
 
-                // Atualizar o estado do botão (opcional)
-                updateClassStatus(aulaName, true)
+                val alunosMatriculados = aula.alunosMatriculados.toMutableList()
+                alunosMatriculados.add(userId)
+                val qtdMatriculados = alunosMatriculados.size
+                val dataToUpdate = mapOf(
+                    "alunosMatriculados" to alunosMatriculados,
+                    "qtdMatriculados" to qtdMatriculados
+                )
+                fb.collection("Aulas").document(aula.id)
+                    .update(dataToUpdate)
+                    .addOnSuccessListener {
+                        val index = aulas.indexOfFirst { it.id == aula.id }
+                        if (index != -1) {
+                            // Atualiza a aula na lista local
+                            val alunosAtualizados = aula.alunosMatriculados.toMutableList().apply { add(userId) }
+                            val aulaAtualizada = aula.copy(
+                                alunosMatriculados = alunosAtualizados,
+                                qtdMatriculados = alunosAtualizados.size
+                            )
+                            aulas[index] = aulaAtualizada
+
+                            // Atualiza o adapter com a lista nova
+                            aulasSemanaAdapter.updateList(aulas)
+                        }
+
+                        Toast.makeText(requireContext(), "Matriculado com sucesso", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(requireContext(), "Erro ao se inscrever", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
             }
 
             dialog.show()
@@ -137,7 +175,7 @@ class Aulas : Fragment() {
     }
 
     // Dialog de cancelamento de inscrição
-    private fun showCancelInscricaoDialog(aulaName: String) {
+    private fun showCancelInscricaoDialog(aula: Aula) {
         context?.let { ctx ->
             val dialog = Dialog(ctx)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -158,50 +196,46 @@ class Aulas : Fragment() {
             // Botão cancelar (vermelho)
             val btnCancelar = dialog.findViewById<Button>(R.id.btnCancelarInscricao)
             btnCancelar.setOnClickListener {
-                // Cancelar a inscrição
-                Toast.makeText(ctx, "Inscrição na aula de $aulaName cancelada!", Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
+                if(userId.isBlank()) {
+                    Toast.makeText(ctx, "Usuário não autenticado.", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                    return@setOnClickListener
+                }
 
-                // Atualizar o estado do botão (opcional)
-                updateClassStatus(aulaName, false)
+                val alunosMatriculados = aula.alunosMatriculados.toMutableList()
+                alunosMatriculados.remove(userId)
+                val qtdMatriculados = alunosMatriculados.size
+                val dataToUpdate = mapOf(
+                    "alunosMatriculados" to alunosMatriculados,
+                    "qtdMatriculados" to qtdMatriculados
+                )
+                fb.collection("Aulas").document(aula.id)
+                    .update(dataToUpdate)
+                    .addOnSuccessListener {
+                        val index = aulas.indexOfFirst { it.id == aula.id }
+                        if (index != -1) {
+                            // Atualiza a aula na lista local
+                            val alunosAtualizados = aula.alunosMatriculados.toMutableList().apply { remove(userId) }
+                            val aulaAtualizada = aula.copy(
+                                alunosMatriculados = alunosAtualizados,
+                                qtdMatriculados = alunosAtualizados.size
+                            )
+                            aulas[index] = aulaAtualizada
+
+                            // Atualiza o adapter com a lista nova
+                            aulasSemanaAdapter.updateList(aulas)
+                        }
+                        Toast.makeText(requireContext(), "Matricula cancelada", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(requireContext(), "Erro ao cancelar matricula", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+
             }
 
             dialog.show()
-        }
-    }
-
-    // Atualizar o estado do botão da aula dependendo se está inscrito ou não
-    private fun updateClassStatus(aulaName: String, inscrito: Boolean) {
-        val view = view ?: return
-
-        when (aulaName) {
-            "Yoga" -> {
-                val btnYoga = view.findViewById<Button>(R.id.btnInscreverYoga)
-                if (inscrito) {
-                    btnYoga.text = "Sair"
-                    btnYoga.setBackgroundColor(Color.parseColor("#FF6B6B"))
-                    // Mudar o listener do botão
-                    btnYoga.setOnClickListener {
-                        showCancelInscricaoDialog("Yoga")
-                    }
-                } else {
-                    btnYoga.text = "Inscrever"
-                    btnYoga.setBackgroundColor(Color.BLACK)
-                    btnYoga.setOnClickListener {
-                        showConfirmInscricaoDialog("Yoga")
-                    }
-                }
-            }
-            "Jiu Jitsu" -> {
-                val btnJiuJitsu = view.findViewById<Button>(R.id.btnSairJiuJitsu)
-                if (!inscrito) {
-                    btnJiuJitsu.text = "Inscrever"
-                    btnJiuJitsu.setBackgroundColor(Color.BLACK)
-                    btnJiuJitsu.setOnClickListener {
-                        showConfirmInscricaoDialog("Jiu Jitsu")
-                    }
-                }
-            }
         }
     }
 }

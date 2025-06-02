@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.unifor_gym.R
 import com.example.unifor_gym.fragments.Aula
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.time.DayOfWeek
@@ -89,8 +90,25 @@ class AulaDetalhes : AppCompatActivity() {
                         } else {
                             aula.instrutor.uppercase()
                         }
+
+                        val equipamentoIds = aula.equipamentos
+
+                        if (equipamentoIds.isNotEmpty()) {
+                            fb.collection("equipamentos")
+                                .whereIn(FieldPath.documentId(), equipamentoIds)
+                                .get()
+                                .addOnSuccessListener { querySnapshot ->
+                                    val nomesEquipamentos = querySnapshot.documents.mapNotNull { it.getString("nome") }
+                                    txtEquipamentos.text = "Equipamentos: " + nomesEquipamentos.joinToString(", ")
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.e("AulaDetalhes", "Erro ao buscar equipamentos", e)
+                                    txtEquipamentos.text = "Equipamentos: Não disponível"
+                                }
+                        } else {
+                            txtEquipamentos.text = "Equipamentos: Nenhum"
+                        }
                         txtProfessorPhoto.text = iniciaisProfessor
-                        txtEquipamentos.text = "Equipamentos: " + aula.equipamentos.joinToString(", ")
                         txtDiaHora.text = "${aula.diaDaSemana} ${aula.horarioInicio} - ${aula.horarioFim}"
                         txtDuracao.text = "Duração: ${calcularDuracaoAula(aula.horarioInicio, aula.horarioFim)}"
                         txtAlunoVaga.text = "Alunos: ${aula.qtdMatriculados}/${aula.qtdVagas}"

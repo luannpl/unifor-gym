@@ -23,6 +23,7 @@ import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import com.example.unifor_gym.adapters.SelecionaEquipamentosAdapter
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -37,7 +38,14 @@ data class Aula (
     var diaDaSemana: String = "",
     var horarioInicio: String = "",
     var horarioFim: String = "",
-    var equipamentos: List<String> = listOf()
+    var equipamentos: List<String> = listOf(),
+    var alunosMatriculados: List<String> = listOf()
+)
+
+data class Equipamento(
+    val id: String,
+    val nome: String,
+    var selecionado: Boolean = false
 )
 
 class GestaoAulas : Fragment() {
@@ -45,6 +53,7 @@ class GestaoAulas : Fragment() {
     private lateinit var btnAdicionarAula: Button
     private lateinit var fb: FirebaseFirestore
     private lateinit var edxBuscarAula: EditText
+    private lateinit var timeWatcher: TextWatcher
     private var aulas: List<Aula> = listOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +81,40 @@ class GestaoAulas : Fragment() {
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+
+        timeWatcher = object : TextWatcher {
+            private var isUpdating = false
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                if (isUpdating) return
+                isUpdating = true
+
+                val digits = s.toString().replace("[^\\d]".toRegex(), "").take(4)
+
+                var formatted = when (digits.length) {
+                    0, 1, 2 -> digits
+                    else -> "${digits.substring(0, 2)}:${digits.substring(2)}"
+                }
+
+                // Validação se completou os 4 dígitos
+                if (digits.length == 4) {
+                    val horas = digits.substring(0, 2).toInt()
+                    val minutos = digits.substring(2, 4).toInt()
+
+                    val horaValida = horas.coerceIn(0, 23)
+                    val minutoValido = minutos.coerceIn(0, 59)
+
+                    formatted = String.format("%02d:%02d", horaValida, minutoValido)
+                }
+
+                s?.replace(0, s.length, formatted, 0, formatted.length)
+
+                isUpdating = false
+            }
+        }
     }
 
     override fun onResume() {
@@ -90,6 +133,18 @@ class GestaoAulas : Fragment() {
             .setCancelable(false)
             .create()
 
+        val listaEquipamentos = mutableListOf<Equipamento>()
+
+        val recyclerEquipamentos = dialogView.findViewById<RecyclerView>(R.id.recyclerSelecionaEquipamento)
+        recyclerEquipamentos.layoutManager = LinearLayoutManager(requireContext())
+
+        val equipamentoAdapter = SelecionaEquipamentosAdapter(listaEquipamentos) { equipamento ->
+            // Callback do adapter — já atualiza 'selecionado' dentro do adapter, aqui não precisa fazer nada
+        }
+        recyclerEquipamentos.adapter = equipamentoAdapter
+
+        configurarRecyclerEquipamentos(recyclerEquipamentos, listaEquipamentos, equipamentoAdapter)
+
         val textViewTitulo = dialogView.findViewById<TextView>(R.id.aulaDialogTitulo)
         val btnClose = dialogView.findViewById<ImageButton>(R.id.btnCloseDialog)
         val btnCancelar = dialogView.findViewById<Button>(R.id.btnAulaDialogCancelar)
@@ -98,13 +153,15 @@ class GestaoAulas : Fragment() {
         val editNomeAula = dialogView.findViewById<EditText>(R.id.editNomeAula)
         val spinnerInstrutor = dialogView.findViewById<Spinner>(R.id.spinnerInstrutor)
         val spinnerDiaSemana = dialogView.findViewById<Spinner>(R.id.spinnerDiaSemana)
-        val spinnerEquipamentos = dialogView.findViewById<Spinner>(R.id.spinnerEquipamentos)
         val editHorarioInicio = dialogView.findViewById<EditText>(R.id.editHorarioInicio)
         val editHorarioFim = dialogView.findViewById<EditText>(R.id.editHorarioFim)
         val editVagas = dialogView.findViewById<EditText>(R.id.editVagas)
 
         textViewTitulo.text = titulo
-        configurarSpinners(spinnerInstrutor, spinnerDiaSemana, spinnerEquipamentos)
+        configurarSpinners(spinnerInstrutor, spinnerDiaSemana)
+
+        editHorarioInicio.addTextChangedListener(timeWatcher)
+        editHorarioFim.addTextChangedListener(timeWatcher)
 
         btnCancelar.setOnClickListener { dialog.dismiss() }
         btnClose.setOnClickListener { dialog.dismiss() }
@@ -113,15 +170,13 @@ class GestaoAulas : Fragment() {
             val nome = editNomeAula.text.toString().trim()
             val instrutor = spinnerInstrutor.selectedItem?.toString()?.trim() ?: ""
             val diaDaSemana = spinnerDiaSemana.selectedItem?.toString()?.trim() ?: ""
-            val equipamentos = listOf(spinnerEquipamentos.selectedItem?.toString()?.trim() ?: "")
+            val equipamentosSelecionados = listaEquipamentos.filter { it.selecionado }
             val horarioInicio = editHorarioInicio.text.toString().trim()
             val horarioFim = editHorarioFim.text.toString().trim()
             val qtdVagas = editVagas.text.toString().trim().toIntOrNull()
-            val qtdMatriculados = 0
 
-            if (nome.isEmpty() ||
-                horarioInicio.isEmpty() ||
-                horarioFim.isEmpty() || qtdVagas == null || instrutor.isEmpty() || diaDaSemana.isEmpty() || equipamentos.isEmpty()) {
+            if (nome.isEmpty() || horarioInicio.isEmpty() || horarioFim.isEmpty() ||
+                qtdVagas == null || instrutor.isEmpty() || diaDaSemana.isEmpty() || equipamentosSelecionados.isEmpty()) {
                 Toast.makeText(requireContext(), "Preencha todos os campos corretamente.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -130,15 +185,15 @@ class GestaoAulas : Fragment() {
                 "nome" to nome,
                 "instrutor" to instrutor,
                 "diaDaSemana" to diaDaSemana,
-                "equipamentos" to equipamentos,
+                "equipamentos" to equipamentosSelecionados.map { it.id },
                 "horarioInicio" to horarioInicio,
                 "horarioFim" to horarioFim,
                 "qtdVagas" to qtdVagas,
                 "qtdMatriculados" to 0,
+                "alunosMatriculados" to emptyList<String>(),
                 "dataCriacao" to FieldValue.serverTimestamp()
             )
 
-            val fb = Firebase.firestore
             fb.collection("Aulas")
                 .add(aulaData)
                 .addOnSuccessListener {
@@ -154,6 +209,8 @@ class GestaoAulas : Fragment() {
         dialog.show()
     }
 
+
+
     private fun mostrarDialogEditarAula(titulo: String, aula: Aula) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_aula, null)
 
@@ -161,6 +218,18 @@ class GestaoAulas : Fragment() {
             .setView(dialogView)
             .setCancelable(false)
             .create()
+
+        // --- INÍCIO: configuração RecyclerView para selecionar equipamentos ---
+        val listaEquipamentos = mutableListOf<Equipamento>()
+        val recyclerEquipamentos = dialogView.findViewById<RecyclerView>(R.id.recyclerSelecionaEquipamento)
+        recyclerEquipamentos.layoutManager = LinearLayoutManager(requireContext())
+        val equipamentoAdapter = SelecionaEquipamentosAdapter(listaEquipamentos) { equipamento ->
+            // não precisa fazer nada aqui, o estado 'selecionado' já é atualizado no adapter
+        }
+        recyclerEquipamentos.adapter = equipamentoAdapter
+
+        configurarRecyclerEquipamentos(recyclerEquipamentos, listaEquipamentos, equipamentoAdapter)
+        // --- FIM: configuração RecyclerView ---
 
         val textViewTitulo = dialogView.findViewById<TextView>(R.id.aulaDialogTitulo)
         val btnClose = dialogView.findViewById<ImageButton>(R.id.btnCloseDialog)
@@ -170,7 +239,6 @@ class GestaoAulas : Fragment() {
         val editNomeAula = dialogView.findViewById<EditText>(R.id.editNomeAula)
         val spinnerInstrutor = dialogView.findViewById<Spinner>(R.id.spinnerInstrutor)
         val spinnerDiaSemana = dialogView.findViewById<Spinner>(R.id.spinnerDiaSemana)
-        val spinnerEquipamentos = dialogView.findViewById<Spinner>(R.id.spinnerEquipamentos)
         val editHorarioInicio = dialogView.findViewById<EditText>(R.id.editHorarioInicio)
         val editHorarioFim = dialogView.findViewById<EditText>(R.id.editHorarioFim)
         val editVagas = dialogView.findViewById<EditText>(R.id.editVagas)
@@ -180,7 +248,10 @@ class GestaoAulas : Fragment() {
         editHorarioInicio.setText(aula.horarioInicio)
         editHorarioFim.setText(aula.horarioFim)
         editVagas.setText(aula.qtdVagas.toString())
-        configurarSpinners(spinnerInstrutor, spinnerDiaSemana, spinnerEquipamentos)
+        configurarSpinners(spinnerInstrutor, spinnerDiaSemana)
+
+        editHorarioInicio.addTextChangedListener(timeWatcher)
+        editHorarioFim.addTextChangedListener(timeWatcher)
 
         btnCancelar.setOnClickListener {
             dialog.dismiss()
@@ -194,11 +265,11 @@ class GestaoAulas : Fragment() {
             val nome = editNomeAula.text.toString().trim()
             val instrutor = spinnerInstrutor.selectedItem?.toString()?.trim() ?: ""
             val diaDaSemana = spinnerDiaSemana.selectedItem?.toString()?.trim() ?: ""
-            val equipamentos = listOf(spinnerEquipamentos.selectedItem?.toString()?.trim() ?: "")
+            val equipamentos = listaEquipamentos.filter { it.selecionado }.map { it.id }
             val horarioInicio = editHorarioInicio.text.toString().trim()
             val horarioFim = editHorarioFim.text.toString().trim()
             val qtdVagas = editVagas.text.toString().trim().toIntOrNull()
-            val qtdMatriculados = 0
+            val qtdMatriculados = aula.qtdMatriculados
 
             if (nome.isEmpty() ||
                 horarioInicio.isEmpty() ||
@@ -215,18 +286,17 @@ class GestaoAulas : Fragment() {
                 "horarioInicio" to horarioInicio,
                 "horarioFim" to horarioFim,
                 "qtdVagas" to qtdVagas,
-                "qtdMatriculados" to 0,
+                "qtdMatriculados" to qtdMatriculados,
                 "dataCriacao" to FieldValue.serverTimestamp()
             )
 
-            val fb = Firebase.firestore
             fb.collection("Aulas")
-                .document(aula.id) // Usar o ID da aula existente
-                .update(aulaData as Map<String, Any>) // Usar update() ao invés de add()
+                .document(aula.id)
+                .update(aulaData as Map<String, Any>)
                 .addOnSuccessListener {
                     Toast.makeText(requireContext(), "Aula editada com sucesso!", Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
-                    carregarAulas() // Recarregar lista
+                    carregarAulas()
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(requireContext(), "Erro ao editar aula: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -235,6 +305,8 @@ class GestaoAulas : Fragment() {
 
         dialog.show()
     }
+
+
 
     private fun mostrarDialogExclusao(titulo: String, aula: Aula) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirmacao, null)
@@ -345,37 +417,57 @@ class GestaoAulas : Fragment() {
 
     private fun configurarSpinners(
         spinnerInstrutor: Spinner,
-        spinnerDiaSemana: Spinner,
-        spinnerEquipamentos: Spinner
+        spinnerDiaSemana: Spinner
     ) {
         // --- Instrutores ---
         fb.collection("users")
-            .whereEqualTo("role", "ADMIN")
             .get()
-            .addOnSuccessListener { docs ->
-                val instrutores = docs.map { it.get("name").toString() }
+            .addOnSuccessListener { result ->
+                val instrutores = result.documents
+                    .filter { it.getString("role") == "ADMIN" }
+                    .map { it.getString("name") ?: "Sem nome" } // ou "email" se preferir
+
                 context?.let { ctx ->
-                    val adapterInstrutor =
-                        ArrayAdapter(ctx, android.R.layout.simple_spinner_item, instrutores)
+                    val adapterInstrutor = ArrayAdapter(
+                        ctx,
+                        android.R.layout.simple_spinner_item,
+                        instrutores
+                    )
                     adapterInstrutor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinnerInstrutor.adapter = adapterInstrutor
                 }
             }
+            .addOnFailureListener { exception ->
+                Log.e("Firestore", "Erro ao buscar instrutores: ", exception)
+                Toast.makeText(context, "Erro ao carregar instrutores", Toast.LENGTH_SHORT).show()
+            }
 
         // --- Dias da semana ---
-        val diasSemana = listOf("Segunda", "Terça", "Quarta", "Quinta", "Sexta")
+        val diasSemana = listOf("Segunda", "Terca", "Quarta", "Quinta", "Sexta", "Sabado", "Domingo")
         context?.let { ctx ->
             val adapterDias = ArrayAdapter(ctx, android.R.layout.simple_spinner_item, diasSemana)
             adapterDias.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinnerDiaSemana.adapter = adapterDias
         }
+    }
 
-        // --- Equipamentos ---
-        val equipamentos = listOf("Banco supino", "Tapetes", "Esteira")
-        context?.let { ctx ->
-            val adapterEquip = ArrayAdapter(ctx, android.R.layout.simple_spinner_item, equipamentos)
-            adapterEquip.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinnerEquipamentos.adapter = adapterEquip
-        }
+
+    private fun configurarRecyclerEquipamentos(recyclerEquipamentos: RecyclerView, listaEquipamentos: MutableList<Equipamento>, equipamentoAdapter: SelecionaEquipamentosAdapter) {
+        fb.collection("equipamentos")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val equipamento = Equipamento(
+                        id = document.id,
+                        nome = document.getString("nome") ?: "",
+                        selecionado = false
+                    )
+                    listaEquipamentos.add(equipamento)
+                }
+                equipamentoAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Erro ao carregar equipamentos: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 }
