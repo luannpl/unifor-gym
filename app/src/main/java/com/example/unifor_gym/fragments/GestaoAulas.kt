@@ -349,13 +349,18 @@ class GestaoAulas : Fragment() {
         spinnerEquipamentos: Spinner
     ) {
         // --- Instrutores ---
-        val instrutores = listOf("Ronninson", "Narak", "Klyssia")
-        context?.let { ctx ->
-            val adapterInstrutor =
-                ArrayAdapter(ctx, android.R.layout.simple_spinner_item, instrutores)
-            adapterInstrutor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinnerInstrutor.adapter = adapterInstrutor
-        }
+        fb.collection("users")
+            .whereEqualTo("role", "ADMIN")
+            .get()
+            .addOnSuccessListener { docs ->
+                val instrutores = docs.map { it.get("name").toString() }
+                context?.let { ctx ->
+                    val adapterInstrutor =
+                        ArrayAdapter(ctx, android.R.layout.simple_spinner_item, instrutores)
+                    adapterInstrutor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinnerInstrutor.adapter = adapterInstrutor
+                }
+            }
 
         // --- Dias da semana ---
         val diasSemana = listOf("Segunda", "Terça", "Quarta", "Quinta", "Sexta")
