@@ -24,7 +24,6 @@ class AulaAdapter (
         val txtQtdVagas: TextView = itemView.findViewById(R.id.txtQtdVagas)
         val btnMore: ImageView = itemView.findViewById(R.id.btnMoreItemAula)
         val progressBar: ProgressBar = itemView.findViewById(R.id.progress_bar)
-
         fun bind(aula: Aula) {
             txtNome.text = aula.nome
             txtQtdMatriculados.text = aula.qtdMatriculados.toString()
