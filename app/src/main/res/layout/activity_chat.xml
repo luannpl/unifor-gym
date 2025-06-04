@@ -5,14 +5,16 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.Chat">
+    tools:context=".activities.Chat"
+    android:fitsSystemWindows="true">
 
+    <!-- Barra Superior -->
     <ImageButton
         android:id="@+id/btnBack"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Voltar"
         android:padding="12dp"
@@ -22,51 +24,53 @@
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="Gym Bot"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/btnBack"
+        app:layout_constraintEnd_toStartOf="@+id/btnAccessibility"
         app:layout_constraintStart_toEndOf="@+id/btnBack"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/btnBack" />
 
+    <ImageButton
+        android:id="@+id/btnAccessibility"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Acessibilidade"
+        android:padding="12dp"
+        android:src="@drawable/accessibility"
+        app:layout_constraintBottom_toTopOf="@+id/messageInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnBack" />
+
+    <!-- RecyclerView para as mensagens -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewMessages"
-        android:layout_width="415dp"
-        android:layout_height="614dp"
+        android:id="@+id/recyclerViewChat"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:clipToPadding="false"
-        android:contentDescription="Mensagens da conversa com o Gym Bot"
-        android:padding="8dp"
+        android:paddingHorizontal="16dp"
         app:layout_constraintBottom_toTopOf="@id/messageInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
-    <ImageView
-        android:id="@+id/btnAccessibility"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="44dp"
-        android:contentDescription="Acessibilidade"
-        android:src="@drawable/accessibility"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewMessages"
-        app:layout_constraintEnd_toEndOf="parent" />
-
+    <!-- Layout de Entrada de Mensagem -->
     <LinearLayout
         android:id="@+id/messageInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:background="@android:color/darker_gray"
         android:orientation="horizontal"
         android:padding="8dp"
+        android:background="@android:color/white"
+        android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -76,20 +80,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:color/white"
+            android:background="@drawable/edittext_background"
             android:hint="Digite sua mensagem"
+            android:inputType="textMultiLine"
+            android:maxLines="5"
             android:minHeight="48dp"
-            android:padding="12dp" />
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:layout_marginEnd="8dp"/>
 
         <ImageButton
             android:id="@+id/buttonSend"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/bg_send_btn"
             android:contentDescription="Enviar"
-            android:padding="8dp"
-            android:src="@android:drawable/ic_menu_send" />
-
+            android:padding="10dp"
+            android:src="@android:drawable/ic_menu_send"
+            app:tint="@android:color/white" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
