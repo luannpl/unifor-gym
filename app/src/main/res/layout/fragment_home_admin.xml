@@ -22,14 +22,13 @@
         android:id="@+id/tvWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bem vindo, Roninson"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
         android:layout_marginStart="16dp"
         android:layout_marginTop="48dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- ScrollView para o conteúdo -->
     <ScrollView
@@ -101,17 +100,10 @@
                         android:id="@+id/tvTotalUsers"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="1.230"
+                        android:textColor="@android:color/black"
                         android:textSize="28sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"/>
+                        android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="+300 no último mês"
-                        android:textSize="12sp"
-                        android:textColor="#757575"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -140,17 +132,10 @@
                         android:id="@+id/tvTotalEquipments"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="102"
+                        android:textColor="@android:color/black"
                         android:textSize="28sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"/>
+                        android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="+30 no último mês"
-                        android:textSize="12sp"
-                        android:textColor="#757575"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -179,17 +164,10 @@
                         android:id="@+id/tvTotalClasses"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="36"
+                        android:textColor="@android:color/black"
                         android:textSize="28sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"/>
+                        android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="+7 no último mês"
-                        android:textSize="12sp"
-                        android:textColor="#757575"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
