@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
 import com.example.unifor_gym.models.PopularClass
 
-class PopularClassAdapter(private var classes: List<PopularClass>) :
+class PopularClassAdapter(private var popularClasses: List<PopularClass>) :
     RecyclerView.Adapter<PopularClassAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -18,15 +18,15 @@ class PopularClassAdapter(private var classes: List<PopularClass>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val popularClass = classes[position]
+        val popularClass = popularClasses[position]
         holder.tvPopularClassName.text = popularClass.name
         holder.progressPopularity.progress = popularClass.popularity
     }
 
-    override fun getItemCount(): Int = classes.size
+    override fun getItemCount(): Int = popularClasses.size
 
-    fun updateData(newClasses: List<PopularClass>) {
-        this.classes = newClasses
+    fun updateData(newData: List<PopularClass>) {
+        popularClasses = newData
         notifyDataSetChanged()
     }
 
