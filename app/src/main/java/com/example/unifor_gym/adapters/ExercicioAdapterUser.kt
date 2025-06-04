@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
 import com.example.unifor_gym.models.ExercicioTreino
 
-class ExercicioAdapterUser(private val exercicios: List<ExercicioTreino>) :
-    RecyclerView.Adapter<ExercicioAdapterUser.ExercicioViewHolder>() {
+class ExercicioAdapterUser(
+    private val exercicios: List<ExercicioTreino>,
+    private val onItemClick: (ExercicioTreino) -> Unit
+) : RecyclerView.Adapter<ExercicioAdapterUser.ExercicioViewHolder>() {
 
     inner class ExercicioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvNome: TextView = itemView.findViewById(R.id.tvNomeExercicio)
@@ -30,11 +32,14 @@ class ExercicioAdapterUser(private val exercicios: List<ExercicioTreino>) :
         holder.tvPeso.text = exercicio.peso
         holder.tvReps.text = exercicio.repeticoes
 
-        // Define o fundo alternado para as linhas
         if (position % 2 == 1) {
             holder.itemView.setBackgroundResource(R.color.light_gray)
         } else {
             holder.itemView.setBackgroundResource(android.R.color.white)
+        }
+
+        holder.itemView.setOnClickListener {
+            onItemClick(exercicio)
         }
     }
 

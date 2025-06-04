@@ -4,47 +4,62 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.cardview.widget.CardView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
 import com.example.unifor_gym.adapters.ExercicioAdapterUser
 import com.example.unifor_gym.models.ExercicioTreino
+import com.google.firebase.firestore.FirebaseFirestore
 
 class TreinoDetalhes : Fragment() {
 
-    private lateinit var txtTreinoNome: TextView
-    private lateinit var btnVoltar: CardView
     private lateinit var recyclerExercicios: RecyclerView
-    private var exercicios: List<ExercicioTreino> = emptyList()
+    private val db = FirebaseFirestore.getInstance()
+    private var treinoId: String? = null
+    private val exercicios = mutableListOf<ExercicioTreino>()
+    private lateinit var adapter: ExercicioAdapterUser
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_treino_detalhes, container, false)
 
-        txtTreinoNome = view.findViewById(R.id.txtNomeTreinoDetalhes)
-        btnVoltar = view.findViewById(R.id.btnVoltarTreinoDetalhes)
         recyclerExercicios = view.findViewById(R.id.recyclerExerciciosTreino)
+        recyclerExercicios.layoutManager = LinearLayoutManager(requireContext())
 
-        // Recuperar argumentos
-        arguments?.let { args ->
-            val treinoNome = args.getString("treino_nome", "")
-            exercicios = args.getParcelableArrayList("exercicios") ?: emptyList()
-
-            txtTreinoNome.text = treinoNome
+        adapter = ExercicioAdapterUser(exercicios) { exercicio ->
+            val fragment = UsuarioTreinoDetalhes().apply {
+                arguments = Bundle().apply {
+                    putString("grupoMuscular", exercicio.grupoMuscular)
+                    putString("exercicioId", exercicio.id)
+                }
+            }
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
         }
 
-        // Configurar RecyclerView
-        recyclerExercicios.layoutManager = LinearLayoutManager(requireContext())
-        recyclerExercicios.adapter = ExercicioAdapterUser(exercicios)
+        recyclerExercicios.adapter = adapter
 
-        // Configurar botão voltar
-        btnVoltar.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
+        // Recuperar treinoId dos argumentos
+        treinoId = arguments?.getString("treinoId")
+
+        // Buscar exercícios do treino no Firestore
+        treinoId?.let { id ->
+            db.collection("treinos").document(id).collection("exercicios")
+                .get()
+                .addOnSuccessListener { result ->
+                    exercicios.clear()
+                    for (doc in result) {
+                        val exercicio = doc.toObject(ExercicioTreino::class.java)
+                        exercicios.add(exercicio)
+                    }
+                    adapter.notifyDataSetChanged()
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(requireContext(), "Erro ao carregar exercícios: ${exception.message}", Toast.LENGTH_LONG).show()
+                }
         }
 
         return view
