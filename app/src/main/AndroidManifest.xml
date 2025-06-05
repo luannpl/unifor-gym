@@ -21,7 +21,8 @@
 
         <activity
             android:name=".activities.VLibrasActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Unifor_gym" />
         <activity
             android:name=".activities.Chat"
             android:windowSoftInputMode="adjustResize"
