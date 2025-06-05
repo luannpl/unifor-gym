@@ -15,6 +15,7 @@ import com.example.unifor_gym.R
 import com.example.unifor_gym.models.UserRole
 import com.example.unifor_gym.utils.FirebaseAuthManager
 import com.google.android.material.button.MaterialButton
+import com.example.unifor_gym.utils.NotificationHelper
 
 class Login : AppCompatActivity() {
 
@@ -107,6 +108,14 @@ class Login : AppCompatActivity() {
                 btnEntrar.text = "Entrar"
 
                 Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show()
+
+                // notificação de login realizado
+                NotificationHelper.criarNotificacaoUsuario(
+                    userId = userProfile.uid,
+                    titulo = "Bem-vindo de volta!",
+                    descricao = "Login realizado com sucesso às ${java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault()).format(java.util.Date())}",
+                    tipoIcone = "usuario"
+                )
 
                 when (userProfile.role) {
                     UserRole.ADMIN -> irParaAdminActivity()
