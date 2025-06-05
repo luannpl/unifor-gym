@@ -31,9 +31,8 @@
                 android:id="@+id/textNomeUsuario"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginStart="8dp"
-                android:text="Narak"
+                android:layout_weight="1"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
