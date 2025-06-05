@@ -10,6 +10,7 @@ import com.example.unifor_gym.fragments.HomeUsuario
 import com.example.unifor_gym.fragments.Notificacoes
 import com.example.unifor_gym.fragments.PerfilUsuario
 import com.example.unifor_gym.fragments.UsuarioTreinos
+import com.example.unifor_gym.utils.VLibrasHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -37,6 +38,10 @@ class UserActivity : AppCompatActivity() {
         fabChat.setOnClickListener {
             val intent = Intent(this, Chat::class.java)
             startActivity(intent)
+        }
+
+        fabAccess.setOnClickListener {
+            VLibrasHelper.openVLibrasWithScreenContent(this)
         }
 
         // Configurar o listener do menu inferior

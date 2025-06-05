@@ -1,11 +1,35 @@
 package com.example.unifor_gym.utils
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import com.example.unifor_gym.activities.VLibrasActivity
 
 object VLibrasHelper {
 
+    /**
+     * Open VLibras with automatically extracted screen content
+     */
+    fun openVLibrasWithScreenContent(activity: Activity) {
+        val extractedText = ScreenTextExtractor.extractFromActivity(activity)
+        val contextualIntro = ScreenTextExtractor.getContextualIntro(activity)
+        val formattedText = ScreenTextExtractor.formatForVLibras(extractedText)
+
+        val fullText = contextualIntro + formattedText
+
+        // Debug logging
+        android.util.Log.d("VLibrasHelper", "Activity: ${activity.javaClass.simpleName}")
+        android.util.Log.d("VLibrasHelper", "Extracted title: ${extractedText.title}")
+        android.util.Log.d("VLibrasHelper", "Extracted content: ${extractedText.content}")
+        android.util.Log.d("VLibrasHelper", "Extracted actions: ${extractedText.actions}")
+        android.util.Log.d("VLibrasHelper", "Full text: $fullText")
+
+        openVLibras(activity, fullText)
+    }
+
+    /**
+     * Open VLibras with custom text (original method)
+     */
     fun openVLibras(context: Context, textToTranslate: String = "") {
         val intent = Intent(context, VLibrasActivity::class.java).apply {
             if (textToTranslate.isNotEmpty()) {
@@ -15,6 +39,19 @@ object VLibrasHelper {
         context.startActivity(intent)
     }
 
+    /**
+     * Open VLibras with both screen content and custom text
+     */
+    fun openVLibrasWithCustomAndScreenContent(activity: Activity, customText: String) {
+        val extractedText = ScreenTextExtractor.extractFromActivity(activity)
+        val formattedScreenText = ScreenTextExtractor.formatForVLibras(extractedText)
+
+        val combinedText = "$customText. $formattedScreenText"
+
+        openVLibras(activity, combinedText)
+    }
+
+    // Keep existing methods for backward compatibility
     fun getAccessibilityTexts(): Map<String, String> {
         return mapOf(
             "welcome" to "Bem-vindo ao Unifor Gym, seu aplicativo de academia",

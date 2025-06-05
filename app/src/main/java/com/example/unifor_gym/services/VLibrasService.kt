@@ -36,6 +36,8 @@ class VLibrasService {
     private fun injectVLibrasWidget(webView: WebView) {
         val vLibrasScript = """
             javascript:(function() {
+                console.log('Starting VLibras injection...');
+                
                 // Remove existing VLibras if present
                 var existing = document.getElementById('vlibras-plugin');
                 if (existing) {
@@ -53,11 +55,28 @@ class VLibrasService {
                 vp.style.height = '100px';
                 document.body.appendChild(vp);
                 
-                // Load VLibras script
+                // Load VLibras script with better error handling
                 var script = document.createElement('script');
                 script.src = 'https://vlibras.gov.br/app/vlibras-plugin.js';
                 script.onload = function() {
-                    new window.VLibras.Widget('https://vlibras.gov.br/app');
+                    try {
+                        console.log('VLibras script loaded successfully');
+                        new window.VLibras.Widget('https://vlibras.gov.br/app');
+                        console.log('VLibras widget created');
+                        
+                        // Notify Android that VLibras is ready
+                        setTimeout(function() {
+                            if (window.VLibras && window.VLibras.Api) {
+                                console.log('VLibras API ready');
+                                window.vLibrasReady = true;
+                            }
+                        }, 2000);
+                    } catch (error) {
+                        console.error('Error creating VLibras widget:', error);
+                    }
+                };
+                script.onerror = function() {
+                    console.error('Failed to load VLibras script');
                 };
                 document.head.appendChild(script);
             })();
@@ -69,10 +88,29 @@ class VLibrasService {
     fun translateText(webView: WebView, text: String) {
         val script = """
             javascript:(function() {
-                if (window.VLibras && window.VLibras.Api) {
-                    window.VLibras.Api.translate('$text');
+                console.log('Attempting to translate: $text');
+                
+                if (window.vLibrasReady && window.VLibras && window.VLibras.Api) {
+                    try {
+                        window.VLibras.Api.translate('$text');
+                        console.log('Translation sent to VLibras');
+                    } catch (error) {
+                        console.error('Error translating:', error);
+                    }
                 } else {
-                    console.log('VLibras not loaded yet');
+                    console.log('VLibras not ready yet, retrying in 2 seconds...');
+                    setTimeout(function() {
+                        if (window.VLibras && window.VLibras.Api) {
+                            try {
+                                window.VLibras.Api.translate('$text');
+                                console.log('Translation sent to VLibras (retry)');
+                            } catch (error) {
+                                console.error('Error translating on retry:', error);
+                            }
+                        } else {
+                            console.log('VLibras still not ready');
+                        }
+                    }, 2000);
                 }
             })();
         """.trimIndent()

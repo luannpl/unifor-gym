@@ -11,6 +11,8 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.example.unifor_gym.R
 import com.example.unifor_gym.models.Exercicio
+import com.example.unifor_gym.utils.VLibrasHelper
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ExercicioDetalhes : AppCompatActivity() {
 
@@ -20,6 +22,7 @@ class ExercicioDetalhes : AppCompatActivity() {
     private lateinit var txtInstrucoes: TextView
     private lateinit var containerEquipamentos: LinearLayout
     private lateinit var containerCategorias: LinearLayout
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +39,11 @@ class ExercicioDetalhes : AppCompatActivity() {
         // Configurar botão de voltar
         btnVoltar.setOnClickListener {
             finish()
+        }
+
+        val fabAccess = findViewById<FloatingActionButton>(R.id.fab_access)
+        fabAccess.setOnClickListener {
+            VLibrasHelper.openVLibrasWithScreenContent(this)
         }
 
         // Obter exercício dos extras

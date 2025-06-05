@@ -30,10 +30,22 @@ class VLibrasActivity : AppCompatActivity() {
         // Get text to translate from intent
         val textToTranslate = intent.getStringExtra("text_to_translate") ?: ""
         if (textToTranslate.isNotEmpty()) {
-            // Delay to ensure VLibras is loaded
+            // Wait longer for VLibras to load and show the text in the webpage
             webView.postDelayed({
+                // First, update the content div with the text to translate
+                val updateContentScript = """
+                    javascript:(function() {
+                        var contentDiv = document.getElementById('content');
+                        if (contentDiv) {
+                            contentDiv.innerHTML = '<h2>Traduzindo:</h2><p>$textToTranslate</p>';
+                        }
+                    })();
+                """.trimIndent()
+                webView.evaluateJavascript(updateContentScript, null)
+
+                // Then translate it
                 vLibrasService.translateText(webView, textToTranslate)
-            }, 3000)
+            }, 5000) // Increased delay to 5 seconds
         }
     }
 
