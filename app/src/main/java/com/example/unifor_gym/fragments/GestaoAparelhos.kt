@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.example.unifor_gym.models.Aparelho
+import com.example.unifor_gym.utils.NotificationHelper
 
 class GestaoAparelhos : Fragment() {
     private lateinit var recyclerAparelhos: RecyclerView
@@ -280,6 +281,7 @@ class GestaoAparelhos : Fragment() {
 
 
     private fun alterarStatusRapido(aparelho: Aparelho) {
+        val statusAnterior = aparelho.status
         val novoStatus = if (aparelho.status == "Operacional") "Manutenção" else "Operacional"
 
         val aparelhoData = hashMapOf(
@@ -291,7 +293,30 @@ class GestaoAparelhos : Fragment() {
             .document(aparelho.id)
             .update(aparelhoData as Map<String, Any>)
             .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Status alterado para $novoStatus", Toast.LENGTH_SHORT).show()
+
+                // notificação de manutenção de aparelhos
+                if (novoStatus == "Manutenção") {
+                    NotificationHelper.criarNotificacaoGlobal(
+                        titulo = "⚠️ Equipamento em manutenção",
+                        descricao = "${aparelho.nome} está temporariamente indisponível para uso",
+                        tipoIcone = "aparelhos"
+                    )
+
+                } else {
+                    NotificationHelper.criarNotificacaoGlobal(
+                        titulo = "✅ Equipamento disponível",
+                        descricao = "${aparelho.nome} voltou a funcionar normalmente!",
+                        tipoIcone = "aparelhos"
+                    )
+                }
+
+                // Success feedback
+                val mensagem = when (novoStatus) {
+                    "Manutenção" -> "⚠️ ${aparelho.nome} marcado para manutenção"
+                    else -> "✅ ${aparelho.nome} operacional novamente"
+                }
+
+                Toast.makeText(requireContext(), mensagem, Toast.LENGTH_SHORT).show()
                 carregarAparelhos()
             }
             .addOnFailureListener { e ->
