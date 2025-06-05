@@ -1,87 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@color/white"
+    android:padding="24dp">
 
-    <!-- LinearLayout horizontal para o texto e o ícone -->
+    <!-- Cabeçalho do Modal -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
 
         <TextView
-            android:id="@+id/tvNovoObjetivo"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Novo objetivo"
-            android:textSize="30sp"
-            android:textColor="#666666"
-            android:layout_marginEnd="150dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="Adicionar Objetivo"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/darkBlue" />
 
         <ImageButton
             android:id="@+id/btnFecharModal"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_gravity="end"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Fechar Modal"
-            android:src="@drawable/x" />
+            android:contentDescription="Fechar modal"
+            android:src="@drawable/ic_close" />
 
     </LinearLayout>
 
-    <!-- Campo para nome do objetivo -->
-    <EditText
-        android:id="@+id/etNomeObjetivo"
+    <!-- Campo Nome do Objetivo -->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nome do Objetivo"
-        android:inputType="text"
-        android:textSize="16sp"
-        android:layout_marginTop="12dp"
-        android:padding="12dp"
-        android:background="@drawable/edittext_background"
-        android:minHeight="56dp" />
+        android:layout_marginBottom="16dp"
+        android:hint="Nome do objetivo"
+        app:boxStrokeColor="@color/darkBlue"
+        app:hintTextColor="@color/darkBlue">
 
-    <!-- Campo para valor atual -->
-    <EditText
-        android:id="@+id/etValorAtual"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etNomeObjetivo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Campo Valor Atual -->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Valor Atual"
-        android:inputType="numberDecimal"
-        android:textSize="16sp"
-        android:layout_marginTop="12dp"
-        android:padding="12dp"
-        android:background="@drawable/edittext_background"
-        android:minHeight="56dp" />
+        android:layout_marginBottom="16dp"
+        android:hint="Valor atual"
+        app:boxStrokeColor="@color/darkBlue"
+        app:hintTextColor="@color/darkBlue">
 
-    <!-- Campo para meta desejada -->
-    <EditText
-        android:id="@+id/etMetaDesejada"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etValorAtual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Campo Meta Desejada -->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Meta Desejada"
-        android:inputType="numberDecimal"
-        android:textSize="16sp"
-        android:layout_marginTop="12dp"
-        android:padding="12dp"
-        android:background="@drawable/edittext_background"
-        android:minHeight="56dp" />
+        android:layout_marginBottom="16dp"
+        android:hint="Meta desejada"
+        app:boxStrokeColor="@color/darkBlue"
+        app:hintTextColor="@color/darkBlue">
 
-    <!-- Botão para adicionar objetivo -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etMetaDesejada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Spinner para Unidade -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Unidade"
+        android:textSize="16sp"
+        android:textColor="@color/darkBlue"
+        android:layout_marginBottom="8dp" />
+
+    <Spinner
+        android:id="@+id/spinnerUnidade"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/spinner_background" />
+
+    <!-- Botão Adicionar/Atualizar -->
     <Button
         android:id="@+id/btnAdicionarObjetivo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/black"
         android:text="Adicionar Objetivo"
+        android:textColor="@color/black"
         android:textSize="16sp"
-        android:layout_marginTop="20dp"
-        android:padding="16dp"
-        android:backgroundTint="@color/black"
-        android:textColor="@android:color/white"
-        android:minHeight="56dp" />
+        android:textStyle="bold" />
+
 </LinearLayout>

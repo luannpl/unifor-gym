@@ -212,63 +212,56 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:background="@color/darkBlue"
+                    android:gravity="center_vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Objetivos"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:gravity="center" />
+
+                    <!-- Botão adicionar objetivo -->
+                    <ImageButton
+                        android:id="@+id/btnAdicionarObjetivo"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/add"
+                        android:contentDescription="Adicionar objetivo"
+                        android:tint="@color/white" />
+
+                </LinearLayout>
+
+                <!-- RecyclerView para listar objetivos -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewObjetivos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:nestedScrollingEnabled="false" />
+
+                <!-- Mensagem quando não há objetivos -->
+                <TextView
+                    android:id="@+id/tvSemObjetivos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nenhum objetivo cadastrado.\nToque no + para adicionar."
+                    android:textSize="16sp"
+                    android:textColor="@android:color/darker_gray"
                     android:gravity="center"
-                    android:padding="12dp"
-                    android:text="Objetivos"
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:padding="32dp"
+                    android:visibility="gone" />
 
-                <!-- Peso objetivo -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="16dp"
-                    android:text="Peso: 62 kg"
-                    android:textSize="16sp" />
-
-                <ProgressBar
-                    android:id="@+id/barraPeso"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_margin="16dp"
-                    android:progress="80"
-                    android:progressTint="#03A9F4" />
-
-                <!-- Leg press objetivo -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    android:text="Leg Press: 200 kg"
-                    android:textSize="16sp" />
-
-                <ProgressBar
-                    android:id="@+id/barraLegPress"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_margin="16dp"
-                    android:progress="50"
-                    android:progressTint="#03A9F4" />
-
-                <!-- Botão adicionar objetivo -->
-                <ImageButton
-                    android:id="@+id/btnAdicionarObjetivo"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="end"
-                    android:layout_margin="16dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/add"
-                    android:contentDescription="Adicionar objetivo" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
