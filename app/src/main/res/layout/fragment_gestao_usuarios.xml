@@ -80,15 +80,18 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- RecyclerView -->
+    <!-- RecyclerView with proper constraints -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerUsuarios"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="60dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/headerUsuariosGestao"
-        android:paddingTop="60dp"
-        android:paddingHorizontal="16dp"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
