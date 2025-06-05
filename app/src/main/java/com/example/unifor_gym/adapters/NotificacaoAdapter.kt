@@ -11,8 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
 import com.example.unifor_gym.models.Notificacao
 
-class NotificacaoAdapter(private var lista: List<Notificacao>) :
-    RecyclerView.Adapter<NotificacaoAdapter.NotificacaoViewHolder>() {
+class NotificacaoAdapter(
+    private var lista: List<Notificacao>
+) : RecyclerView.Adapter<NotificacaoAdapter.NotificacaoViewHolder>() {
+
+    private var onNotificacaoClick: ((Notificacao) -> Unit)? = null
+
+    fun setOnNotificacaoClickListener(callback: (Notificacao) -> Unit) {
+        onNotificacaoClick = callback
+    }
 
     inner class NotificacaoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardNotificacao: CardView = itemView.findViewById(R.id.cardNotificacao)
@@ -38,17 +45,27 @@ class NotificacaoAdapter(private var lista: List<Notificacao>) :
         // Define o ícone apropriado
         val iconeResId = when (notificacao.tipoIcone) {
             "exercicios" -> R.drawable.exercicios
+            "aulas" -> R.drawable.aulas
+            "usuario" -> R.drawable.usuario
+            "aparelhos" -> R.drawable.aparelhos
             "notificacoes" -> R.drawable.notificacoes
             else -> R.drawable.notificacoes
         }
         holder.icone.setImageResource(iconeResId)
 
-        // Define a cor de fundo baseado no status de leitura
-        if (notificacao.lida) {
-            holder.cardNotificacao.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.white))
-        } else {
-            // Cor de fundo para notificações não lidas (cinza claro conforme design)
-            holder.cardNotificacao.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.light_blue_gray))
+        // Todas as notificações com fundo cinza claro
+        holder.cardNotificacao.setCardBackgroundColor(
+            ContextCompat.getColor(holder.itemView.context, R.color.light_blue_gray)
+        )
+
+        // Texto normal para todas as notificações
+        holder.titulo.alpha = 1.0f
+        holder.descricao.alpha = 1.0f
+        holder.tempo.alpha = 1.0f
+
+        // Configurar clique na notificação (se callback estiver definido)
+        holder.cardNotificacao.setOnClickListener {
+            onNotificacaoClick?.invoke(notificacao)
         }
     }
 
