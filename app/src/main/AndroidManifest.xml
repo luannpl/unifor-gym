@@ -16,8 +16,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Unifor_gym"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31" >
 
+        <activity
+            android:name=".activities.VLibrasActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.Chat"
             android:windowSoftInputMode="adjustResize"
