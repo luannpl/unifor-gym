@@ -10,6 +10,7 @@ import com.example.unifor_gym.fragments.GestaoExercicios
 import com.example.unifor_gym.fragments.GestaoUsuarios
 import com.example.unifor_gym.fragments.HomeAdmin
 import com.example.unifor_gym.R
+import com.example.unifor_gym.utils.VLibrasHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -34,6 +35,11 @@ class AdminActivity : AppCompatActivity() {
         fabChat.setOnClickListener {
             val intent = Intent(this, Chat::class.java)
             startActivity(intent)
+        }
+
+        val fabAccess = findViewById<FloatingActionButton>(R.id.fab_access)
+        fabAccess.setOnClickListener {
+            VLibrasHelper.openVLibrasWithScreenContent(this)
         }
 
         bottomNavMenu.setOnItemSelectedListener { item ->

@@ -14,6 +14,7 @@ import com.example.unifor_gym.adapters.ChatAdapter
 import com.example.unifor_gym.models.Message
 import com.example.unifor_gym.repositories.FirestoreRepository
 import com.example.unifor_gym.services.ChatbotService
+import com.example.unifor_gym.utils.VLibrasHelper
 import com.google.firebase.FirebaseApp
 
 
@@ -50,6 +51,11 @@ class Chat : AppCompatActivity() {
                 enviarPergunta(pergunta)
                 editTextMessage.text.clear()
             }
+        }
+
+        val btnAccessibility = findViewById<ImageButton>(R.id.btnAccessibility)
+        btnAccessibility.setOnClickListener {
+            VLibrasHelper.openVLibrasWithScreenContent(this)
         }
     }
 

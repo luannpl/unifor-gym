@@ -12,6 +12,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.unifor_gym.R
 import com.example.unifor_gym.fragments.Aula
+import com.example.unifor_gym.utils.VLibrasHelper
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -74,6 +76,11 @@ class AulaDetalhes : AppCompatActivity() {
             Toast.makeText(this, "Aula não encontrada", Toast.LENGTH_SHORT).show()
             finish()
             return
+        }
+
+        val fabAccess = findViewById<FloatingActionButton>(R.id.fab_access)
+        fabAccess.setOnClickListener {
+            VLibrasHelper.openVLibrasWithScreenContent(this)
         }
 
         val aula = fb.collection("Aulas").document(aulaId).get()
