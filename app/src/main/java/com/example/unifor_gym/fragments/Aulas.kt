@@ -23,6 +23,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.example.unifor_gym.utils.NotificationHelper
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Aulas : Fragment() {
 
@@ -161,6 +164,14 @@ class Aulas : Fragment() {
                             aulasSemanaAdapter.updateList(aulas)
                         }
 
+                        // notificação de inscrição em aula
+                        NotificationHelper.criarNotificacaoUsuario(
+                            userId = userId,
+                            titulo = "Inscrição confirmada! ✅",
+                            descricao = "Você foi inscrito na aula de ${aula.nome} - ${aula.diaDaSemana} às ${aula.horarioInicio}",
+                            tipoIcone = "aulas"
+                        )
+
                         Toast.makeText(requireContext(), "Matriculado com sucesso", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
                     }
@@ -225,6 +236,15 @@ class Aulas : Fragment() {
                             // Atualiza o adapter com a lista nova
                             aulasSemanaAdapter.updateList(aulas)
                         }
+
+                        // notificação de cancelamento de aula
+                        NotificationHelper.criarNotificacaoUsuario(
+                            userId = userId,
+                            titulo = "Inscrição cancelada 📋",
+                            descricao = "Sua inscrição na aula de ${aula.nome} foi cancelada com sucesso",
+                            tipoIcone = "aulas"
+                        )
+
                         Toast.makeText(requireContext(), "Matricula cancelada", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
                     }
