@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
     private const val BASE_URL = "https://generativelanguage.googleapis.com/"
 
-    const val API_KEY = "SUA_CHAVE_AQUI"
+    const val API_KEY = "AIzaSyAcWMo77yzjHb1uVHI7ngsBULQ32I8KKGk"
 
     val api: GeminiApi by lazy {
         Retrofit.Builder()
