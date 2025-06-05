@@ -25,6 +25,9 @@ import com.example.unifor_gym.models.UserProfile
 import com.example.unifor_gym.models.UserRole
 import com.example.unifor_gym.models.Usuario
 import com.google.android.material.textfield.TextInputEditText
+import android.widget.ArrayAdapter
+import android.widget.ImageButton
+import android.widget.Spinner
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -129,6 +132,16 @@ class GestaoUsuarios : Fragment(), UsuarioAdapter.OnUsuarioClickListener {
             }
     }
 
+    private fun getRandomColor(): Int {
+        val colors = arrayOf(
+            0xFFE57373.toInt(), 0xFFF06292.toInt(), 0xFFBA68C8.toInt(),
+            0xFF9575CD.toInt(), 0xFF7986CB.toInt(), 0xFF64B5F6.toInt(),
+            0xFF4FC3F7.toInt(), 0xFF4DD0E1.toInt(), 0xFF4DB6AC.toInt(),
+            0xFF81C784.toInt(), 0xFFAED581.toInt(), 0xFFFF8A65.toInt()
+        )
+        return colors.random()
+    }
+
     private fun buscarUsuarios(query: String) {
         Log.d("GestaoUsuarios", "buscarUsuarios: Recebida query: '$query'. Tamanho da lista original: ${todosUsuarios.size}")
 
@@ -183,7 +196,7 @@ class GestaoUsuarios : Fragment(), UsuarioAdapter.OnUsuarioClickListener {
 
         layoutMontarTreino.setOnClickListener {
             dialog.dismiss()
-            Toast.makeText(requireContext(), "Funcionalidade de montar treino não implementada", Toast.LENGTH_SHORT).show()
+            mostrarDialogMontarTreino(usuario)
         }
 
         layoutEditar.setOnClickListener {
@@ -376,13 +389,187 @@ class GestaoUsuarios : Fragment(), UsuarioAdapter.OnUsuarioClickListener {
             .show()
     }
 
-    private fun getRandomColor(): Int {
-        val colors = arrayOf(
-            0xFFE57373.toInt(), 0xFFF06292.toInt(), 0xFFBA68C8.toInt(),
-            0xFF9575CD.toInt(), 0xFF7986CB.toInt(), 0xFF64B5F6.toInt(),
-            0xFF4FC3F7.toInt(), 0xFF4DD0E1.toInt(), 0xFF4DB6AC.toInt(),
-            0xFF81C784.toInt(), 0xFFAED581.toInt(), 0xFFFF8A65.toInt()
-        )
-        return colors.random()
+    private fun mostrarDialogMontarTreino(usuario: Usuario) {
+        val dialog = Dialog(requireContext(), R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_montar_treino)
+        dialog.setCancelable(true)
+
+        val window = dialog.window
+        window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        // Configurar texto do usuário
+        val txtUsuarioTreino = dialog.findViewById<TextView>(R.id.txtUsuarioTreino)
+        txtUsuarioTreino.text = "${usuario.nome} (${usuario.email})"
+
+        // Botão de fechar
+        val btnFechar = dialog.findViewById<ImageButton>(R.id.btnFecharMontarTreino)
+        btnFechar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        // Configurar spinners
+        configurarSpinnersTreino(dialog)
+
+        // Carregar exercícios nos spinners
+        carregarExerciciosParaSpinners(dialog)
+
+        // Botão salvar treino (usar o botão adicionar exercício como salvar por simplicidade)
+        val btnAdicionarExercicio = dialog.findViewById<Button>(R.id.btnAdicionarExercicio)
+        btnAdicionarExercicio.setText("Salvar Treino")
+        btnAdicionarExercicio.setOnClickListener {
+            salvarTreino(dialog, usuario)
+        }
+
+        dialog.show()
     }
+
+    private fun configurarSpinnersTreino(dialog: Dialog) {
+        // Spinner de tipo de treino
+        val spinnerTipoTreino = dialog.findViewById<Spinner>(R.id.spinnerTipoTreino)
+        val tiposTreino = arrayOf("Musculação", "Cardio", "Funcional", "Crossfit", "Yoga")
+        val adapterTipoTreino = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, tiposTreino)
+        spinnerTipoTreino.adapter = adapterTipoTreino
+
+        // Spinner de dias da semana
+        val spinnerDiasSemana = dialog.findViewById<Spinner>(R.id.spinnerDiasSemana)
+        val diasSemana = arrayOf("Segunda e Quinta", "Terça e Sexta", "Quarta e Sábado", "Todos os dias")
+        val adapterDiasSemana = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, diasSemana)
+        spinnerDiasSemana.adapter = adapterDiasSemana
+
+        // Spinners de séries
+        val spinnerSeries1 = dialog.findViewById<Spinner>(R.id.spinnerSeries1)
+        val spinnerSeries2 = dialog.findViewById<Spinner>(R.id.spinnerSeries2)
+        val series = arrayOf("2", "3", "4", "5")
+        val adapterSeries = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, series)
+        spinnerSeries1.adapter = adapterSeries
+        spinnerSeries2.adapter = adapterSeries
+
+        // Spinners de repetições
+        val spinnerReps1 = dialog.findViewById<Spinner>(R.id.spinnerReps1)
+        val spinnerReps2 = dialog.findViewById<Spinner>(R.id.spinnerReps2)
+        val repeticoes = arrayOf("5", "8", "10", "12", "15", "20")
+        val adapterReps = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, repeticoes)
+        spinnerReps1.adapter = adapterReps
+        spinnerReps2.adapter = adapterReps
+
+        // Spinners de descanso
+        val spinnerDescanso1 = dialog.findViewById<Spinner>(R.id.spinnerDescanso1)
+        val spinnerDescanso2 = dialog.findViewById<Spinner>(R.id.spinnerDescanso2)
+        val descansos = arrayOf("30s", "45s", "60s", "90s", "120s")
+        val adapterDescanso = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, descansos)
+        spinnerDescanso1.adapter = adapterDescanso
+        spinnerDescanso2.adapter = adapterDescanso
+    }
+
+    private fun carregarExerciciosParaSpinners(dialog: Dialog) {
+        fb.collection("exercicios")
+            .get()
+            .addOnSuccessListener { result ->
+                val exercicios = mutableListOf<String>()
+                exercicios.add("Selecione") // Opção padrão
+
+                for (document in result) {
+                    val nomeExercicio = document.getString("nome")
+                    if (!nomeExercicio.isNullOrBlank()) {
+                        exercicios.add(nomeExercicio)
+                    }
+                }
+
+                // Configurar spinners de exercícios
+                val spinnerExercicio1 = dialog.findViewById<Spinner>(R.id.spinnerExercicio1)
+                val spinnerExercicio2 = dialog.findViewById<Spinner>(R.id.spinnerExercicio2)
+                val adapterExercicios = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, exercicios)
+                spinnerExercicio1.adapter = adapterExercicios
+                spinnerExercicio2.adapter = adapterExercicios
+            }
+            .addOnFailureListener { e ->
+                Log.e("GestaoUsuarios", "Erro ao carregar exercícios", e)
+                Toast.makeText(requireContext(), "Erro ao carregar exercícios", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun salvarTreino(dialog: Dialog, usuario: Usuario) {
+        // Obter valores dos campos
+        val edtNomeTreino = dialog.findViewById<EditText>(R.id.edtNomeTreino)
+        val spinnerTipoTreino = dialog.findViewById<Spinner>(R.id.spinnerTipoTreino)
+        val spinnerDiasSemana = dialog.findViewById<Spinner>(R.id.spinnerDiasSemana)
+
+        val spinnerExercicio1 = dialog.findViewById<Spinner>(R.id.spinnerExercicio1)
+        val spinnerSeries1 = dialog.findViewById<Spinner>(R.id.spinnerSeries1)
+        val spinnerReps1 = dialog.findViewById<Spinner>(R.id.spinnerReps1)
+        val spinnerDescanso1 = dialog.findViewById<Spinner>(R.id.spinnerDescanso1)
+
+        val spinnerExercicio2 = dialog.findViewById<Spinner>(R.id.spinnerExercicio2)
+        val spinnerSeries2 = dialog.findViewById<Spinner>(R.id.spinnerSeries2)
+        val spinnerReps2 = dialog.findViewById<Spinner>(R.id.spinnerReps2)
+        val spinnerDescanso2 = dialog.findViewById<Spinner>(R.id.spinnerDescanso2)
+
+        val nomeTreino = edtNomeTreino.text.toString().trim()
+        val tipoTreino = spinnerTipoTreino.selectedItem.toString()
+        val diasSemana = spinnerDiasSemana.selectedItem.toString()
+
+        if (nomeTreino.isEmpty()) {
+            Toast.makeText(requireContext(), "Digite o nome do treino", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Montar lista de exercícios
+        val exercicios = mutableListOf<Map<String, Any>>()
+
+        // Exercício 1
+        val exercicio1 = spinnerExercicio1.selectedItem.toString()
+        if (exercicio1 != "Selecione") {
+            exercicios.add(mapOf(
+                "nome" to exercicio1,
+                "series" to spinnerSeries1.selectedItem.toString(),
+                "repeticoes" to spinnerReps1.selectedItem.toString(),
+                "descanso" to spinnerDescanso1.selectedItem.toString()
+            ))
+        }
+
+        // Exercício 2
+        val exercicio2 = spinnerExercicio2.selectedItem.toString()
+        if (exercicio2 != "Selecione") {
+            exercicios.add(mapOf(
+                "nome" to exercicio2,
+                "series" to spinnerSeries2.selectedItem.toString(),
+                "repeticoes" to spinnerReps2.selectedItem.toString(),
+                "descanso" to spinnerDescanso2.selectedItem.toString()
+            ))
+        }
+
+        if (exercicios.isEmpty()) {
+            Toast.makeText(requireContext(), "Selecione pelo menos um exercício", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Criar treino para salvar no Firebase
+        val treinoData = hashMapOf(
+            "titulo" to nomeTreino,
+            "usuarioEmail" to usuario.email, // Usar email para identificar usuário
+            "tipoTreino" to tipoTreino,
+            "diasSemana" to diasSemana,
+            "exercicios" to exercicios,
+            "dataCriacao" to FieldValue.serverTimestamp()
+        )
+
+        // Salvar no Firestore
+        fb.collection("treinos")
+            .add(treinoData)
+            .addOnSuccessListener {
+                Toast.makeText(requireContext(), "Treino criado com sucesso!", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Erro ao criar treino: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.e("GestaoUsuarios", "Erro ao salvar treino", e)
+            }
+    }
+    val colors = arrayOf(
+        0xFFE57373.toInt(), 0xFFF06292.toInt(), 0xFFBA68C8.toInt(),
+        0xFF9575CD.toInt(), 0xFF7986CB.toInt(), 0xFF64B5F6.toInt(),
+        0xFF4FC3F7.toInt(), 0xFF4DD0E1.toInt(), 0xFF4DB6AC.toInt(),
+        0xFF81C784.toInt(), 0xFFAED581.toInt(), 0xFFFF8A65.toInt()
+    )
 }
