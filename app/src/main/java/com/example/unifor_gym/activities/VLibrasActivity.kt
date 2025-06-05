@@ -1,4 +1,3 @@
-// app/src/main/java/com/example/unifor_gym/activities/VLibrasActivity.kt
 package com.example.unifor_gym.activities
 
 import android.os.Bundle
@@ -9,6 +8,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unifor_gym.R
 import com.example.unifor_gym.services.VLibrasService
+import android.webkit.WebChromeClient // Import WebChromeClient
+import android.webkit.WebViewClient // Import WebViewClient
 
 class VLibrasActivity : AppCompatActivity() {
 
@@ -39,16 +40,60 @@ class VLibrasActivity : AppCompatActivity() {
         textToTranslate = intent.getStringExtra("text_to_translate") ?: ""
         Log.d(TAG, "Text to translate: $textToTranslate")
 
-        if (textToTranslate.isNotEmpty()) {
-            // Schedule translation attempts
-            scheduleTranslation()
-        }
+        // The JavaScript injection will happen after the page is loaded and VLibras is ready.
+        // This ensures the WebView is fully initialized and the VLibras API is available.
     }
 
     private fun setupVLibras() {
-        vLibrasService.setupVLibrasWebView(webView, this)
+        Log.d(TAG, "Setting up WebView for VLibras.")
+        // Configure WebView settings
+        webView.apply {
+            settings.javaScriptEnabled = true
+            settings.domStorageEnabled = true
+            settings.allowFileAccess = true
+            settings.allowContentAccess = true
+            settings.setSupportZoom(false)
+            settings.builtInZoomControls = false
+            settings.displayZoomControls = false
+            settings.mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+        }
 
-        // Load a comprehensive HTML page for VLibras
+        // Add JavaScript interface for debugging
+        webView.addJavascriptInterface(VLibrasService.VLibrasJavaScriptInterface(), "AndroidInterface")
+        Log.d(TAG, "AndroidInterface added to WebView.")
+
+        // Set a WebChromeClient to capture console messages from JavaScript
+        webView.webChromeClient = object : WebChromeClient() {
+            override fun onConsoleMessage(consoleMessage: android.webkit.ConsoleMessage?): Boolean {
+                consoleMessage?.let {
+                    Log.d(TAG, "WebView Console: ${it.message()} -- From line ${it.lineNumber()} of ${it.sourceId()}")
+                }
+                return super.onConsoleMessage(consoleMessage)
+            }
+        }
+        Log.d(TAG, "WebChromeClient set for WebView.")
+
+        // Set a WebViewClient to detect when the page has finished loading
+        webView.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                Log.d(TAG, "WebView onPageFinished: $url")
+                // Once the page is finished loading, trigger the JavaScript process
+                // to check VLibras readiness and then attempt translation.
+                if (textToTranslate.isNotEmpty()) {
+                    val setTextAndTriggerScript = "javascript:window.currentTextToTranslate =$textToTranslate\"; startTranslationProcess();"
+                    webView.evaluateJavascript(setTextAndTriggerScript, null)
+                    Log.d(TAG, "Attempted to inject textToTranslate and trigger startTranslationProcess via evaluateJavascript.")
+                }
+            }
+
+            override fun onReceivedError(view: WebView?, request: android.webkit.WebResourceRequest?, error: android.webkit.WebResourceError?) {
+                super.onReceivedError(view, request, error)
+                Log.e(TAG, "WebView Error: ${error?.description} on ${request?.url}")
+            }
+        }
+
+        // Load a comprehensive HTML page for VLibras with embedded script
         val htmlContent = """
             <!DOCTYPE html>
             <html lang="pt-BR">
@@ -156,7 +201,7 @@ class VLibrasActivity : AppCompatActivity() {
             <body>
                 <div class="container">
                     <div class="header">
-                        <h1><span class="emoji">🤟</span>VLibras - Unifor Gym</h1>
+                        <h1>VLibras - Unifor Gym</h1>
                         <div class="subtitle">Tradução para Língua Brasileira de Sinais</div>
                     </div>
                     
@@ -187,27 +232,37 @@ class VLibrasActivity : AppCompatActivity() {
                     </div>
                 </div>
                 
+                <div vw class="enabled">
+                    <div vw-access-button class="active"></div>
+                    <div vw-plugin-wrapper>
+                        <div class="vw-plugin-top-wrapper"></div>
+                    </div>
+                </div>
+                <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
                 <script>
+                    new window.VLibras.Widget("https://vlibras.gov.br/app");
+
                     let translationAttempts = 0;
                     const maxAttempts = 5;
                     
                     function updateStatus(message, isError = false) {
-                        const statusText = document.getElementById('status-text');
+                        const statusText = document.getElementById("status-text");
                         statusText.textContent = message;
-                        statusText.style.color = isError ? '#d32f2f' : '#1976d2';
-                        console.log('Status: ' + message);
+                        statusText.style.color = isError ? "#d32f2f" : "#1976d2";
+                        console.log("Status: " + message);
+                        AndroidInterface.log("JS Status: " + message);
                     }
                     
                     function showTranslationSection(text) {
-                        const section = document.getElementById('translate-section');
-                        const textDiv = document.getElementById('translation-text');
+                        const section = document.getElementById("translate-section");
+                        const textDiv = document.getElementById("translation-text");
                         textDiv.textContent = text;
-                        section.style.display = 'block';
+                        section.style.display = "block";
                     }
                     
                     function checkVLibrasStatus() {
                         const status = {
-                            vLibrasExists: typeof window.VLibras !== 'undefined',
+                            vLibrasExists: typeof window.VLibras !== "undefined",
                             vLibrasReady: window.vLibrasReady || false,
                             apiExists: false,
                             widgetExists: false,
@@ -215,23 +270,24 @@ class VLibrasActivity : AppCompatActivity() {
                         };
                         
                         if (window.VLibras) {
-                            status.apiExists = typeof window.VLibras.Api !== 'undefined';
-                            status.widgetExists = typeof window.VLibras.Widget !== 'undefined';
+                            status.apiExists = typeof window.VLibras.Api !== "undefined";
+                            status.widgetExists = typeof window.VLibras.Widget !== "undefined";
                         }
                         
-                        updateStatus('VLibras: ' + (status.vLibrasExists ? 'Carregado' : 'Não carregado') + 
-                                   ', Ready: ' + (status.vLibrasReady ? 'Sim' : 'Não') + 
-                                   ', API: ' + (status.apiExists ? 'Sim' : 'Não'));
+                        updateStatus("VLibras: " + (status.vLibrasExists ? "Carregado" : "Não carregado") + 
+                                   ", Ready: " + (status.vLibrasReady ? "Sim" : "Não") + 
+                                   ", API: " + (status.apiExists ? "Sim" : "Não"));
                         
-                        console.log('VLibras Status Check:', JSON.stringify(status, null, 2));
+                        console.log("VLibras Status Check:", JSON.stringify(status, null, 2));
+                        AndroidInterface.log("JS VLibras Status Check: " + JSON.stringify(status));
                         return status;
                     }
                     
                     function retryTranslation() {
                         if (window.currentTextToTranslate) {
-                            updateStatus('Tentando traduzir novamente...');
+                            updateStatus("Tentando traduzir novamente...");
                             setTimeout(() => {
-                                window.AndroidInterface?.log('Manual retry translation attempt');
+                                AndroidInterface.log("Manual retry translation attempt");
                                 attemptTranslation(window.currentTextToTranslate);
                             }, 1000);
                         }
@@ -239,58 +295,50 @@ class VLibrasActivity : AppCompatActivity() {
                     
                     function attemptTranslation(text) {
                         translationAttempts++;
-                        updateStatus('Tentativa de tradução ' + translationAttempts + '/' + maxAttempts + '...');
+                        updateStatus("Tentativa de tradução " + translationAttempts + "/" + maxAttempts + "...");
+                        AndroidInterface.log("JS Attempting translation: " + text + " (Attempt " + translationAttempts + ")");
                         
                         try {
-                            // Multiple translation strategies
                             let success = false;
-                            
-                            // Strategy 1: Direct API
-                            if (window.VLibras && window.VLibras.Api && window.VLibras.Api.translate) {
+                            if (typeof window.VLibras !== "undefined" && typeof window.VLibras.Api !== "undefined" && typeof window.VLibras.Api.translate === "function") {
                                 window.VLibras.Api.translate(text);
-                                updateStatus('Tradução enviada via VLibras.Api.translate');
+                                updateStatus("Tradução enviada via VLibras.Api.translate");
                                 success = true;
-                            }
-                            // Strategy 2: Widget instance
-                            else if (window.vLibrasInstance && window.vLibrasInstance.translate) {
-                                window.vLibrasInstance.translate(text);
-                                updateStatus('Tradução enviada via widget instance');
-                                success = true;
-                            }
-                            // Strategy 3: Add text to page for auto-detection
-                            else if (window.vLibrasReady) {
-                                showTranslationSection(text);
-                                updateStatus('Texto adicionado à página para detecção automática');
-                                success = true;
+                            } else {
+                                console.log("VLibras API not ready yet. Retrying...");
+                                AndroidInterface.log("JS VLibras API not ready yet. Retrying... typeof window.VLibras: " + (typeof window.VLibras) + ", typeof window.VLibras.Api: " + (typeof window.VLibras.Api) + ", typeof window.VLibras.Api.translate: " + (typeof window.VLibras.Api.translate));
                             }
                             
                             if (success) {
-                                document.getElementById('retry-btn').style.display = 'inline-block';
+                                document.getElementById("retry-btn").style.display = "inline-block";
                             } else if (translationAttempts < maxAttempts) {
                                 setTimeout(() => attemptTranslation(text), 2000);
                             } else {
-                                updateStatus('Falha ao traduzir após múltiplas tentativas', true);
-                                document.getElementById('retry-btn').style.display = 'inline-block';
+                                updateStatus("Falha ao traduzir após múltiplas tentativas", true);
+                                document.getElementById("retry-btn").style.display = "inline-block";
                             }
                             
                         } catch (error) {
-                            console.error('Translation error:', error);
-                            updateStatus('Erro na tradução: ' + error.message, true);
+                            console.error("Translation error:", error);
+                            AndroidInterface.log("JS Translation error: " + error.message);
+                            updateStatus("Erro na tradução: " + error.message, true);
                             if (translationAttempts < maxAttempts) {
                                 setTimeout(() => attemptTranslation(text), 2000);
                             }
                         }
                     }
                     
-                    // Initialize when DOM is ready
-                    document.addEventListener('DOMContentLoaded', function() {
-                        updateStatus('Página carregada, aguardando VLibras...');
+                    function startTranslationProcess() {
+                        updateStatus("Página carregada, aguardando VLibras...");
+                        AndroidInterface.log("JS startTranslationProcess called");
                         
-                        // Check VLibras status periodically
                         const statusCheckInterval = setInterval(() => {
-                            if (window.vLibrasReady) {
-                                updateStatus('VLibras pronto!');
+                            AndroidInterface.log("JS Checking VLibras readiness... typeof window.VLibras: " + (typeof window.VLibras) + ", typeof window.VLibras.Api: " + (typeof window.VLibras.Api) + ", typeof window.VLibras.Api.translate: " + (typeof window.VLibras.Api.translate));
+                            if (typeof window.VLibras !== "undefined" && typeof window.VLibras.Api !== "undefined" && typeof window.VLibras.Api.translate === "function") {
+                                window.vLibrasReady = true; // Manually set vLibrasReady after VLibras.Api is available
+                                updateStatus("VLibras pronto!");
                                 clearInterval(statusCheckInterval);
+                                AndroidInterface.log("JS VLibras is ready. Attempting translation.");
                                 
                                 // Start translation if text is available
                                 if (window.currentTextToTranslate) {
@@ -303,44 +351,20 @@ class VLibrasActivity : AppCompatActivity() {
                         setTimeout(() => {
                             clearInterval(statusCheckInterval);
                             if (!window.vLibrasReady) {
-                                updateStatus('Timeout aguardando VLibras', true);
+                                updateStatus("Timeout aguardando VLibras", true);
+                                AndroidInterface.log("JS Timeout waiting for VLibras.");
                             }
                         }, 30000);
-                    });
+                    }
+
+                    // Removed DOMContentLoaded listener as onPageFinished in Android handles it.
                 </script>
             </body>
             </html>
         """.trimIndent()
 
         webView.loadDataWithBaseURL("https://vlibras.gov.br", htmlContent, "text/html", "UTF-8", null)
-    }
-
-    private fun scheduleTranslation() {
-        // Set text in JavaScript for later use
-        val setTextScript = "javascript:window.currentTextToTranslate = '$textToTranslate';"
-        webView.evaluateJavascript(setTextScript, null)
-
-        // Schedule multiple translation attempts
-        webView.postDelayed({
-            Log.d(TAG, "First translation attempt")
-            vLibrasService.translateText(webView, textToTranslate)
-        }, 3000)
-
-        webView.postDelayed({
-            Log.d(TAG, "Second translation attempt")
-            vLibrasService.translateText(webView, textToTranslate)
-        }, 6000)
-
-        webView.postDelayed({
-            Log.d(TAG, "Third translation attempt")
-            vLibrasService.translateText(webView, textToTranslate)
-        }, 10000)
-
-        // Status check
-        webView.postDelayed({
-            Log.d(TAG, "Status check")
-            vLibrasService.checkVLibrasStatus(webView)
-        }, 8000)
+        Log.d(TAG, "HTML content loaded into WebView.")
     }
 
     override fun onBackPressed() {
