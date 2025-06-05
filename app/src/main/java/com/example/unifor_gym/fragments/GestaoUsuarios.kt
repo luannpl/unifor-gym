@@ -453,6 +453,14 @@ class GestaoUsuarios : Fragment(), UsuarioAdapter.OnUsuarioClickListener {
         spinnerReps1.adapter = adapterReps
         spinnerReps2.adapter = adapterReps
 
+        // Spinners de carga
+        val spinnerCarga1 = dialog.findViewById<Spinner>(R.id.spinnerCarga1)
+        val spinnerCarga2 = dialog.findViewById<Spinner>(R.id.spinnerCarga2)
+        val cargas = arrayOf("5kg", "10kg", "15kg", "20kg", "25kg", "30kg", "35kg", "40kg", "45kg", "50kg", "60kg", "70kg", "80kg", "90kg", "100kg")
+        val adapterCarga = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, cargas)
+        spinnerCarga1.adapter = adapterCarga
+        spinnerCarga2.adapter = adapterCarga
+
         // Spinners de descanso
         val spinnerDescanso1 = dialog.findViewById<Spinner>(R.id.spinnerDescanso1)
         val spinnerDescanso2 = dialog.findViewById<Spinner>(R.id.spinnerDescanso2)
@@ -498,11 +506,13 @@ class GestaoUsuarios : Fragment(), UsuarioAdapter.OnUsuarioClickListener {
         val spinnerExercicio1 = dialog.findViewById<Spinner>(R.id.spinnerExercicio1)
         val spinnerSeries1 = dialog.findViewById<Spinner>(R.id.spinnerSeries1)
         val spinnerReps1 = dialog.findViewById<Spinner>(R.id.spinnerReps1)
+        val spinnerCarga1 = dialog.findViewById<Spinner>(R.id.spinnerCarga1)
         val spinnerDescanso1 = dialog.findViewById<Spinner>(R.id.spinnerDescanso1)
 
         val spinnerExercicio2 = dialog.findViewById<Spinner>(R.id.spinnerExercicio2)
         val spinnerSeries2 = dialog.findViewById<Spinner>(R.id.spinnerSeries2)
         val spinnerReps2 = dialog.findViewById<Spinner>(R.id.spinnerReps2)
+        val spinnerCarga2 = dialog.findViewById<Spinner>(R.id.spinnerCarga2)
         val spinnerDescanso2 = dialog.findViewById<Spinner>(R.id.spinnerDescanso2)
 
         val nomeTreino = edtNomeTreino.text.toString().trim()
@@ -524,6 +534,7 @@ class GestaoUsuarios : Fragment(), UsuarioAdapter.OnUsuarioClickListener {
                 "nome" to exercicio1,
                 "series" to spinnerSeries1.selectedItem.toString(),
                 "repeticoes" to spinnerReps1.selectedItem.toString(),
+                "carga" to spinnerCarga1.selectedItem.toString(),
                 "descanso" to spinnerDescanso1.selectedItem.toString()
             ))
         }
@@ -535,6 +546,7 @@ class GestaoUsuarios : Fragment(), UsuarioAdapter.OnUsuarioClickListener {
                 "nome" to exercicio2,
                 "series" to spinnerSeries2.selectedItem.toString(),
                 "repeticoes" to spinnerReps2.selectedItem.toString(),
+                "carga" to spinnerCarga2.selectedItem.toString(),
                 "descanso" to spinnerDescanso2.selectedItem.toString()
             ))
         }
