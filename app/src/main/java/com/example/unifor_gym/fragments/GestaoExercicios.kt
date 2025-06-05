@@ -24,6 +24,7 @@ import com.example.unifor_gym.activities.ExercicioDetalhes
 import com.example.unifor_gym.adapters.ExercicioAdapter
 import com.example.unifor_gym.models.AcoesMenuMais
 import com.example.unifor_gym.models.Exercicio
+import com.example.unifor_gym.utils.NotificationHelper
 
 class GestaoExercicios : Fragment() {
     private lateinit var recyclerExercicios: RecyclerView
@@ -210,6 +211,14 @@ class GestaoExercicios : Fragment() {
             firestore.collection("exercicios")
                 .add(novoExercicio)
                 .addOnSuccessListener { documentReference ->
+
+                    // notificação global para exercício novo
+                    NotificationHelper.criarNotificacaoGlobal(
+                        titulo = "🆕 Novo exercício disponível!",
+                        descricao = "${nome} foi adicionado à biblioteca de exercícios",
+                        tipoIcone = "exercicios"
+                    )
+
                     Toast.makeText(requireContext(), "Exercício adicionado com sucesso", Toast.LENGTH_SHORT).show()
 
                     // Criar exercício com o ID real do Firebase
