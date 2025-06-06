@@ -8,6 +8,5 @@ data class UsuarioExercicioTreino(
     val grupoMuscular: String,
     val equipamentos: List<String>,
     val dificuldade: String,
-    val organizacao: String,
     val urlVideo: String? = null
 )
