@@ -1,16 +1,20 @@
 package com.example.unifor_gym.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import com.example.unifor_gym.R
+import com.example.unifor_gym.activities.Login
 import com.example.unifor_gym.adapters.DailyClassAdapter
 import com.example.unifor_gym.adapters.PopularClassAdapter
 import com.example.unifor_gym.models.PopularClass
@@ -28,11 +32,13 @@ class HomeAdmin : Fragment() {
     private lateinit var tvTotalEquipments: TextView
     private lateinit var tvTotalClasses: TextView
     private lateinit var tvWelcome: TextView
+    private lateinit var btnLogout: ImageButton
 
     private lateinit var dailyClassAdapter: DailyClassAdapter
     private lateinit var popularClassAdapter: PopularClassAdapter
 
     private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +52,7 @@ class HomeAdmin : Fragment() {
 
         initViews(view)
         setupRecyclerViews()
+        setupLogoutButton()
         loadDashboardData()
     }
 
@@ -56,6 +63,49 @@ class HomeAdmin : Fragment() {
         tvTotalEquipments = view.findViewById(R.id.tvTotalEquipments)
         tvTotalClasses = view.findViewById(R.id.tvTotalClasses)
         tvWelcome = view.findViewById(R.id.tvWelcome)
+        btnLogout = view.findViewById(R.id.btnLogout)
+    }
+
+    private fun setupLogoutButton() {
+        btnLogout.setOnClickListener {
+            showLogoutDialog()
+        }
+    }
+
+    private fun showLogoutDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Sair")
+            .setMessage("Tem certeza que deseja sair?")
+            .setPositiveButton("Sim") { _, _ ->
+                performLogout()
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    private fun performLogout() {
+        try {
+            // Fazer logout do Firebase
+            auth.signOut()
+
+            // Limpar preferências compartilhadas se houver
+            val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+            sharedPreferences.edit().clear().apply()
+
+            // Redirecionar para a tela de login
+            redirectToLogin()
+
+        } catch (e: Exception) {
+            Log.e("HomeAdmin", "Erro ao fazer logout", e)
+        }
+    }
+
+    private fun redirectToLogin() {
+        // Substitua "LoginActivity" pelo nome da sua Activity de login
+        val intent = Intent(requireContext(), Login::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     private fun setupRecyclerViews() {
