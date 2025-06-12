@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    tools:context=".activities.ExercicioDetalhes">
 
-    <!-- Top dark blue bar -->
     <View
         android:id="@+id/topBarExercicioDetalhes"
         android:layout_width="match_parent"
@@ -14,7 +14,6 @@
         android:background="@color/darkBlue"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Back button -->
     <androidx.cardview.widget.CardView
         android:id="@+id/btnVoltarExercicioDetalhes"
         android:layout_width="40dp"
@@ -34,7 +33,6 @@
             app:tint="@color/darkBlue" />
     </androidx.cardview.widget.CardView>
 
-    <!-- Exercise Title -->
     <TextView
         android:id="@+id/txtTituloExercicioDetalhes"
         android:layout_width="wrap_content"
@@ -48,7 +46,6 @@
         app:layout_constraintStart_toEndOf="@id/btnVoltarExercicioDetalhes"
         app:layout_constraintTop_toTopOf="@id/btnVoltarExercicioDetalhes" />
 
-    <!-- Main Content Card -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -69,7 +66,6 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- Demonstracao Section -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,30 +74,12 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <!-- Video Preview -->
-                <androidx.cardview.widget.CardView
+                <WebView
+                    android:id="@+id/webview_player"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginTop="16dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="0dp">
+                    android:layout_marginTop="16dp" />
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#CACACA">
-
-                        <!-- Play Button -->
-                        <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/outline_play_circle"
-                            app:tint="@color/darkBlue" />
-                    </FrameLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- Dificuldade - Card arredondado -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -117,6 +95,7 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/txtDificuldadeExercicioDetalhes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#FFF59D"
@@ -124,11 +103,9 @@
                         android:paddingVertical="2dp"
                         android:text="Intermediário"
                         android:textColor="#5A5A5A"
-                        android:textSize="14sp"
-                        android:id="@+id/txtDificuldadeExercicioDetalhes"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
 
-                <!-- Instruções - Card arredondado -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -176,19 +153,17 @@
                             </LinearLayout>
 
                             <TextView
+                                android:id="@+id/txtInstrucoesExercicioDetalhes"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:text="Texto instruções"
                                 android:textColor="#5A5A5A"
-                                android:textSize="14sp"
-                                android:id="@+id/txtInstrucoesExercicioDetalhes"
-                                />
+                                android:textSize="14sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <!-- Equipment -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -212,17 +187,14 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <!-- Equipment List -->
                 <LinearLayout
+                    android:id="@+id/containerEquipamentosDetalhes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="28dp"
                     android:layout_marginTop="8dp"
-                    android:orientation="vertical"
-                    android:id="@+id/containerEquipamentosDetalhes">
-                </LinearLayout>
+                    android:orientation="vertical" />
 
-                <!-- Categories -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -246,7 +218,6 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <!-- Category Tags -->
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -254,42 +225,10 @@
                     android:scrollbars="none">
 
                     <LinearLayout
+                        android:id="@+id/containerCategoriasDetalhes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:id="@+id/containerCategoriasDetalhes">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:background="@drawable/rounded_blue_bg"
-                            android:paddingHorizontal="16dp"
-                            android:paddingVertical="8dp"
-                            android:text="Peito"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:background="@drawable/rounded_blue_bg"
-                            android:paddingHorizontal="16dp"
-                            android:paddingVertical="8dp"
-                            android:text="Braços"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_blue_bg"
-                            android:paddingHorizontal="16dp"
-                            android:paddingVertical="8dp"
-                            android:text="Ombros"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
+                        android:orientation="horizontal">
                     </LinearLayout>
                 </HorizontalScrollView>
             </LinearLayout>
@@ -304,7 +243,6 @@
         android:layout_marginBottom="48dp"
         android:contentDescription="Acessibilidade"
         android:src="@drawable/accessibility"
-        android:tint="@android:color/holo_blue_light"
         app:backgroundTint="@android:color/transparent"
         app:elevation="0dp"
         app:layout_constraintBottom_toTopOf="@id/fab_chat"
