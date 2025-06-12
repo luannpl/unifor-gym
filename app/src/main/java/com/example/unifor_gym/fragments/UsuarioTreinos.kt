@@ -10,20 +10,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unifor_gym.R
 import com.example.unifor_gym.adapters.UsuarioExercicioTreinoAdapter
+import com.example.unifor_gym.models.ExercicioTreino
+import com.example.unifor_gym.models.Treino
 import com.example.unifor_gym.models.UsuarioExercicioTreino
 import com.example.unifor_gym.models.UsuarioGrupoTreino
-import com.google.firebase.firestore.FirebaseFirestore
-import android.widget.Toast
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
-
+import com.google.firebase.firestore.FirebaseFirestore
 
 class UsuarioTreinos : Fragment(), UsuarioExercicioTreinoAdapter.OnExercicioTreinoListener {
 
     private lateinit var recyclerPerna: RecyclerView
-    private lateinit var recyclerPeito: RecyclerView
     private lateinit var recyclerCosta: RecyclerView
+    private lateinit var recyclerPeito: RecyclerView
     private val gruposTreino = mutableListOf<UsuarioGrupoTreino>()
 
     val auth = FirebaseAuth.getInstance()
@@ -62,99 +60,48 @@ class UsuarioTreinos : Fragment(), UsuarioExercicioTreinoAdapter.OnExercicioTrei
                     return@addOnSuccessListener
                 }
 
-                var gruposCarregados = 0
-                val totalGrupos = treinosSnapshot.size()
-
                 for (treinoDoc in treinosSnapshot) {
                     val nomeGrupo = treinoDoc.getString("titulo") ?: ""
                     Log.d("UsuarioTreinos", "Processando grupo: $nomeGrupo")
-                    val exerciciosRaw = treinoDoc.get("exercicios") as? List<Map<String, Any>> ?: emptyList()
-                    Log.d("UsuarioTreinos", "Exercícios do grupo raw: $exerciciosRaw")
-                    val exerciciosLista = exerciciosRaw.mapNotNull { it["nome"] as? String }
-                    Log.d("UsuarioTreinos", "Exercícios do grupo convertidos: $exerciciosLista")
+                    val exerciciosRaw = treinoDoc.get("exercicios") as? List<Map<String, Any>> ?: continue
 
-                    val exerciciosTreino = mutableListOf<UsuarioExercicioTreino>()
-
-                    if (exerciciosLista.isEmpty()) {
-                        Log.d("UsuarioTreinos", "Grupo $nomeGrupo não tem exercícios")
-                        gruposTreino.add(UsuarioGrupoTreino(nomeGrupo, exerciciosTreino))
-                        gruposCarregados++
-                        if (gruposCarregados == totalGrupos) {
-                            Log.d("UsuarioTreinos", "Todos os grupos carregados - atualizando RecyclerView")
-                            setupRecycler()
+                    val exercicios = exerciciosRaw.mapNotNull { exercicioMap ->
+                        try {
+                            UsuarioExercicioTreino(
+                                id = exercicioMap["nome"].hashCode(),
+                                nome = exercicioMap["nome"]?.toString() ?: "",
+                                carga = exercicioMap["carga"]?.toString() ?: "",
+                                repeticoes = buildString {
+                                    val series = exercicioMap["series"]?.toString() ?: "3"
+                                    val reps = exercicioMap["repeticoes"]?.toString() ?: "10"
+                                    append("${series}x${reps}")
+                                },
+                                grupoMuscular = nomeGrupo,
+                                equipamentos = listOf(),
+                                dificuldade = exercicioMap["dificuldade"]?.toString() ?: "Intermediário",
+                                urlVideo = exercicioMap["urlVideo"]?.toString()
+                            )
+                        } catch (e: Exception) {
+                            Log.e("UsuarioTreinos", "Erro ao converter exercício", e)
+                            null
                         }
-                        continue
                     }
 
-                    var exerciciosCarregados = 0
-                    val totalExercicios = exerciciosLista.size
-
-                    for (nomeExercicio in exerciciosLista) {
-                        val exercicioInfo = exerciciosRaw.find { it["nome"] == nomeExercicio }
-                        val carga = exercicioInfo?.get("carga") as? String ?: ""
-                        val repeticoes = exercicioInfo?.get("repeticoes") as? String ?: ""
-                        Log.d("UsuarioTreinos", "Buscando dados do exercício: $nomeExercicio")
-                        db.collection("exercicios")
-                            .whereEqualTo("nome", nomeExercicio)
-                            .get()
-                            .addOnSuccessListener { exercicioSnapshot ->
-                                if (!exercicioSnapshot.isEmpty) {
-                                    val doc = exercicioSnapshot.documents[0]
-                                    Log.d("UsuarioTreinos", "Exercício encontrado: ${doc.getString("nome")}")
-
-                                    val aparelhosRaw = doc.get("aparelhos")
-                                    Log.d("UsuarioTreinos", "Campo aparelhos raw: $aparelhosRaw, tipo: ${aparelhosRaw?.javaClass}")
-
-                                    val usuarioExercicio = UsuarioExercicioTreino(
-                                        id = doc.getLong("id")?.toInt() ?: 0,
-                                        nome = doc.getString("nome") ?: "",
-                                        carga = carga ?: "",
-                                        repeticoes = repeticoes ?: "",
-                                        grupoMuscular = doc.getString("grupoMuscular") ?: "",
-                                        equipamentos = doc.get("aparelhos") as? List<String> ?: emptyList(),
-                                        dificuldade = doc.getString("dificuldade") ?: "",
-                                        urlVideo = doc.getString("urlVideo")
-                                    )
-                                    exerciciosTreino.add(usuarioExercicio)
-                                } else {
-                                    Log.w("UsuarioTreinos", "Nenhum documento encontrado para exercício: $nomeExercicio")
-                                }
-                                exerciciosCarregados++
-                                Log.d("UsuarioTreinos", "Exercícios carregados no grupo '$nomeGrupo': $exerciciosCarregados/$totalExercicios")
-
-                                if (exerciciosCarregados == totalExercicios) {
-                                    Log.d("UsuarioTreinos", "Todos exercícios do grupo '$nomeGrupo' carregados, adicionando ao gruposTreino")
-                                    gruposTreino.add(UsuarioGrupoTreino(nomeGrupo, exerciciosTreino))
-                                    gruposCarregados++
-                                    if (gruposCarregados == totalGrupos) {
-                                        Log.d("UsuarioTreinos", "Todos os grupos carregados - atualizando RecyclerView")
-                                        setupRecycler()
-                                    }
-                                }
-                            }
-                            .addOnFailureListener { e ->
-                                Log.e("UsuarioTreinos", "Erro ao carregar exercício $nomeExercicio: ", e)
-                                exerciciosCarregados++
-                                if (exerciciosCarregados == totalExercicios) {
-                                    gruposTreino.add(UsuarioGrupoTreino(nomeGrupo, exerciciosTreino))
-                                    gruposCarregados++
-                                    if (gruposCarregados == totalGrupos) {
-                                        Log.d("UsuarioTreinos", "Todos os grupos carregados - atualizando RecyclerView")
-                                        setupRecycler()
-                                    }
-                                }
-                            }
+                    if (exercicios.isNotEmpty()) {
+                        val grupoTreino = UsuarioGrupoTreino(nomeGrupo, exercicios)
+                        gruposTreino.add(grupoTreino)
                     }
                 }
+
+                setupRecycler()
             }
             .addOnFailureListener { e ->
                 Log.e("UsuarioTreinos", "Erro ao buscar treinos: ", e)
             }
     }
 
-
     private fun setupRecycler() {
-        val grupos = listOf("Perna", "Costa", "Peito")
+        val grupos = listOf("Perna", "Costas", "Peito")
 
         for (grupo in grupos) {
             val grupoTreino = gruposTreino.find { it.nome.equals(grupo, ignoreCase = true) }
@@ -178,8 +125,6 @@ class UsuarioTreinos : Fragment(), UsuarioExercicioTreinoAdapter.OnExercicioTrei
         }
     }
 
-
-
     override fun onExercicioClick(exercicio: UsuarioExercicioTreino) {
         Log.d("UsuarioTreinos", "Exercício clicado: ${exercicio.nome} (ID: ${exercicio.id}) do grupo ${exercicio.grupoMuscular}")
 
@@ -196,5 +141,79 @@ class UsuarioTreinos : Fragment(), UsuarioExercicioTreinoAdapter.OnExercicioTrei
             .commit()
 
         Log.d("UsuarioTreinos", "Navegando para detalhes do exercício")
+    }
+
+    // ADDED: Method to navigate to full workout view
+    fun navigateToFullWorkout(grupoMuscular: String) {
+        val currentUser = auth.currentUser
+
+        if (currentUser == null) {
+            Log.e("UsuarioTreinos", "Usuário não autenticado")
+            return
+        }
+
+        val userEmail = currentUser.email
+
+        if (userEmail.isNullOrBlank()) {
+            Log.e("UsuarioTreinos", "Email do usuário não encontrado")
+            return
+        }
+
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("treinos")
+            .whereEqualTo("usuarioEmail", userEmail)
+            .whereEqualTo("titulo", grupoMuscular)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val document = documents.documents[0]
+                    val titulo = document.getString("titulo") ?: grupoMuscular
+                    val exerciciosData = document.get("exercicios") as? List<Map<String, Any>> ?: emptyList()
+
+                    // Convert exercises to ExercicioTreino for TreinoDetalhes
+                    val exercicios = exerciciosData.mapNotNull { exercicioMap ->
+                        try {
+                            ExercicioTreino(
+                                id = exercicioMap["nome"]?.toString() ?: "",
+                                nome = exercicioMap["nome"]?.toString() ?: "",
+                                peso = exercicioMap["carga"]?.toString() ?: "",
+                                repeticoes = buildString {
+                                    val series = exercicioMap["series"]?.toString() ?: "3"
+                                    val reps = exercicioMap["repeticoes"]?.toString() ?: "10"
+                                    append("${series}x${reps}")
+                                },
+                                grupoMuscular = titulo,
+                                descricao = "Descanso: ${exercicioMap["descanso"]?.toString() ?: "60s"}"
+                            )
+                        } catch (e: Exception) {
+                            Log.e("UsuarioTreinos", "Erro ao converter exercício", e)
+                            null
+                        }
+                    }
+
+                    val treino = Treino(titulo, exercicios)
+
+                    // Navigate to TreinoDetalhes
+                    val fragment = TreinoDetalhes().apply {
+                        arguments = Bundle().apply {
+                            putString("treino_nome", treino.titulo)
+                            putParcelableArrayList("exercicios", ArrayList(treino.exercicios))
+                        }
+                    }
+
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(grupoMuscular)
+                        .commit()
+
+                    Log.d("UsuarioTreinos", "Navegando para treino completo de $grupoMuscular")
+                } else {
+                    Log.w("UsuarioTreinos", "Nenhum treino encontrado para $grupoMuscular")
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("UsuarioTreinos", "Erro ao buscar treino de $grupoMuscular", e)
+            }
     }
 }

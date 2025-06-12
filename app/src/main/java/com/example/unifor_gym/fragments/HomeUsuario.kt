@@ -85,26 +85,17 @@ class HomeUsuario : Fragment() {
                         currentUser.displayName ?:
                         "Usuário"
 
-                        tvBemVindo.text = "Bem vindo, $nomeUsuario"
+                        tvBemVindo.text = "Bem-vindo, $nomeUsuario"
                     } else {
-                        // Se não encontrar no Firestore, usar o displayName do Firebase Auth
-                        val nome = currentUser.displayName ?:
-                        currentUser.email?.substringBefore("@") ?:
-                        "Usuário"
-                        tvBemVindo.text = "Bem vindo, $nome"
+                        tvBemVindo.text = "Bem-vindo, ${currentUser.displayName ?: "Usuário"}"
                     }
                 }
                 .addOnFailureListener { exception ->
-                    Log.e("HomeUsuario", "Erro ao carregar dados do usuário", exception)
-                    // Em caso de erro, usar dados do Firebase Auth ou padrão
-                    val nome = currentUser.displayName ?:
-                    currentUser.email?.substringBefore("@") ?:
-                    "Usuário"
-                    tvBemVindo.text = "Bem vindo, $nome"
+                    Log.e("HomeUsuario", "Erro ao carregar nome do usuário", exception)
+                    tvBemVindo.text = "Bem-vindo, Usuário"
                 }
         } else {
-            // Usuário não está logado
-            tvBemVindo.text = "Bem vindo"
+            tvBemVindo.text = "Bem-vindo, Usuário"
         }
     }
 
@@ -123,12 +114,10 @@ class HomeUsuario : Fragment() {
             return
         }
 
-        Log.d("HomeUsuario", "Buscando treinos para o email: $userEmail")
-
-        // Buscar treinos do usuário baseado no email
+        // Buscar um treino qualquer do usuário para exibição na home
         db.collection("treinos")
             .whereEqualTo("usuarioEmail", userEmail)
-            .limit(1) // Pegar apenas o primeiro treino encontrado para o "treino do dia"
+            .limit(1) // Pegar apenas o primeiro treino
             .get()
             .addOnSuccessListener { documents ->
                 if (!documents.isEmpty) {
@@ -137,9 +126,7 @@ class HomeUsuario : Fragment() {
                     val titulo = document.getString("titulo") ?: "Treino"
                     val exerciciosData = document.get("exercicios") as? List<Map<String, Any>> ?: emptyList()
 
-                    Log.d("HomeUsuario", "Treino encontrado: $titulo com ${exerciciosData.size} exercícios")
-
-                    // Converter os exercícios para o modelo ExercicioTreino
+                    // Converter os exercícios
                     val exercicios = exerciciosData.mapNotNull { exercicioMap ->
                         try {
                             ExercicioTreino(
@@ -151,7 +138,7 @@ class HomeUsuario : Fragment() {
                                     val reps = exercicioMap["repeticoes"]?.toString() ?: "10"
                                     append("${series}x${reps}")
                                 },
-                                grupoMuscular = titulo, // Usar o título como grupo muscular
+                                grupoMuscular = titulo,
                                 descricao = "Descanso: ${exercicioMap["descanso"]?.toString() ?: "60s"}"
                             )
                         } catch (e: Exception) {
@@ -210,31 +197,27 @@ class HomeUsuario : Fragment() {
         }
     }
 
-    private fun criarViewExercicio(exercicio: ExercicioTreino, isAlternate: Boolean): View {
+    private fun criarViewExercicio(exercicio: ExercicioTreino, isEven: Boolean): LinearLayout {
         val exercicioLayout = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.HORIZONTAL
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            setPadding(32, 24, 32, 24)
+            setPadding(16, 12, 16, 12)
 
-            // Alternar cor de fundo
-            if (isAlternate) {
+            if (isEven) {
                 setBackgroundColor(resources.getColor(android.R.color.background_light, null))
             }
         }
 
-        // Nome do exercício
         val nomeView = TextView(requireContext()).apply {
-            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 2.5f)
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             text = exercicio.nome
-            textAlignment = View.TEXT_ALIGNMENT_CENTER
             setTextColor(resources.getColor(android.R.color.black, null))
             textSize = 14f
         }
 
-        // Peso
         val pesoView = TextView(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             text = exercicio.peso
@@ -243,7 +226,6 @@ class HomeUsuario : Fragment() {
             textSize = 14f
         }
 
-        // Séries x Repetições
         val seriesView = TextView(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             text = exercicio.repeticoes
@@ -271,6 +253,7 @@ class HomeUsuario : Fragment() {
         Log.d("HomeUsuario", "Nenhum treino encontrado - mostrando layout vazio")
     }
 
+    // FIXED: This method now properly navigates to TreinoDetalhes
     private fun buscarTreinoPorGrupo(grupo: String) {
         val currentUser = auth.currentUser
 
@@ -321,7 +304,7 @@ class HomeUsuario : Fragment() {
 
                     val treino = Treino(titulo, exercicios)
 
-                    // Navegar para os detalhes do treino
+                    // FIXED: Navigate to TreinoDetalhes with proper bundle
                     val fragment = TreinoDetalhes().apply {
                         arguments = Bundle().apply {
                             putString("treino_nome", treino.titulo)

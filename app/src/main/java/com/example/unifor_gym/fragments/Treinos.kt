@@ -12,6 +12,7 @@ import com.example.unifor_gym.R
 import com.example.unifor_gym.adapters.TreinoAdapterUser
 import com.example.unifor_gym.models.ExercicioTreino
 import com.example.unifor_gym.models.Treino
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class Treinos : Fragment() {
@@ -20,6 +21,7 @@ class Treinos : Fragment() {
     private lateinit var adapter: TreinoAdapterUser
     private val listaTreinos = mutableListOf<Treino>()
     private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +32,7 @@ class Treinos : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         adapter = TreinoAdapterUser(listaTreinos) { treinoClicado ->
+            // FIXED: Proper navigation with exercise data
             val bundle = Bundle().apply {
                 putString("treino_nome", treinoClicado.titulo)
                 putParcelableArrayList("exercicios", ArrayList(treinoClicado.exercicios))
@@ -47,12 +50,153 @@ class Treinos : Fragment() {
 
         recyclerView.adapter = adapter
 
-        buscarTreinosDoFirestore()
+        buscarTreinosDoUsuario()
 
         return view
     }
 
+    // FIXED: Load workouts for the current user only (matches your current approach)
+    private fun buscarTreinosDoUsuario() {
+        val currentUser = auth.currentUser
+
+        if (currentUser == null) {
+            Log.e("Treinos", "Usuário não autenticado")
+            buscarTreinosDoFirestore() // Fallback to all workouts if not authenticated
+            return
+        }
+
+        val userEmail = currentUser.email
+
+        if (userEmail.isNullOrBlank()) {
+            Log.e("Treinos", "Email do usuário não encontrado")
+            buscarTreinosDoFirestore() // Fallback to all workouts
+            return
+        }
+
+        Log.d("Treinos", "Buscando treinos para o usuário: $userEmail")
+
+        db.collection("treinos")
+            .whereEqualTo("usuarioEmail", userEmail)
+            .get()
+            .addOnSuccessListener { result ->
+                listaTreinos.clear()
+
+                if (result.isEmpty) {
+                    Log.d("Treinos", "Nenhum treino encontrado para o usuário")
+                    adapter.notifyDataSetChanged()
+                    return@addOnSuccessListener
+                }
+
+                Log.d("Treinos", "Encontrados ${result.size()} treinos")
+
+                for (document in result) {
+                    try {
+                        val titulo = document.getString("titulo") ?: continue
+                        val exerciciosMap = document["exercicios"] as? List<Map<String, Any>> ?: continue
+
+                        Log.d("Treinos", "Processando treino: $titulo com ${exerciciosMap.size} exercícios")
+
+                        val exercicios = exerciciosMap.mapNotNull { exercicioMap ->
+                            try {
+                                ExercicioTreino(
+                                    id = exercicioMap["nome"]?.toString() ?: "",
+                                    nome = exercicioMap["nome"]?.toString() ?: "",
+                                    peso = exercicioMap["carga"]?.toString() ?: "",
+                                    repeticoes = buildString {
+                                        val series = exercicioMap["series"]?.toString() ?: "3"
+                                        val reps = exercicioMap["repeticoes"]?.toString() ?: "10"
+                                        append("${series}x${reps}")
+                                    },
+                                    grupoMuscular = titulo,
+                                    descricao = "Descanso: ${exercicioMap["descanso"]?.toString() ?: "60s"}"
+                                )
+                            } catch (e: Exception) {
+                                Log.e("Treinos", "Erro ao converter exercício: ${exercicioMap}", e)
+                                null
+                            }
+                        }
+
+                        if (exercicios.isNotEmpty()) {
+                            val treino = Treino(titulo, exercicios)
+                            listaTreinos.add(treino)
+                            Log.d("Treinos", "Treino '$titulo' adicionado com ${exercicios.size} exercícios")
+                        }
+                    } catch (e: Exception) {
+                        Log.e("Treinos", "Erro ao processar documento: ${document.id}", e)
+                    }
+                }
+
+                adapter.notifyDataSetChanged()
+                Log.d("Treinos", "Total de treinos carregados: ${listaTreinos.size}")
+            }
+            .addOnFailureListener { exception ->
+                Log.e("Treinos", "Erro ao buscar treinos", exception)
+            }
+    }
+
     private fun buscarTreinosDoFirestore() {
+        // Get current user for filtering
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val userEmail = currentUser?.email
+
+        if (currentUser == null || userEmail.isNullOrBlank()) {
+            Log.e("Treinos", "Usuário não autenticado ou email não encontrado")
+            // Still show all workouts if user not authenticated (optional)
+            loadAllWorkouts()
+            return
+        }
+
+        // Filter workouts by user email
+        db.collection("treinos")
+            .whereEqualTo("usuarioEmail", userEmail)
+            .get()
+            .addOnSuccessListener { result ->
+                listaTreinos.clear()
+
+                if (result.isEmpty) {
+                    adapter.notifyDataSetChanged()
+                    return@addOnSuccessListener
+                }
+
+                for (document in result) {
+                    val titulo = document.getString("titulo") ?: continue
+                    val exerciciosMap = document["exercicios"] as? List<Map<String, Any>> ?: continue
+
+                    val exercicios = exerciciosMap.mapNotNull { exercicioMap ->
+                        try {
+                            ExercicioTreino(
+                                id = exercicioMap["nome"]?.toString() ?: "",
+                                nome = exercicioMap["nome"]?.toString() ?: "",
+                                peso = exercicioMap["carga"]?.toString() ?: "",
+                                repeticoes = buildString {
+                                    val series = exercicioMap["series"]?.toString() ?: "3"
+                                    val reps = exercicioMap["repeticoes"]?.toString() ?: "10"
+                                    append("${series}x${reps}")
+                                },
+                                grupoMuscular = titulo,
+                                descricao = "Descanso: ${exercicioMap["descanso"]?.toString() ?: "60s"}"
+                            )
+                        } catch (e: Exception) {
+                            Log.e("Treinos", "Erro ao converter exercício", e)
+                            null
+                        }
+                    }
+
+                    if (exercicios.isNotEmpty()) {
+                        val treino = Treino(titulo, exercicios)
+                        listaTreinos.add(treino)
+                    }
+                }
+
+                adapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                Log.e("Treinos", "Erro ao buscar treinos do Firestore", exception)
+            }
+    }
+
+    // Optional: Keep the original logic as a separate method if you want to show all workouts when user is not authenticated
+    private fun loadAllWorkouts() {
         db.collection("treinos")
             .get()
             .addOnSuccessListener { result ->
@@ -65,52 +209,38 @@ class Treinos : Fragment() {
 
                 for (document in result) {
                     val titulo = document.getString("titulo") ?: continue
-                    val exerciciosMap =
-                        document["exercícios"] as? List<Map<String, Any>> ?: emptyList()
+                    val exerciciosMap = document["exercicios"] as? List<Map<String, Any>> ?: continue
 
-                    if (exerciciosMap.isEmpty()) {
-                        // Se não tem exercícios, adiciona treino vazio logo
-                        listaTreinos.add(Treino(titulo, emptyList()))
-                        adapter.notifyDataSetChanged()
-                        continue
+                    val exercicios = exerciciosMap.mapNotNull { exercicioMap ->
+                        try {
+                            ExercicioTreino(
+                                id = exercicioMap["nome"]?.toString() ?: "",
+                                nome = exercicioMap["nome"]?.toString() ?: "",
+                                peso = exercicioMap["carga"]?.toString() ?: "",
+                                repeticoes = buildString {
+                                    val series = exercicioMap["series"]?.toString() ?: "3"
+                                    val reps = exercicioMap["repeticoes"]?.toString() ?: "10"
+                                    append("${series}x${reps}")
+                                },
+                                grupoMuscular = titulo,
+                                descricao = "Descanso: ${exercicioMap["descanso"]?.toString() ?: "60s"}"
+                            )
+                        } catch (e: Exception) {
+                            Log.e("Treinos", "Erro ao converter exercício", e)
+                            null
+                        }
                     }
 
-                    val exerciciosList = mutableListOf<ExercicioTreino>()
-                    var exerciciosCarregados = 0
-
-                    for (exercicioMap in exerciciosMap) {
-                        val idExercicio = exercicioMap["nome"]?.toString()
-                            ?: exercicioMap["id"]?.toString()
-                            ?: continue
-
-                        val peso = exercicioMap["carga"]?.toString() ?: ""
-                        val repeticoes = exercicioMap["repetições"]?.toString() ?: ""
-
-                        db.collection("exercicios").document(idExercicio).get()
-                            .addOnSuccessListener { exercicioDoc ->
-                                val nomeExercicio = exercicioDoc.getString("nome") ?: "Exercício"
-                                exerciciosList.add(ExercicioTreino(nomeExercicio, peso, repeticoes))
-                                exerciciosCarregados++
-
-                                // Só adiciona o treino quando todos os exercícios estiverem carregados
-                                if (exerciciosCarregados == exerciciosMap.size) {
-                                    listaTreinos.add(Treino(titulo, exerciciosList))
-                                    adapter.notifyDataSetChanged()
-                                }
-                            }
-                            .addOnFailureListener { e ->
-                                Log.e("Treinos", "Erro ao buscar nome do exercício", e)
-                                exerciciosCarregados++
-                                if (exerciciosCarregados == exerciciosMap.size) {
-                                    listaTreinos.add(Treino(titulo, exerciciosList))
-                                    adapter.notifyDataSetChanged()
-                                }
-                            }
+                    if (exercicios.isNotEmpty()) {
+                        val treino = Treino(titulo, exercicios)
+                        listaTreinos.add(treino)
                     }
                 }
+
+                adapter.notifyDataSetChanged()
             }
             .addOnFailureListener { exception ->
-                Log.e("Treinos", "Erro ao buscar treinos", exception)
+                Log.e("Treinos", "Erro ao buscar treinos do Firestore", exception)
             }
     }
 }
