@@ -1,9 +1,10 @@
 package com.example.unifor_gym.activities
 
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
-import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import com.example.unifor_gym.R
 import com.example.unifor_gym.models.Exercicio
 import com.example.unifor_gym.utils.VLibrasHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.util.regex.Pattern
 
 class ExercicioDetalhes : AppCompatActivity() {
 
@@ -22,7 +24,7 @@ class ExercicioDetalhes : AppCompatActivity() {
     private lateinit var txtInstrucoes: TextView
     private lateinit var containerEquipamentos: LinearLayout
     private lateinit var containerCategorias: LinearLayout
-
+    private lateinit var webViewPlayer: WebView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +37,9 @@ class ExercicioDetalhes : AppCompatActivity() {
         txtInstrucoes = findViewById(R.id.txtInstrucoesExercicioDetalhes)
         containerEquipamentos = findViewById(R.id.containerEquipamentosDetalhes)
         containerCategorias = findViewById(R.id.containerCategoriasDetalhes)
+        // Pegando o WebView pelo ID
+        webViewPlayer = findViewById(R.id.webview_player)
 
-        // Configurar botão de voltar
         btnVoltar.setOnClickListener {
             finish()
         }
@@ -46,13 +49,11 @@ class ExercicioDetalhes : AppCompatActivity() {
             VLibrasHelper.openVLibrasWithScreenContent(this)
         }
 
-        // Obter exercício dos extras
         val exercicio = intent.getParcelableExtra<Exercicio>("exercicio")
 
         if (exercicio != null) {
             preencherDetalhesExercicio(exercicio)
         } else {
-            // Caso não tenha recebido os dados do exercício
             txtTitulo.text = "Erro ao carregar exercício"
         }
     }
@@ -117,5 +118,65 @@ class ExercicioDetalhes : AppCompatActivity() {
             txtSemCategorias.textSize = 16f
             containerCategorias.addView(txtSemCategorias)
         }
+
+        val urlDoVideo = exercicio.videoUrl
+        Log.d("ExercicioDetalhes", "Video URL: ${exercicio.videoUrl}")
+        if (!urlDoVideo.isNullOrBlank()) {
+            val videoId = getYouTubeId(urlDoVideo)
+            Log.d("ExercicioDetalhes", "videoId: ${videoId}")
+            if (videoId != null) {
+                webViewPlayer.settings.javaScriptEnabled = true
+                val html = """
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <style>
+                            body { margin: 0; padding: 0; background-color: black; }
+                            .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="video-container">
+                            <iframe 
+                                width="100%" 
+                                height="100%" 
+                                src="https://www.youtube.com/embed/$videoId" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </body>
+                    </html>
+                """.trimIndent()
+                // Carregar o HTML no WebView
+                webViewPlayer.loadData(html, "text/html", "utf-8")
+            }
+        }
+    }
+
+    private fun getYouTubeId(youTubeUrl: String?): String? {
+        if (youTubeUrl.isNullOrBlank()) {
+            return null
+        }
+        Log.d("ExerciciosDetalhes::getYoutubeId", "youtubeUrl: ${youTubeUrl}")
+
+        // Padrão de Regex ATUALIZADO para incluir "shorts/" e ser mais robusto.
+        val pattern = "(?:youtu\\.be/|watch\\?v=|/videos/|embed\\/|/v/|/e/|shorts/|watch\\?.+&v=)([^&?/\"]{11})"
+
+        val compiledPattern = Pattern.compile(pattern)
+        val matcher = compiledPattern.matcher(youTubeUrl)
+
+        return if (matcher.find()) {
+            matcher.group(1) // Pega o primeiro grupo de captura, que é o nosso ID
+        } else {
+            null
+        }
+    }
+
+    override fun onDestroy() {
+        // É importante destruir o WebView para liberar memória
+        webViewPlayer.destroy()
+        super.onDestroy()
     }
 }
